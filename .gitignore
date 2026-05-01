@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Project specific
+corpus/raw_metadata/
+corpus/logs/
+*.jsonl
+
+# User specific
+.gemini/
+.antigravity/
+
+# Manifests (optional, keeping for now as they are small and results-oriented)
+# corpus/manifest_candidates.csv
+# corpus/manifest_100.csv
