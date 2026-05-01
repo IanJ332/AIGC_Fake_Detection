@@ -12,30 +12,68 @@ def normalize_title(title):
 
 def score_paper(paper):
     """
-    Score each paper:
-    score = 0.35 * normalized citation_count 
-          + 0.35 * topical_relevance
-          + 0.15 * pdf_or_oa_available
-          + 0.10 * benchmark_or_dataset_relevance
-          + 0.05 * recency_bonus
+    Score each paper with hard exclusions for topic drift.
     """
-    # 1. Citation score (log normalized or capped)
+    title = str(paper.get("title") or "").lower()
+    abstract = str(paper.get("abstract") or "").lower()
+    title_abs = title + " " + abstract
+    
+    # --- Hard Exclusions ---
+    exclusion_reasons = []
+    
+    # 1. Medical Imaging / Pathology
+    med_kws = ["brain tumor", "brats", "pathology", "clinical", "cancer", "medical", "mri", "ct scan", "histopathology", "arterial stiffness", "coronavirus", "medicine", "nanomedicine", "neuroimaging", "alzheimer"]
+    if any(kw in title_abs for kw in med_kws):
+        if not any(kw in title for kw in ["fake", "deepfake", "forgery", "aigc"]):
+            exclusion_reasons.append("medical_only")
+        
+    # 2. Chemistry / Materials
+    chem_kws = ["luminescent", "metal-organic", "chemistry", "material science", "nanoparticle", "molecular", "mass spectrometry", "spectrometry"]
+    if any(kw in title_abs for kw in chem_kws):
+        exclusion_reasons.append("chemistry_materials")
+        
+    # 3. Generic Object Detection / Benchmarks (unless AIGC/Forgery mentioned in TITLE)
+    bench_kws = ["pascal", "voc challenge", "coco dataset", "imagenet", "object detection benchmark", "visual genome", "voc (voc) challenge"]
+    if any(kw in title for kw in bench_kws) or ( "voc" in title and "challenge" in title):
+        aigc_core = ["fake", "forgery", "manipulation", "deepfake", "synthetic", "generated", "aigc", "forensics"]
+        if not any(kw in title for kw in aigc_core):
+            exclusion_reasons.append("object_detection_only")
+        
+    # 4. Generic Explainability (unless AIGC/Forgery mentioned in TITLE)
+    exp_kws = ["grad-cam", "lrp", "explainable ai", "xai", "visual explanations", "pixel-wise explanations"]
+    if any(kw in title for kw in exp_kws):
+        if not any(kw in title for kw in ["fake", "forgery", "manipulation", "deepfake"]):
+            exclusion_reasons.append("explainability_only")
+        
+    # 5. General CV / Non-Image (unless AIGC/Forgery mentioned)
+    gen_kws = [
+        "wireless", "6g", "image processing", "computer vision survey", 
+        "haze removal", "visual tracking", "image data augmentation",
+        "temperature", "climate", "ocean", "satellite", "remote sensing",
+        "communication network", "internet of things", "iot", "sensor network",
+        "spectrometry", "spectroscopy", "natural products"
+    ]
+    if any(kw in title_abs for kw in gen_kws):
+        if not any(kw in title for kw in ["fake", "forgery", "deepfake", "synthetic", "aigc"]):
+            exclusion_reasons.append("generic_cv_only")
+        
+    if exclusion_reasons:
+        return 0.0, ", ".join(exclusion_reasons)
+
+    # --- Normal Scoring ---
+    # 1. Citation score
     citations = paper.get("citation_count", 0)
-    # Simple normalization: cap at 1000 citations and divide by 1000
     citation_score = min(citations / 1000.0, 1.0)
     
-    # 2. Topical relevance (keyword matching)
-    title_abs = (paper.get("title") or "") + " " + (paper.get("abstract") or "")
-    title_abs = title_abs.lower()
-    
-    # Check if 'image' or related is present
+    # 2. Topical relevance
+    # Essential image focus
     has_image_focus = any(kw in title_abs for kw in ["image", "face", "facial", "visual", "pixel", "frame", "vision"])
     if not has_image_focus:
-        return 0.0 
+        return 0.0, "no_image_focus"
     
     # Exclude video-only if explicitly stated and no mention of image
     if "video" in title_abs and "image" not in title_abs:
-        return 0.001 # Very low but not zero
+        return 0.001, "video_only_risk"
         
     aigc_keywords = [
         "aigc", "deepfake", "gan", "diffusion", "synthetic", "forgery", 
@@ -53,14 +91,13 @@ def score_paper(paper):
     has_detection = any(kw in title_abs for kw in detection_keywords)
     
     if not (has_aigc and has_detection):
-        topical_relevance = 0.1 # Weak match
+        topical_relevance = 0.1
     else:
-        # Extra points for very specific AIGC terms
         specific_keywords = ["deepfake", "aigc", "diffusion", "stable diffusion", "midjourney"]
         if any(kw in title_abs for kw in specific_keywords):
             topical_relevance = 1.0
         else:
-            topical_relevance = 0.8 # Good but general
+            topical_relevance = 0.8
     
     # 3. Open access
     oa_score = 1.0 if paper.get("pdf_url") else 0.0
@@ -86,11 +123,10 @@ def score_paper(paper):
         0.05 * recency_bonus
     )
     
-    # If it's a very weak topical match, penalize heavily
     if topical_relevance < 0.2:
         final_score *= 0.1
 
-    return final_score
+    return final_score, ""
 
 def infer_tags(paper):
     title_abs = ((paper.get("title") or "") + " " + (paper.get("abstract") or "")).lower()
@@ -191,55 +227,74 @@ def main():
     df = df.drop_duplicates(subset=['norm_title'])
     print(f"After deduplication: {len(df)}")
 
-    # Score
-    df['score'] = df.apply(score_paper, axis=1)
-    df['paper_role_guess'] = df.apply(guess_paper_role, axis=1)
-    df['risk_flags'] = df.apply(check_risk_flags, axis=1)
+    # Scoring
+    scored_results = df.apply(lambda row: score_paper(row), axis=1)
+    df['score'] = [r[0] for r in scored_results]
+    df['exclusion_reason'] = [r[1] for r in scored_results]
     
-    # Sort
-    df = df.sort_values(by='score', ascending=False)
+    df['paper_role_guess'] = df.apply(guess_paper_role, axis=1)
+    df['risk_flags'] = df['exclusion_reason']
     
     # Add inferred tags
     df[['modality_scope', 'topic_family', 'era']] = df.apply(lambda row: pd.Series(infer_tags(row)), axis=1)
     
-    # Replacement Protocol
-    # Identify weak matches or excluded modalities
-    exclude_terms = ["video", "audio", "speech", "voice", "text detection", "watermark"]
-    def is_weak(row):
-        title_abs = (str(row['title']) + " " + str(row.get('abstract', ''))).lower()
-        if any(term in title_abs for term in exclude_terms) and "image" not in title_abs:
-            return True
-        if row['score'] < 0.1: # Threshold for penalized weak matches
-            return True
-        return False
+    # must_keep_reason logic
+    def get_must_keep_reason(row):
+        title = str(row['title']).lower()
+        reason = row['exclusion_reason']
+        if reason == "":
+            return ""
+            
+        if "object_detection_only" in reason:
+            return "foundational_dataset_used_by_many_corpus_papers"
+        if "explainability_only" in reason:
+            return "foundational_method_for_localization_or_explainability"
+        if "generic_cv_only" in reason:
+            if "survey" in title or "review" in title:
+                return "foundational_survey_providing_context"
+            return "foundational_method_for_image_analysis"
+        if "medical_only" in reason:
+            return "foundational_method_for_imaging_benchmarking"
+        if "chemistry_materials" in reason:
+            return "foundational_method_for_material_analysis"
+        if "no_image_focus" in reason:
+            return "foundational_generic_machine_learning_method"
+        if "video_only_risk" in reason:
+            return "foundational_method_for_temporal_analysis"
+            
+        return "general_foundational_method"
 
-    df['replacement_candidate'] = df.apply(is_weak, axis=1)
-    df['must_keep'] = ~df['replacement_candidate']
+    df['must_keep_reason'] = df.apply(get_must_keep_reason, axis=1)
+
+    # Replacement Protocol - Prioritized Sorting
+    # 1. No exclusion reason (Strong/Weak)
+    # 2. Least offensive drift
+    def get_sort_priority(row):
+        reason = row['exclusion_reason']
+        if reason == "":
+            return 0
+        if reason == "no_image_focus":
+            return 1
+        if "generic_cv_only" in reason:
+            return 2
+        if "explainability_only" in reason:
+            return 3
+        if "object_detection_only" in reason:
+            return 4
+        # Medical/Chemistry at the very bottom
+        return 5
+
+    df['sort_priority'] = df.apply(get_sort_priority, axis=1)
     
-    # Sort by score descending
-    df = df.sort_values(by='score', ascending=False)
+    # Sort by priority ascending, then score descending
+    df = df.sort_values(by=['sort_priority', 'score'], ascending=[True, False])
     
-    # Initial top 100
+    # Final 100
     manifest_100 = df.head(100).copy()
     
-    # Check if replacements needed
-    weak_count = manifest_100['replacement_candidate'].sum()
-    print(f"Initial top 100 has {weak_count} weak matches.")
-    
-    if weak_count > 0:
-        print(f"Applying replacement protocol for {weak_count} papers...")
-        strong_candidates = df[100:][~df[100:]['replacement_candidate']].head(weak_count)
-        
-        # Identify indices to replace
-        replace_indices = manifest_100[manifest_100['replacement_candidate']].index
-        
-        if not strong_candidates.empty:
-            num_to_replace = min(len(replace_indices), len(strong_candidates))
-            for i in range(num_to_replace):
-                idx_to_remove = replace_indices[i]
-                # Replace with top strong candidate
-                manifest_100.loc[idx_to_remove] = strong_candidates.iloc[i]
-            print(f"Replaced {num_to_replace} papers.")
+    # Identify replacement candidates (for candidates pool)
+    df['replacement_candidate'] = df['exclusion_reason'] != ""
+    manifest_100['replacement_candidate'] = manifest_100['exclusion_reason'] != ""
 
     # Final outputs
     df.head(200).to_csv("corpus/manifest_candidates.csv", index=False)

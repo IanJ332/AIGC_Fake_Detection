@@ -23,25 +23,14 @@ def audit_corpus(manifest_path="corpus/manifest_100.csv", output_path="docs/day1
     role_dist = df['paper_role_guess'].value_counts().to_dict()
     risk_dist = df['risk_flags'].value_counts().to_dict()
     
-    # 2. Suspicious Papers
-    exclude_terms = ["video", "audio", "speech", "voice", "text detection", "watermark"]
-    def is_suspicious(row):
-        title = str(row['title']).lower()
-        reasons = []
-        if any(term in title for term in exclude_terms) and "image" not in title:
-            reasons.append("exclusion_term_match")
-        if pd.isna(row.get('citation_count')):
-            reasons.append("missing_citation")
-        if pd.isna(row.get('source_url')):
-            reasons.append("missing_source")
-        if pd.isna(row.get('year')):
-            reasons.append("missing_year")
-        if row.get('paper_role_guess') == "unknown":
-            reasons.append("unknown_role")
-        return ", ".join(reasons)
-
-    df['audit_suspicious_reasons'] = df.apply(is_suspicious, axis=1)
-    suspicious_df = df[df['audit_suspicious_reasons'] != ""]
+    # Topic Drift Section
+    drift_categories = [
+        "medical_only", "chemistry_materials", "object_detection_only", 
+        "explainability_only", "generic_cv_only", "no_image_focus", "video_only_risk"
+    ]
+    # Check exclusion_reason/risk_flags
+    drift_papers = df[df['risk_flags'].str.contains("|".join(drift_categories), na=False)]
+    drift_count = len(drift_papers)
     
     # 3. Generate Markdown
     md = []
@@ -53,6 +42,18 @@ def audit_corpus(manifest_path="corpus/manifest_100.csv", output_path="docs/day1
     md.append(f"- **Duplicate Titles**: {dup_title}")
     md.append(f"- **PDF/OA Available**: {pdf_count} ({pdf_count/total_rows:.1%})")
     md.append(f"- **Citation Count**: Min: {cit_min}, Median: {cit_median}, Max: {cit_max}")
+    md.append(f"- **Topic Drift Count**: {drift_count}")
+    md.append("")
+    
+    md.append("## Topic Drift Details")
+    if drift_count > 0:
+        md.append("| Title | Drift Category | Must Keep Reason |")
+        md.append("| :--- | :--- | :--- |")
+        for _, row in drift_papers.iterrows():
+            title = str(row['title'])[:80] + "..." if len(str(row['title'])) > 80 else str(row['title'])
+            md.append(f"| {title} | {row['risk_flags']} | {row.get('must_keep_reason', '')} |")
+    else:
+        md.append("No significant topic drift detected.")
     md.append("")
     
     md.append("## Distributions")
@@ -81,6 +82,22 @@ def audit_corpus(manifest_path="corpus/manifest_100.csv", output_path="docs/day1
     md.append("")
     
     md.append("## Suspicious Papers List")
+    # Exclusion terms check
+    exclude_terms = ["video", "audio", "speech", "voice", "text detection", "watermark"]
+    def is_suspicious(row):
+        title = str(row['title']).lower()
+        reasons = []
+        if any(term in title for term in exclude_terms) and "image" not in title:
+            reasons.append("exclusion_term_match")
+        if pd.isna(row.get('citation_count')):
+            reasons.append("missing_citation")
+        if pd.isna(row.get('year')):
+            reasons.append("missing_year")
+        return ", ".join(reasons)
+
+    df['audit_suspicious_reasons'] = df.apply(is_suspicious, axis=1)
+    suspicious_df = df[df['audit_suspicious_reasons'] != ""]
+
     if suspicious_df.empty:
         md.append("No suspicious papers found.")
     else:
@@ -95,7 +112,7 @@ def audit_corpus(manifest_path="corpus/manifest_100.csv", output_path="docs/day1
         f.write("\n".join(md))
     
     print(f"Audit complete. Results saved to {output_path}")
-    return len(suspicious_df)
+    return drift_count
 
 if __name__ == "__main__":
     audit_corpus()
