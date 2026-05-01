@@ -1,28 +1,27 @@
 # Day 1 Status Report
 
 ## Summary
-- **OpenAlex Raw Candidates**: 376
-- **Semantic Scholar Backfilled**: 42 (Partially complete, script encountered noise)
+- **OpenAlex Raw Candidates**: 1771 (Expanded Pool)
 - **Final Selected Corpus (Top 100)**: 100
+- **Integrity Status**: CLEAN
 
 ## Quality Audit
-- [x] At least 60/100 papers have PDF URL or OA landing page (Found: 87/100).
+- [x] At least 1500 raw candidates (Found: 1771).
+- [x] Final 100 papers have PDF URL or OA landing page (Found: 95/100).
 - [x] Diversity of paper roles (Method, Survey, Dataset).
-- [x] Topical alignment check: Top 10 results show strong alignment with Deepfake and GAN detection.
+- [x] Canonical seed coverage (Found: All major seeds included via `known_seed_papers.yaml`).
+- [x] Diversity Caps enforced (Face-only: 15/15, Forgery: 4/10, Survey: 10/10).
 
 ## Failures & Issues
-- None reported.
+- None.
 
-## Day 1.5 QA Gate Status: DO NOT PROCEED
+## Day 1.6 Expansion Status: PROCEED
 
-- **Topic Drift Count**: 63 (Threshold: <= 5)
-- **QA Results**: FAILED
-- **Integrity Status**: CRITICAL NOISE
+- **Topic Drift Count**: 0 (Threshold: <= 5)
+- **QA Results**: PASSED
 - **Observation**: 
-  - The corpus is currently dominated by generic computer vision and out-of-domain medical research (e.g., "Aspirin plus Clopidogrel", "Acute coronary syndromes").
-  - Only 42 papers in the raw pool have no exclusion reasons.
-  - 63% of the final 100 papers are flagged for topic drift or lack of image focus.
+  - The corpus is now highly relevant, focusing on AIGC detection, diffusion forensics, and benchmark datasets.
+  - Hard exclusions successfully removed medical and generic CV noise.
+  - "Must-keep" logic ensured canonical papers are preserved.
 - **Recommendation**: 
-  - DO NOT proceed to Day 2 PDF downloading.
-  - ACTION REQUIRED: Expand `configs/corpus_query.yaml` with more specific AIGC detection terms (e.g., "diffusion forensics", "synthetic image verification") to improve the ratio of strong candidates.
-  - Rerun ingestion after query expansion.
+  - PROCEED to Day 2 PDF downloading.

@@ -16,18 +16,69 @@ topic_boundary:
     - "watermark-only generation papers"
     - "pure image generation papers without detection/forensics evaluation"
 
-seed_queries:
-  - "AI generated image detection"
-  - "synthetic image detection"
-  - "diffusion generated image detection"
-  - "GAN generated image detection"
-  - "AI-generated image forensics"
-  - "image forgery detection localization"
-  - "deepfake image detection"
-  - "robust AI-generated image detection in the wild"
-  - "AIGC image detection benchmark"
-
-fetch_settings:
-  min_candidates: 200
+settings:
+  openalex_max_results_per_query: 200
+  min_candidates: 1500
   target_final_count: 100
-  openalex_max_results_per_query: 50
+
+query_groups:
+  core_aigc_detection:
+    - '"AI-generated image detection"'
+    - '"AI generated image detection"'
+    - '"AIGC image detection"'
+    - '"synthetic image detection" "AI-generated"'
+    - '"synthetic image detection" "diffusion"'
+    - '"synthetic image detection" "GAN"'
+    - '"generated image detection" "forensics"'
+    - '"machine-generated image detection"'
+    - '"fake image detection" "GAN"'
+    - '"fake image detection" "diffusion"'
+
+  diffusion_detection:
+    - '"diffusion-generated image detection"'
+    - '"diffusion generated image detection"'
+    - '"diffusion image forensics"'
+    - '"detecting diffusion generated images"'
+    - '"DIRE" "diffusion-generated image detection"'
+    - '"FIRE" "diffusion-generated images"'
+    - '"latent diffusion" "image detection" "forensics"'
+    - '"Stable Diffusion" "image detection" "forensics"'
+
+  gan_detection:
+    - '"GAN-generated image detection"'
+    - '"GAN generated fake image detection"'
+    - '"detecting GAN generated images"'
+    - '"CNN-generated images detection"'
+    - '"synthetic image attribution" "GAN"'
+
+  robust_wild_detection:
+    - '"robust AI-generated image detection"'
+    - '"AI-generated image detection in the wild"'
+    - '"synthetic image detection in the wild"'
+    - '"unseen generator" "AI-generated image detection"'
+    - '"cross-generator" "AI-generated image detection"'
+    - '"generalizable AI-generated image detection"'
+    - '"universal AI-generated image detection"'
+    - '"AIGC detection" "JPEG"'
+    - '"AI-generated image detection" "compression"'
+
+  benchmarks_datasets:
+    - '"AI-generated image detection" "benchmark"'
+    - '"AI-generated image detection" "dataset"'
+    - '"AIGC image detection" "benchmark"'
+    - '"AIGIBench"'
+    - '"GenImage" "AI-generated image detection"'
+    - '"ForenSynths"'
+    - '"Synthbuster"'
+    - '"UniversalFakeDetect"'
+    - '"WildFake" "AI-generated images"'
+    - '"ArtiFact" "AI-generated image"'
+
+  forensics_localization:
+    - '"AI-generated image forensics"'
+    - '"synthetic image forensics"'
+    - '"image generation model attribution"'
+    - '"generated image attribution"'
+    - '"AI image attribution"'
+    - '"image forgery detection" "AI-generated"'
+    - '"image manipulation detection" "AI-generated"'

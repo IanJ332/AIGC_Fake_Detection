@@ -28,6 +28,8 @@ def audit_corpus(manifest_path="corpus/manifest_100.csv", output_path="docs/day1
         "medical_only", "chemistry_materials", "object_detection_only", 
         "explainability_only", "generic_cv_only", "no_image_focus", "video_only_risk"
     ]
+    # Ensure risk_flags is string for matching
+    df['risk_flags'] = df['risk_flags'].fillna('').astype(str)
     # Check exclusion_reason/risk_flags
     drift_papers = df[df['risk_flags'].str.contains("|".join(drift_categories), na=False)]
     drift_count = len(drift_papers)
