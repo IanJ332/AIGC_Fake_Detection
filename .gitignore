@@ -12,12 +12,16 @@ ENV/
 # Project specific
 corpus/raw_metadata/
 corpus/logs/
+corpus/pdfs/
+corpus/tei_xml/
+corpus/download_logs/
 *.jsonl
 
 # User specific
 .gemini/
 .antigravity/
 
-# Manifests (optional, keeping for now as they are small and results-oriented)
-# corpus/manifest_candidates.csv
-# corpus/manifest_100.csv
+# Manifests and Registry
+# We want to keep manifest_100.csv and document_registry.csv
+!corpus/manifest_100.csv
+!corpus/document_registry.csv
