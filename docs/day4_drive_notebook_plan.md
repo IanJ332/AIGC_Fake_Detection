@@ -19,9 +19,17 @@ Establish a robust, reproducible cloud-based data acquisition and parsing enviro
 5. **Evidence Extraction**: Execute the Day 3 parsing pipeline to generate section-level JSON and table candidates.
 6. **Readiness Probe**: Generate a `drive_data_status.json` file to communicate project state to subsequent notebooks.
 
+## Implementation Workflow (Notebook 02)
+1. **Sampling**: Select a diverse batch of 8 papers (P001-P010) for focused validation.
+2. **Quality Audit**: Verify that the PyMuPDF parsing successfully captured essential sections (Abstract, Method, Results).
+3. **Entity Extraction**: Run rule-based scanners for Datasets (e.g., GenImage), Models (e.g., DINOv2), and Generators (e.g., Diffusion).
+4. **Tuple Probing**: Test result extraction from table candidates, linking metrics to numeric values.
+5. **Question Routing**: Validate a multi-type question classifier against 12 test queries.
+
 ## Success Criteria
 - **Document Coverage**: At least 80 PDFs successfully acquired and registered.
 - **Parse Quality**: At least 65 papers successfully parsed into sections.
+- **Extraction Yield**: Notebook 02 must find >20 entities in the sample batch.
 - **Traceability**: Every document must have a valid SHA256 and mapped metadata in the persistent registry.
 
 ## Next Phase
