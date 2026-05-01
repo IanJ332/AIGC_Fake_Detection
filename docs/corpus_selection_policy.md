@@ -24,8 +24,8 @@ Each paper is scored on a scale of 0.0 to 1.0 using the following weights:
 
 | Weight | Component | Description |
 | :--- | :--- | :--- |
-| 0.45 | Citation Count | Normalized citation count (capped for Day 1). |
-| 0.25 | Topical Relevance | Keyword matching in title and abstract. |
+| 0.35 | Citation Count | Normalized citation count (capped). |
+| 0.35 | Topical Relevance | Keyword matching in title and abstract. |
 | 0.15 | PDF Availability | Bonus for papers with a direct PDF URL or Open Access. |
 | 0.10 | Benchmark/Dataset | Priority for papers introducing new benchmarks or datasets. |
 | 0.05 | Recency Bonus | Bonus for papers published in 2021-2023+. |
