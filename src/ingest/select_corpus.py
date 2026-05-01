@@ -13,15 +13,15 @@ def normalize_title(title):
 def score_paper(paper):
     """
     Score each paper:
-    score = 0.45 * normalized citation_count 
-          + 0.25 * topical_relevance
-          + 0.15 * open_access_pdf_available
+    score = 0.35 * normalized citation_count 
+          + 0.35 * topical_relevance
+          + 0.15 * pdf_or_oa_available
           + 0.10 * benchmark_or_dataset_relevance
           + 0.05 * recency_bonus
     """
     # 1. Citation score (log normalized or capped)
     citations = paper.get("citation_count", 0)
-    # Simple normalization for Day 1: cap at 1000 citations and divide by 1000
+    # Simple normalization: cap at 1000 citations and divide by 1000
     citation_score = min(citations / 1000.0, 1.0)
     
     # 2. Topical relevance (keyword matching)
@@ -40,9 +40,14 @@ def score_paper(paper):
     aigc_keywords = [
         "aigc", "deepfake", "gan", "diffusion", "synthetic", "forgery", 
         "stable diffusion", "midjourney", "dalle", "generated", "manipulation",
-        "artificial", "adversarial", "neural"
+        "artificial", "adversarial", "neural", "fake", "synthesized", "manipulated",
+        "generative", "synthesis", "face swap", "attribute editing"
     ]
-    detection_keywords = ["detection", "forensics", "localization", "identification", "fake", "authenticity", "verifying"]
+    detection_keywords = [
+        "detection", "forensics", "localization", "identification", "fake", 
+        "authenticity", "verifying", "classifier", "attribution", "recognition",
+        "forgery", "analysis", "discriminating", "detecting"
+    ]
     
     has_aigc = any(kw in title_abs for kw in aigc_keywords)
     has_detection = any(kw in title_abs for kw in detection_keywords)
@@ -50,13 +55,18 @@ def score_paper(paper):
     if not (has_aigc and has_detection):
         topical_relevance = 0.1 # Weak match
     else:
-        topical_relevance = 1.0 # Strong match
+        # Extra points for very specific AIGC terms
+        specific_keywords = ["deepfake", "aigc", "diffusion", "stable diffusion", "midjourney"]
+        if any(kw in title_abs for kw in specific_keywords):
+            topical_relevance = 1.0
+        else:
+            topical_relevance = 0.8 # Good but general
     
     # 3. Open access
     oa_score = 1.0 if paper.get("pdf_url") else 0.0
     
     # 4. Benchmark/Dataset
-    benchmark_keywords = ["benchmark", "dataset", "competition", "challenge", "evaluation"]
+    benchmark_keywords = ["benchmark", "dataset", "competition", "challenge", "evaluation", "database"]
     benchmark_matches = sum(1 for kw in benchmark_keywords if kw in title_abs)
     benchmark_score = 1.0 if benchmark_matches > 0 else 0.0
     
@@ -69,18 +79,64 @@ def score_paper(paper):
         recency_bonus = 0.5
         
     final_score = (
-        0.45 * citation_score +
-        0.25 * topical_relevance +
+        0.35 * citation_score +
+        0.35 * topical_relevance +
         0.15 * oa_score +
         0.10 * benchmark_score +
         0.05 * recency_bonus
     )
     
     # If it's a very weak topical match, penalize heavily
-    if topical_relevance < 0.5:
+    if topical_relevance < 0.2:
         final_score *= 0.1
 
     return final_score
+
+def infer_tags(paper):
+    title_abs = ((paper.get("title") or "") + " " + (paper.get("abstract") or "")).lower()
+    
+    # Modality Scope
+    modality = "unknown"
+    if "image" in title_abs or "pixel" in title_abs:
+        modality = "image"
+        if "face" in title_abs or "facial" in title_abs:
+            modality = "face_image"
+    elif "video" in title_abs:
+        modality = "video"
+    elif "audio" in title_abs or "speech" in title_abs or "voice" in title_abs:
+        modality = "audio"
+    elif "text" in title_abs:
+        modality = "text"
+        
+    # Topic Family
+    family = "unknown"
+    if "deepfake" in title_abs or "face manipulation" in title_abs or "face swap" in title_abs:
+        family = "face_forgery_detection"
+    elif "gan" in title_abs or "diffusion" in title_abs or "synthetic" in title_abs or "aigc" in title_abs:
+        family = "ai_generated_image_detection"
+    elif "forgery" in title_abs and ("localization" in title_abs or "segmentation" in title_abs or "pixel" in title_abs):
+        family = "image_forgery_localization"
+    elif "benchmark" in title_abs or "dataset" in title_abs or "database" in title_abs:
+        family = "benchmark_dataset"
+    elif "survey" in title_abs or "review" in title_abs:
+        family = "survey"
+    elif "forensics" in title_abs:
+        family = "general_forensics"
+        
+    # Era
+    year = paper.get("year", 0)
+    era = "unknown"
+    if year > 0:
+        if "diffusion" in title_abs or "stable diffusion" in title_abs or year >= 2023:
+            era = "diffusion_era"
+        elif year >= 2022:
+            era = "foundation_model_era"
+        elif "gan" in title_abs or (year >= 2014 and year < 2022):
+            era = "gan_era"
+        else:
+            era = "pre_gan"
+            
+    return modality, family, era
 
 def guess_paper_role(paper):
     title_abs = ((paper.get("title") or "") + " " + (paper.get("abstract") or "")).lower()
@@ -143,15 +199,52 @@ def main():
     # Sort
     df = df.sort_values(by='score', ascending=False)
     
-    # Output top 200 candidates
-    manifest_candidates = df.head(200)
-    manifest_candidates.to_csv("corpus/manifest_candidates.csv", index=False)
-    print(f"Saved top 200 candidates to corpus/manifest_candidates.csv")
+    # Add inferred tags
+    df[['modality_scope', 'topic_family', 'era']] = df.apply(lambda row: pd.Series(infer_tags(row)), axis=1)
     
-    # Output top 100 selection
-    manifest_100 = df.head(100)
+    # Replacement Protocol
+    # Identify weak matches or excluded modalities
+    exclude_terms = ["video", "audio", "speech", "voice", "text detection", "watermark"]
+    def is_weak(row):
+        title_abs = (str(row['title']) + " " + str(row.get('abstract', ''))).lower()
+        if any(term in title_abs for term in exclude_terms) and "image" not in title_abs:
+            return True
+        if row['score'] < 0.1: # Threshold for penalized weak matches
+            return True
+        return False
+
+    df['replacement_candidate'] = df.apply(is_weak, axis=1)
+    df['must_keep'] = ~df['replacement_candidate']
+    
+    # Sort by score descending
+    df = df.sort_values(by='score', ascending=False)
+    
+    # Initial top 100
+    manifest_100 = df.head(100).copy()
+    
+    # Check if replacements needed
+    weak_count = manifest_100['replacement_candidate'].sum()
+    print(f"Initial top 100 has {weak_count} weak matches.")
+    
+    if weak_count > 0:
+        print(f"Applying replacement protocol for {weak_count} papers...")
+        strong_candidates = df[100:][~df[100:]['replacement_candidate']].head(weak_count)
+        
+        # Identify indices to replace
+        replace_indices = manifest_100[manifest_100['replacement_candidate']].index
+        
+        if not strong_candidates.empty:
+            num_to_replace = min(len(replace_indices), len(strong_candidates))
+            for i in range(num_to_replace):
+                idx_to_remove = replace_indices[i]
+                # Replace with top strong candidate
+                manifest_100.loc[idx_to_remove] = strong_candidates.iloc[i]
+            print(f"Replaced {num_to_replace} papers.")
+
+    # Final outputs
+    df.head(200).to_csv("corpus/manifest_candidates.csv", index=False)
     manifest_100.to_csv("corpus/manifest_100.csv", index=False)
-    print(f"Saved top 100 selection to corpus/manifest_100.csv")
+    print(f"Saved manifests. Final 100 has {len(manifest_100)} rows.")
 
 if __name__ == "__main__":
     main()
