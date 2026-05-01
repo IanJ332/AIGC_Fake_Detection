@@ -1,0 +1,101 @@
+paper_id,parse_success,needs_ocr,total_chars,page_count,error
+P001,True,False,2467,3,
+P002,True,False,50977,9,
+P003,True,False,38053,11,
+P004,True,False,53978,17,
+P005,True,False,153909,38,
+P006,True,False,49688,10,
+P007,True,False,59402,13,
+P008,True,False,81692,19,
+P009,True,False,75228,17,
+P010,True,False,47486,14,
+P011,False,False,0,0,No PDF available
+P012,False,False,0,0,No PDF available
+P013,False,False,0,0,No PDF available
+P014,False,False,0,0,No PDF available
+P015,False,False,0,0,No PDF available
+P016,True,False,23026,6,
+P017,True,False,49397,10,
+P018,True,False,97218,19,
+P019,True,False,139433,47,
+P020,False,False,0,0,No PDF available
+P021,True,False,175244,29,
+P022,True,False,45931,9,
+P023,True,False,122818,24,
+P024,False,False,0,0,No PDF available
+P025,False,False,0,0,No PDF available
+P026,True,False,142400,46,
+P027,False,False,0,0,No PDF available
+P028,True,False,45056,16,
+P029,False,False,0,0,No PDF available
+P030,True,False,42713,10,
+P031,True,False,42191,10,
+P032,True,False,102995,34,
+P033,False,False,0,0,No PDF available
+P034,True,False,64283,14,
+P035,True,False,79355,14,
+P036,False,False,0,0,No PDF available
+P037,True,False,19979,6,
+P038,False,False,0,0,No PDF available
+P039,True,False,42108,8,
+P040,True,False,57844,23,
+P041,False,False,0,0,No PDF available
+P042,True,False,51243,11,
+P043,False,False,0,0,No PDF available
+P044,True,False,49855,15,
+P045,True,False,46288,9,
+P046,True,False,35543,12,
+P047,True,False,36311,6,
+P048,False,False,0,0,No PDF available
+P049,False,False,0,0,No PDF available
+P050,False,False,0,0,No PDF available
+P051,True,False,56149,11,
+P052,True,False,44959,9,
+P053,True,False,82618,15,
+P054,True,False,30282,6,
+P055,True,False,67648,18,
+P056,True,False,45103,14,
+P057,True,False,67802,18,
+P058,False,False,0,0,No PDF available
+P059,True,False,36328,8,
+P060,True,False,41807,11,
+P061,False,False,0,0,No PDF available
+P062,False,False,0,0,No PDF available
+P063,False,False,0,0,No PDF available
+P064,True,False,62366,12,
+P065,False,False,0,0,No PDF available
+P066,True,False,41090,9,
+P067,False,False,0,0,No PDF available
+P068,True,False,78246,17,
+P069,True,False,42536,10,
+P070,False,False,0,0,No PDF available
+P071,True,False,82720,17,
+P072,False,False,0,0,No PDF available
+P073,False,False,0,0,No PDF available
+P074,True,False,66034,24,
+P075,True,False,53822,16,
+P076,True,False,86961,13,
+P077,True,False,68629,19,
+P078,True,False,35556,7,
+P079,True,False,46562,9,
+P080,True,False,43772,9,
+P081,True,False,35698,7,
+P082,True,False,51712,10,
+P083,True,False,56582,14,
+P084,True,False,77186,19,
+P085,True,False,31358,7,
+P086,True,False,41262,9,
+P087,True,False,57960,10,
+P088,False,False,0,0,No PDF available
+P089,True,False,43743,9,
+P090,True,False,58799,16,
+P091,False,False,0,0,No PDF available
+P092,True,False,57636,13,
+P093,True,False,77800,23,
+P094,True,False,63491,13,
+P095,True,False,52732,8,
+P096,True,False,41935,10,
+P097,True,False,29369,13,
+P098,True,False,26239,5,
+P099,True,False,77733,40,
+P100,True,False,41576,14,

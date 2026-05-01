@@ -15,6 +15,10 @@ corpus/logs/
 corpus/pdfs/
 corpus/tei_xml/
 corpus/download_logs/
+corpus/parsed/
+corpus/sections/
+corpus/tables/
+corpus/parse_logs/
 *.jsonl
 
 # User specific
@@ -25,3 +29,4 @@ corpus/download_logs/
 # We want to keep manifest_100.csv and document_registry.csv
 !corpus/manifest_100.csv
 !corpus/document_registry.csv
+!corpus/parse_registry.csv
