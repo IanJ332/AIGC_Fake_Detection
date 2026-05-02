@@ -1,6 +1,7 @@
 import json
 import argparse
 import subprocess
+import os
 import pandas as pd
 from pathlib import Path
 from src.query.router import classify_question
@@ -49,8 +50,19 @@ def run_eval(data_dir, questions_path, output_dir=None):
                     "--data-dir", str(data_dir),
                     "--question", question
                 ]
-                result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+                env = os.environ.copy()
+                env["PYTHONIOENCODING"] = "utf-8"
+                env["PYTHONUTF8"] = "1"
                 
+                result = subprocess.run(
+                    cmd, 
+                    capture_output=True, 
+                    text=True, 
+                    timeout=30,
+                    env=env,
+                    encoding="utf-8",
+                    errors="replace"
+                )
                 if result.returncode == 0:
                     summary["operator_success"] += 1
                     output_text = result.stdout

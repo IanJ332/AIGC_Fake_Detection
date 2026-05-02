@@ -3,9 +3,9 @@
 - **Total Questions**: 40
 - **Tier Routing Accuracy**: 38/40 (95.0%)
 - **Unknown Tier Count**: 0
-- **Operator Execution Success**: 28/40
-- **Answers with Evidence**: 28
-- **Answers with Limitations**: 28
+- **Operator Execution Success**: 40/40
+- **Answers with Evidence**: 40
+- **Answers with Limitations**: 40
 
 ## Per-Tier Distribution
 | Tier | Count |

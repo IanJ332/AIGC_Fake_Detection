@@ -4,11 +4,22 @@ from .router import classify_question
 from .operators import load_context, answer_single_doc, answer_aggregation, answer_contradiction, answer_temporal, answer_citation_graph, answer_multihop, answer_negation, answer_quantitative
 from .answer_builder import build_final_answer
 
+def configure_utf8_output():
+    for stream_name in ("stdout", "stderr"):
+        stream = getattr(sys, stream_name, None)
+        if stream is not None and hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+
 def main():
     parser = argparse.ArgumentParser(description="AIGC Research QA Engine")
     parser.add_argument("--data-dir", default="/content/drive/MyDrive/AIGC/Data", help="Path to Data directory")
     parser.add_argument("--question", required=True, help="Research question to ask")
     args = parser.parse_args()
+    
+    configure_utf8_output()
     
     # 1. Routing
     route = classify_question(args.question)
@@ -47,7 +58,10 @@ def main():
     print(f"QUESTION: {args.question}")
     print(f"TIER: {tier}")
     print("-" * 40)
-    print(final_output)
+    try:
+        print(final_output)
+    except UnicodeEncodeError:
+        print(final_output.encode("utf-8", errors="replace").decode("utf-8", errors="replace"))
     print("-" * 40)
 
 if __name__ == "__main__":
