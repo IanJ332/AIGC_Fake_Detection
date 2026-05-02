@@ -78,7 +78,7 @@ python eval/run_eval.py --data-dir ./Data --questions eval/questions_40.jsonl
 
 ## Performance & Evaluation
 
-- **Routing Accuracy**: 92.5%
+- **Routing Accuracy**: 95.0%
 - **Operator Success**: 100%
 - **Evidence Coverage**: ~53% (strictly grounded snippets)
 - **Unknown Tier Count**: 0

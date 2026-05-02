@@ -4,9 +4,9 @@ Three measured local ablation levels, all at $0 spend (no paid APIs).
 
 | Level | Description | Routing % | Op Success % | Evidence % | Avg Latency (s) | Spend |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| router_only | Route question; return tier label, no operator execution. | 92.5 | 100.0 | 0.0 | 0.0 | $0.00 |
-| operator_no_evidence | Run operator; return answer text only (evidence suppressed). | 92.5 | 100.0 | 0.0 | 0.025 | $0.00 |
-| operator_with_evidence | Full pipeline: operator + evidence collection (current syste | 92.5 | 100.0 | 100.0 | 0.024 | $0.00 |
+| router_only | Route question; return tier label, no operator execution. | 95.0 | 100.0 | 0.0 | 0.0 | $0.00 |
+| operator_no_evidence | Run operator; return answer text only (evidence suppressed). | 95.0 | 100.0 | 0.0 | 0.025 | $0.00 |
+| operator_with_evidence | Full pipeline: operator + evidence collection (current syste | 95.0 | 100.0 | 100.0 | 0.023 | $0.00 |
 
 ## Notes
 
