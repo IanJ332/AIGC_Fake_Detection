@@ -92,6 +92,17 @@ Detailed metrics are available in [docs/quality_vs_budget.md](docs/quality_vs_bu
 - Results are heuristic candidates and should be cross-verified with source snippets.
 - For full details, see [docs/limitations.md](docs/limitations.md).
 
+## Submitted Artifacts
+
+To maintain a lightweight and efficient repository, the full runtime data (PDFs, DuckDB, parsed JSONL) is intentionally excluded from version control. However, a curated set of lightweight evidence artifacts is included under the `artifacts/` directory for audit and review:
+
+- **Reports**: Day 5 extraction logs and Day 6 evaluation summaries.
+- **Manifests**: Registry files for the 100-paper corpus and parsing results.
+- **Samples**: Representative CSV samples of the extracted entities and results.
+- **Inventory**: A high-level summary of the full local data scale (`artifacts/data_inventory_summary.md`).
+
+The full data can be inspected in the Google Drive runtime environment or regenerated via the provided notebooks if the source PDF bundle is provided.
+
 ## Cost Report
 Total estimated spend for this project: **$0.00**.
 See [docs/cost_report.md](docs/cost_report.md) for details.

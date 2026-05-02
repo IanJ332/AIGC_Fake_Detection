@@ -1,0 +1,10 @@
+{
+    "timestamp": "2026-05-02T16:36:36.971329",
+    "sample_paper_count": 8,
+    "sections_loaded": 73,
+    "table_candidates_loaded": 842,
+    "entity_rows": 417,
+    "result_rows": 313,
+    "router_questions_tested": 12,
+    "final_status": "PROBE_PASS"
+}

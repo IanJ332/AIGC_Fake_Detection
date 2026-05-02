@@ -1,0 +1,201 @@
+result_id,paper_id,paper_title,year,dataset_guess,metric_guess,value_guess,value_numeric,value_scale_guess,condition_guess,model_guess,evidence_anchor,raw_text,confidence
+R00001,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C31,"Proposed (AUROC = 0.99, F1 = 0.97, MCC = 0.93)",medium
+R00002,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C31,"Proposed (AUROC = 0.99, F1 = 0.97, MCC = 0.93)",medium
+R00003,P002,Unknown,Unknown,unknown,F1,0.93,0.93,decimal,unknown,unknown,P002_C31,"Proposed (AUROC = 0.99, F1 = 0.97, MCC = 0.93)",medium
+R00004,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C32,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00005,P002,Unknown,Unknown,unknown,F1,0.96,0.96,decimal,unknown,unknown,P002_C32,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00006,P002,Unknown,Unknown,unknown,F1,0.92,0.92,decimal,unknown,unknown,P002_C32,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00007,P002,Unknown,Unknown,unknown,F1,1.00,1.0,decimal,unknown,unknown,P002_C33,"Proposed, Specific (AUROC = 1.00, F1 = 0.99, MCC = 0.97)",medium
+R00008,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C33,"Proposed, Specific (AUROC = 1.00, F1 = 0.99, MCC = 0.97)",medium
+R00009,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C33,"Proposed, Specific (AUROC = 1.00, F1 = 0.99, MCC = 0.97)",medium
+R00010,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C34,"Proposed, Specific (AUROC = 0.99, F1 = 0.97, MCC = 0.93)",medium
+R00011,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C34,"Proposed, Specific (AUROC = 0.99, F1 = 0.97, MCC = 0.93)",medium
+R00012,P002,Unknown,Unknown,unknown,F1,0.93,0.93,decimal,unknown,unknown,P002_C34,"Proposed, Specific (AUROC = 0.99, F1 = 0.97, MCC = 0.93)",medium
+R00013,P002,Unknown,Unknown,unknown,F1,0.72,0.72,decimal,unknown,unknown,P002_C35,"Proposed, Generalization (AUROC = 0.72, F1 = 0.68, MCC = 0.48)",medium
+R00014,P002,Unknown,Unknown,unknown,F1,0.68,0.68,decimal,unknown,unknown,P002_C35,"Proposed, Generalization (AUROC = 0.72, F1 = 0.68, MCC = 0.48)",medium
+R00015,P002,Unknown,Unknown,unknown,F1,0.48,0.48,decimal,unknown,unknown,P002_C35,"Proposed, Generalization (AUROC = 0.72, F1 = 0.68, MCC = 0.48)",medium
+R00016,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C36,"Proposed, Generalization (AUROC = 0.97, F1 = 0.92, MCC = 0.85)",medium
+R00017,P002,Unknown,Unknown,unknown,F1,0.92,0.92,decimal,unknown,unknown,P002_C36,"Proposed, Generalization (AUROC = 0.97, F1 = 0.92, MCC = 0.85)",medium
+R00018,P002,Unknown,Unknown,unknown,F1,0.85,0.85,decimal,unknown,unknown,P002_C36,"Proposed, Generalization (AUROC = 0.97, F1 = 0.92, MCC = 0.85)",medium
+R00019,P002,Unknown,Unknown,unknown,F1,0.73,0.73,decimal,unknown,unknown,P002_C37,"UFD (AUROC = 0.73, F1 = 0.68, MCC = 0.42)",medium
+R00020,P002,Unknown,Unknown,unknown,F1,0.68,0.68,decimal,unknown,unknown,P002_C37,"UFD (AUROC = 0.73, F1 = 0.68, MCC = 0.42)",medium
+R00021,P002,Unknown,Unknown,unknown,F1,0.42,0.42,decimal,unknown,unknown,P002_C37,"UFD (AUROC = 0.73, F1 = 0.68, MCC = 0.42)",medium
+R00022,P002,Unknown,Unknown,unknown,F1,0.04,0.04,decimal,unknown,unknown,P002_C38,"UFD (AUROC = 0.04, F1 = 0.67, MCC = 0.00)",medium
+R00023,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C38,"UFD (AUROC = 0.04, F1 = 0.67, MCC = 0.00)",medium
+R00024,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C38,"UFD (AUROC = 0.04, F1 = 0.67, MCC = 0.00)",medium
+R00025,P002,Unknown,Unknown,unknown,F1,0.50,0.5,decimal,unknown,unknown,P002_C39,"Wang et al. (AUROC = 0.50, F1 = 0.44, MCC = 0.00)",medium
+R00026,P002,Unknown,Unknown,unknown,F1,0.44,0.44,decimal,unknown,unknown,P002_C39,"Wang et al. (AUROC = 0.50, F1 = 0.44, MCC = 0.00)",medium
+R00027,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C39,"Wang et al. (AUROC = 0.50, F1 = 0.44, MCC = 0.00)",medium
+R00028,P002,Unknown,Unknown,unknown,F1,0.30,0.3,decimal,unknown,unknown,P002_C40,"Wang et al. (AUROC = 0.30, F1 = 0.00, MCC = 0.00)",medium
+R00029,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C40,"Wang et al. (AUROC = 0.30, F1 = 0.00, MCC = 0.00)",medium
+R00030,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C40,"Wang et al. (AUROC = 0.30, F1 = 0.00, MCC = 0.00)",medium
+R00031,P002,Unknown,Unknown,unknown,F1,0.66,0.66,decimal,unknown,unknown,P002_C41,"Mandelli et al. (AUROC = 0.66, F1 = 0.71, MCC = 0.37)",medium
+R00032,P002,Unknown,Unknown,unknown,F1,0.71,0.71,decimal,unknown,unknown,P002_C41,"Mandelli et al. (AUROC = 0.66, F1 = 0.71, MCC = 0.37)",medium
+R00033,P002,Unknown,Unknown,unknown,F1,0.37,0.37,decimal,unknown,unknown,P002_C41,"Mandelli et al. (AUROC = 0.66, F1 = 0.71, MCC = 0.37)",medium
+R00034,P002,Unknown,Unknown,unknown,F1,0.71,0.71,decimal,unknown,unknown,P002_C42,"Mandelli et al. (AUROC = 0.71, F1 = 0.74, MCC = 0.49)",medium
+R00035,P002,Unknown,Unknown,unknown,F1,0.74,0.74,decimal,unknown,unknown,P002_C42,"Mandelli et al. (AUROC = 0.71, F1 = 0.74, MCC = 0.49)",medium
+R00036,P002,Unknown,Unknown,unknown,F1,0.49,0.49,decimal,unknown,unknown,P002_C42,"Mandelli et al. (AUROC = 0.71, F1 = 0.74, MCC = 0.49)",medium
+R00037,P002,Unknown,Unknown,unknown,F1,0.05,0.05,decimal,unknown,unknown,P002_C43,"Corvi et al. (AUROC = 0.05, F1 = 0.67, MCC = 0.00)",medium
+R00038,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C43,"Corvi et al. (AUROC = 0.05, F1 = 0.67, MCC = 0.00)",medium
+R00039,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C43,"Corvi et al. (AUROC = 0.05, F1 = 0.67, MCC = 0.00)",medium
+R00040,P002,Unknown,Unknown,unknown,F1,0.01,0.01,decimal,unknown,unknown,P002_C44,"Corvi et al. (AUROC = 0.01, F1 = 0.67, MCC = 0.00)",medium
+R00041,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C44,"Corvi et al. (AUROC = 0.01, F1 = 0.67, MCC = 0.00)",medium
+R00042,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C44,"Corvi et al. (AUROC = 0.01, F1 = 0.67, MCC = 0.00)",medium
+R00043,P002,Unknown,Unknown,unknown,F1,0.53,0.53,decimal,unknown,unknown,P002_C45,"Gragnaniello et al. (AUROC = 0.53, F1 = 0.70, MCC = 0.26)",medium
+R00044,P002,Unknown,Unknown,unknown,F1,0.70,0.7,decimal,unknown,unknown,P002_C45,"Gragnaniello et al. (AUROC = 0.53, F1 = 0.70, MCC = 0.26)",medium
+R00045,P002,Unknown,Unknown,unknown,F1,0.26,0.26,decimal,unknown,unknown,P002_C45,"Gragnaniello et al. (AUROC = 0.53, F1 = 0.70, MCC = 0.26)",medium
+R00046,P002,Unknown,Unknown,unknown,F1,0.01,0.01,decimal,unknown,unknown,P002_C46,"Gragnaniello et al. (AUROC = 0.01, F1 = 0.67, MCC = 0.00)",medium
+R00047,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C46,"Gragnaniello et al. (AUROC = 0.01, F1 = 0.67, MCC = 0.00)",medium
+R00048,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C46,"Gragnaniello et al. (AUROC = 0.01, F1 = 0.67, MCC = 0.00)",medium
+R00049,P002,Unknown,Unknown,unknown,F1,0.52,0.52,decimal,unknown,unknown,P002_C47,"PatchForensics (AUROC = 0.52, F1 = 0.67, MCC = 0.11)",medium
+R00050,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C47,"PatchForensics (AUROC = 0.52, F1 = 0.67, MCC = 0.11)",medium
+R00051,P002,Unknown,Unknown,unknown,F1,0.11,0.11,decimal,unknown,unknown,P002_C47,"PatchForensics (AUROC = 0.52, F1 = 0.67, MCC = 0.11)",medium
+R00052,P002,Unknown,Unknown,unknown,F1,0.55,0.55,decimal,unknown,unknown,P002_C48,"PatchForensics (AUROC = 0.55, F1 = 0.72, MCC = 0.33)",medium
+R00053,P002,Unknown,Unknown,unknown,F1,0.72,0.72,decimal,unknown,unknown,P002_C48,"PatchForensics (AUROC = 0.55, F1 = 0.72, MCC = 0.33)",medium
+R00054,P002,Unknown,Unknown,unknown,F1,0.33,0.33,decimal,unknown,unknown,P002_C48,"PatchForensics (AUROC = 0.55, F1 = 0.72, MCC = 0.33)",medium
+R00055,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C49,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.91)",medium
+R00056,P002,Unknown,Unknown,unknown,F1,0.96,0.96,decimal,unknown,unknown,P002_C49,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.91)",medium
+R00057,P002,Unknown,Unknown,unknown,F1,0.91,0.91,decimal,unknown,unknown,P002_C49,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.91)",medium
+R00058,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C50,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00059,P002,Unknown,Unknown,unknown,F1,0.96,0.96,decimal,unknown,unknown,P002_C50,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00060,P002,Unknown,Unknown,unknown,F1,0.92,0.92,decimal,unknown,unknown,P002_C50,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00061,P002,Unknown,Unknown,unknown,F1,0.94,0.94,decimal,unknown,unknown,P002_C51,"Proposed, Specific (AUROC = 0.94, F1 = 0.87, MCC = 0.73)",medium
+R00062,P002,Unknown,Unknown,unknown,F1,0.87,0.87,decimal,unknown,unknown,P002_C51,"Proposed, Specific (AUROC = 0.94, F1 = 0.87, MCC = 0.73)",medium
+R00063,P002,Unknown,Unknown,unknown,F1,0.73,0.73,decimal,unknown,unknown,P002_C51,"Proposed, Specific (AUROC = 0.94, F1 = 0.87, MCC = 0.73)",medium
+R00064,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C52,"Proposed, Specific (AUROC = 0.99, F1 = 0.97, MCC = 0.94)",medium
+R00065,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C52,"Proposed, Specific (AUROC = 0.99, F1 = 0.97, MCC = 0.94)",medium
+R00066,P002,Unknown,Unknown,unknown,F1,0.94,0.94,decimal,unknown,unknown,P002_C52,"Proposed, Specific (AUROC = 0.99, F1 = 0.97, MCC = 0.94)",medium
+R00067,P002,Unknown,Unknown,unknown,F1,0.92,0.92,decimal,unknown,unknown,P002_C53,"Proposed, Generalization (AUROC = 0.92, F1 = 0.85, MCC = 0.70)",medium
+R00068,P002,Unknown,Unknown,unknown,F1,0.85,0.85,decimal,unknown,unknown,P002_C53,"Proposed, Generalization (AUROC = 0.92, F1 = 0.85, MCC = 0.70)",medium
+R00069,P002,Unknown,Unknown,unknown,F1,0.70,0.7,decimal,unknown,unknown,P002_C53,"Proposed, Generalization (AUROC = 0.92, F1 = 0.85, MCC = 0.70)",medium
+R00070,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C54,"Proposed, Generalization (AUROC = 0.97, F1 = 0.91, MCC = 0.83)",medium
+R00071,P002,Unknown,Unknown,unknown,F1,0.91,0.91,decimal,unknown,unknown,P002_C54,"Proposed, Generalization (AUROC = 0.97, F1 = 0.91, MCC = 0.83)",medium
+R00072,P002,Unknown,Unknown,unknown,F1,0.83,0.83,decimal,unknown,unknown,P002_C54,"Proposed, Generalization (AUROC = 0.97, F1 = 0.91, MCC = 0.83)",medium
+R00073,P002,Unknown,Unknown,unknown,F1,0.86,0.86,decimal,unknown,unknown,P002_C55,"UFD (AUROC = 0.86, F1 = 0.79, MCC = 0.62)",medium
+R00074,P002,Unknown,Unknown,unknown,F1,0.79,0.79,decimal,unknown,unknown,P002_C55,"UFD (AUROC = 0.86, F1 = 0.79, MCC = 0.62)",medium
+R00075,P002,Unknown,Unknown,unknown,F1,0.62,0.62,decimal,unknown,unknown,P002_C55,"UFD (AUROC = 0.86, F1 = 0.79, MCC = 0.62)",medium
+R00076,P002,Unknown,Unknown,unknown,F1,0.23,0.23,decimal,unknown,unknown,P002_C56,"UFD (AUROC = 0.23, F1 = 0.66, MCC = 0.10)",medium
+R00077,P002,Unknown,Unknown,unknown,F1,0.66,0.66,decimal,unknown,unknown,P002_C56,"UFD (AUROC = 0.23, F1 = 0.66, MCC = 0.10)",medium
+R00078,P002,Unknown,Unknown,unknown,F1,0.10,0.1,decimal,unknown,unknown,P002_C56,"UFD (AUROC = 0.23, F1 = 0.66, MCC = 0.10)",medium
+R00079,P002,Unknown,Unknown,unknown,F1,0.71,0.71,decimal,unknown,unknown,P002_C57,"Wang et al. (AUROC = 0.71, F1 = 0.72, MCC = 0.39)",medium
+R00080,P002,Unknown,Unknown,unknown,F1,0.72,0.72,decimal,unknown,unknown,P002_C57,"Wang et al. (AUROC = 0.71, F1 = 0.72, MCC = 0.39)",medium
+R00081,P002,Unknown,Unknown,unknown,F1,0.39,0.39,decimal,unknown,unknown,P002_C57,"Wang et al. (AUROC = 0.71, F1 = 0.72, MCC = 0.39)",medium
+R00082,P002,Unknown,Unknown,unknown,F1,0.37,0.37,decimal,unknown,unknown,P002_C58,"Wang et al. (AUROC = 0.37, F1 = 0.16, MCC = 0.05)",medium
+R00083,P002,Unknown,Unknown,unknown,F1,0.16,0.16,decimal,unknown,unknown,P002_C58,"Wang et al. (AUROC = 0.37, F1 = 0.16, MCC = 0.05)",medium
+R00084,P002,Unknown,Unknown,unknown,F1,0.05,0.05,decimal,unknown,unknown,P002_C58,"Wang et al. (AUROC = 0.37, F1 = 0.16, MCC = 0.05)",medium
+R00085,P002,Unknown,Unknown,unknown,F1,0.86,0.86,decimal,unknown,unknown,P002_C59,"Mandelli et al. (AUROC = 0.86, F1 = 0.88, MCC = 0.76)",medium
+R00086,P002,Unknown,Unknown,unknown,F1,0.88,0.88,decimal,unknown,unknown,P002_C59,"Mandelli et al. (AUROC = 0.86, F1 = 0.88, MCC = 0.76)",medium
+R00087,P002,Unknown,Unknown,unknown,F1,0.76,0.76,decimal,unknown,unknown,P002_C59,"Mandelli et al. (AUROC = 0.86, F1 = 0.88, MCC = 0.76)",medium
+R00088,P002,Unknown,Unknown,unknown,F1,0.82,0.82,decimal,unknown,unknown,P002_C60,"Mandelli et al. (AUROC = 0.82, F1 = 0.82, MCC = 0.61)",medium
+R00089,P002,Unknown,Unknown,unknown,F1,0.82,0.82,decimal,unknown,unknown,P002_C60,"Mandelli et al. (AUROC = 0.82, F1 = 0.82, MCC = 0.61)",medium
+R00090,P002,Unknown,Unknown,unknown,F1,0.61,0.61,decimal,unknown,unknown,P002_C60,"Mandelli et al. (AUROC = 0.82, F1 = 0.82, MCC = 0.61)",medium
+R00091,P002,Unknown,Unknown,unknown,F1,0.27,0.27,decimal,unknown,unknown,P002_C61,"Corvi et al. (AUROC = 0.27, F1 = 0.67, MCC = 0.12)",medium
+R00092,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C61,"Corvi et al. (AUROC = 0.27, F1 = 0.67, MCC = 0.12)",medium
+R00093,P002,Unknown,Unknown,unknown,F1,0.12,0.12,decimal,unknown,unknown,P002_C61,"Corvi et al. (AUROC = 0.27, F1 = 0.67, MCC = 0.12)",medium
+R00094,P002,Unknown,Unknown,unknown,F1,0.17,0.17,decimal,unknown,unknown,P002_C62,"Corvi et al. (AUROC = 0.17, F1 = 0.67, MCC = 0.00)",medium
+R00095,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C62,"Corvi et al. (AUROC = 0.17, F1 = 0.67, MCC = 0.00)",medium
+R00096,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C62,"Corvi et al. (AUROC = 0.17, F1 = 0.67, MCC = 0.00)",medium
+R00097,P002,Unknown,Unknown,unknown,F1,0.73,0.73,decimal,unknown,unknown,P002_C63,"Gragnaniello et al. (AUROC = 0.73, F1 = 0.75, MCC = 0.45)",medium
+R00098,P002,Unknown,Unknown,unknown,F1,0.75,0.75,decimal,unknown,unknown,P002_C63,"Gragnaniello et al. (AUROC = 0.73, F1 = 0.75, MCC = 0.45)",medium
+R00099,P002,Unknown,Unknown,unknown,F1,0.45,0.45,decimal,unknown,unknown,P002_C63,"Gragnaniello et al. (AUROC = 0.73, F1 = 0.75, MCC = 0.45)",medium
+R00100,P002,Unknown,Unknown,unknown,F1,0.34,0.34,decimal,unknown,unknown,P002_C64,"Gragnaniello et al. (AUROC = 0.34, F1 = 0.67, MCC = 0.00)",medium
+R00101,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C64,"Gragnaniello et al. (AUROC = 0.34, F1 = 0.67, MCC = 0.00)",medium
+R00102,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C64,"Gragnaniello et al. (AUROC = 0.34, F1 = 0.67, MCC = 0.00)",medium
+R00103,P002,Unknown,Unknown,unknown,F1,0.38,0.38,decimal,unknown,unknown,P002_C65,"PatchForensics (AUROC = 0.38, F1 = 0.67, MCC = 0.11)",medium
+R00104,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C65,"PatchForensics (AUROC = 0.38, F1 = 0.67, MCC = 0.11)",medium
+R00105,P002,Unknown,Unknown,unknown,F1,0.11,0.11,decimal,unknown,unknown,P002_C65,"PatchForensics (AUROC = 0.38, F1 = 0.67, MCC = 0.11)",medium
+R00106,P002,Unknown,Unknown,unknown,F1,0.24,0.24,decimal,unknown,unknown,P002_C66,"PatchForensics (AUROC = 0.24, F1 = 0.67, MCC = 0.02)",medium
+R00107,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C66,"PatchForensics (AUROC = 0.24, F1 = 0.67, MCC = 0.02)",medium
+R00108,P002,Unknown,Unknown,unknown,F1,0.02,0.02,decimal,unknown,unknown,P002_C66,"PatchForensics (AUROC = 0.24, F1 = 0.67, MCC = 0.02)",medium
+R00109,P002,Unknown,Unknown,unknown,F1,1.00,1.0,decimal,unknown,unknown,P002_C67,"Proposed (AUROC = 1.00, F1 = 0.97, MCC = 0.93)",medium
+R00110,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C67,"Proposed (AUROC = 1.00, F1 = 0.97, MCC = 0.93)",medium
+R00111,P002,Unknown,Unknown,unknown,F1,0.93,0.93,decimal,unknown,unknown,P002_C67,"Proposed (AUROC = 1.00, F1 = 0.97, MCC = 0.93)",medium
+R00112,P002,Unknown,Unknown,unknown,F1,1.00,1.0,decimal,unknown,unknown,P002_C68,"Proposed (AUROC = 1.00, F1 = 0.97, MCC = 0.94)",medium
+R00113,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C68,"Proposed (AUROC = 1.00, F1 = 0.97, MCC = 0.94)",medium
+R00114,P002,Unknown,Unknown,unknown,F1,0.94,0.94,decimal,unknown,unknown,P002_C68,"Proposed (AUROC = 1.00, F1 = 0.97, MCC = 0.94)",medium
+R00115,P002,Unknown,Unknown,unknown,F1,1.00,1.0,decimal,unknown,unknown,P002_C69,"Proposed, Specific (AUROC = 1.00, F1 = 0.98, MCC = 0.97)",medium
+R00116,P002,Unknown,Unknown,unknown,F1,0.98,0.98,decimal,unknown,unknown,P002_C69,"Proposed, Specific (AUROC = 1.00, F1 = 0.98, MCC = 0.97)",medium
+R00117,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C69,"Proposed, Specific (AUROC = 1.00, F1 = 0.98, MCC = 0.97)",medium
+R00118,P002,Unknown,Unknown,unknown,F1,1.00,1.0,decimal,unknown,unknown,P002_C70,"Proposed, Specific (AUROC = 1.00, F1 = 0.99, MCC = 0.97)",medium
+R00119,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C70,"Proposed, Specific (AUROC = 1.00, F1 = 0.99, MCC = 0.97)",medium
+R00120,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C70,"Proposed, Specific (AUROC = 1.00, F1 = 0.99, MCC = 0.97)",medium
+R00121,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C71,"Proposed, Generalization (AUROC = 0.97, F1 = 0.92, MCC = 0.83)",medium
+R00122,P002,Unknown,Unknown,unknown,F1,0.92,0.92,decimal,unknown,unknown,P002_C71,"Proposed, Generalization (AUROC = 0.97, F1 = 0.92, MCC = 0.83)",medium
+R00123,P002,Unknown,Unknown,unknown,F1,0.83,0.83,decimal,unknown,unknown,P002_C71,"Proposed, Generalization (AUROC = 0.97, F1 = 0.92, MCC = 0.83)",medium
+R00124,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C72,"Proposed, Generalization (AUROC = 0.97, F1 = 0.92, MCC = 0.83)",medium
+R00125,P002,Unknown,Unknown,unknown,F1,0.92,0.92,decimal,unknown,unknown,P002_C72,"Proposed, Generalization (AUROC = 0.97, F1 = 0.92, MCC = 0.83)",medium
+R00126,P002,Unknown,Unknown,unknown,F1,0.83,0.83,decimal,unknown,unknown,P002_C72,"Proposed, Generalization (AUROC = 0.97, F1 = 0.92, MCC = 0.83)",medium
+R00127,P002,Unknown,Unknown,unknown,F1,0.53,0.53,decimal,unknown,unknown,P002_C73,"UFD (AUROC = 0.53, F1 = 0.67, MCC = 0.24)",medium
+R00128,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C73,"UFD (AUROC = 0.53, F1 = 0.67, MCC = 0.24)",medium
+R00129,P002,Unknown,Unknown,unknown,F1,0.24,0.24,decimal,unknown,unknown,P002_C73,"UFD (AUROC = 0.53, F1 = 0.67, MCC = 0.24)",medium
+R00130,P002,Unknown,Unknown,unknown,F1,0.52,0.52,decimal,unknown,unknown,P002_C74,"UFD (AUROC = 0.52, F1 = 0.67, MCC = 0.22)",medium
+R00131,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C74,"UFD (AUROC = 0.52, F1 = 0.67, MCC = 0.22)",medium
+R00132,P002,Unknown,Unknown,unknown,F1,0.22,0.22,decimal,unknown,unknown,P002_C74,"UFD (AUROC = 0.52, F1 = 0.67, MCC = 0.22)",medium
+R00133,P002,Unknown,Unknown,unknown,F1,0.35,0.35,decimal,unknown,unknown,P002_C75,"Wang et al. (AUROC = 0.35, F1 = 0.14, MCC = 0.00)",medium
+R00134,P002,Unknown,Unknown,unknown,F1,0.14,0.14,decimal,unknown,unknown,P002_C75,"Wang et al. (AUROC = 0.35, F1 = 0.14, MCC = 0.00)",medium
+R00135,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C75,"Wang et al. (AUROC = 0.35, F1 = 0.14, MCC = 0.00)",medium
+R00136,P002,Unknown,Unknown,unknown,F1,0.35,0.35,decimal,unknown,unknown,P002_C76,"Wang et al. (AUROC = 0.35, F1 = 0.13, MCC = 0.00)",medium
+R00137,P002,Unknown,Unknown,unknown,F1,0.13,0.13,decimal,unknown,unknown,P002_C76,"Wang et al. (AUROC = 0.35, F1 = 0.13, MCC = 0.00)",medium
+R00138,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C76,"Wang et al. (AUROC = 0.35, F1 = 0.13, MCC = 0.00)",medium
+R00139,P002,Unknown,Unknown,unknown,F1,0.88,0.88,decimal,unknown,unknown,P002_C77,"Mandelli et al. (AUROC = 0.88, F1 = 0.87, MCC = 0.73)",medium
+R00140,P002,Unknown,Unknown,unknown,F1,0.87,0.87,decimal,unknown,unknown,P002_C77,"Mandelli et al. (AUROC = 0.88, F1 = 0.87, MCC = 0.73)",medium
+R00141,P002,Unknown,Unknown,unknown,F1,0.73,0.73,decimal,unknown,unknown,P002_C77,"Mandelli et al. (AUROC = 0.88, F1 = 0.87, MCC = 0.73)",medium
+R00142,P002,Unknown,Unknown,unknown,F1,0.89,0.89,decimal,unknown,unknown,P002_C78,"Mandelli et al. (AUROC = 0.89, F1 = 0.88, MCC = 0.75)",medium
+R00143,P002,Unknown,Unknown,unknown,F1,0.88,0.88,decimal,unknown,unknown,P002_C78,"Mandelli et al. (AUROC = 0.89, F1 = 0.88, MCC = 0.75)",medium
+R00144,P002,Unknown,Unknown,unknown,F1,0.75,0.75,decimal,unknown,unknown,P002_C78,"Mandelli et al. (AUROC = 0.89, F1 = 0.88, MCC = 0.75)",medium
+R00145,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C79,"Corvi et al. (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00146,P002,Unknown,Unknown,unknown,F1,0.96,0.96,decimal,unknown,unknown,P002_C79,"Corvi et al. (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00147,P002,Unknown,Unknown,unknown,F1,0.92,0.92,decimal,unknown,unknown,P002_C79,"Corvi et al. (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00148,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C80,"Corvi et al. (AUROC = 0.99, F1 = 0.97, MCC = 0.93)",medium
+R00149,P002,Unknown,Unknown,unknown,F1,0.97,0.97,decimal,unknown,unknown,P002_C80,"Corvi et al. (AUROC = 0.99, F1 = 0.97, MCC = 0.93)",medium
+R00150,P002,Unknown,Unknown,unknown,F1,0.93,0.93,decimal,unknown,unknown,P002_C80,"Corvi et al. (AUROC = 0.99, F1 = 0.97, MCC = 0.93)",medium
+R00151,P002,Unknown,Unknown,unknown,F1,0.38,0.38,decimal,unknown,unknown,P002_C81,"Gragnaniello et al. (AUROC = 0.38, F1 = 0.67, MCC = 0.05)",medium
+R00152,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C81,"Gragnaniello et al. (AUROC = 0.38, F1 = 0.67, MCC = 0.05)",medium
+R00153,P002,Unknown,Unknown,unknown,F1,0.05,0.05,decimal,unknown,unknown,P002_C81,"Gragnaniello et al. (AUROC = 0.38, F1 = 0.67, MCC = 0.05)",medium
+R00154,P002,Unknown,Unknown,unknown,F1,0.39,0.39,decimal,unknown,unknown,P002_C82,"Gragnaniello et al. (AUROC = 0.39, F1 = 0.67, MCC = 0.04)",medium
+R00155,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C82,"Gragnaniello et al. (AUROC = 0.39, F1 = 0.67, MCC = 0.04)",medium
+R00156,P002,Unknown,Unknown,unknown,F1,0.04,0.04,decimal,unknown,unknown,P002_C82,"Gragnaniello et al. (AUROC = 0.39, F1 = 0.67, MCC = 0.04)",medium
+R00157,P002,Unknown,Unknown,unknown,F1,0.40,0.4,decimal,unknown,unknown,P002_C83,"PatchForensics (AUROC = 0.40, F1 = 0.68, MCC = 0.19)",medium
+R00158,P002,Unknown,Unknown,unknown,F1,0.68,0.68,decimal,unknown,unknown,P002_C83,"PatchForensics (AUROC = 0.40, F1 = 0.68, MCC = 0.19)",medium
+R00159,P002,Unknown,Unknown,unknown,F1,0.19,0.19,decimal,unknown,unknown,P002_C83,"PatchForensics (AUROC = 0.40, F1 = 0.68, MCC = 0.19)",medium
+R00160,P002,Unknown,Unknown,unknown,F1,0.39,0.39,decimal,unknown,unknown,P002_C84,"PatchForensics (AUROC = 0.39, F1 = 0.68, MCC = 0.18)",medium
+R00161,P002,Unknown,Unknown,unknown,F1,0.68,0.68,decimal,unknown,unknown,P002_C84,"PatchForensics (AUROC = 0.39, F1 = 0.68, MCC = 0.18)",medium
+R00162,P002,Unknown,Unknown,unknown,F1,0.18,0.18,decimal,unknown,unknown,P002_C84,"PatchForensics (AUROC = 0.39, F1 = 0.68, MCC = 0.18)",medium
+R00163,P002,Unknown,Unknown,unknown,F1,0.98,0.98,decimal,unknown,unknown,P002_C85,"Proposed (AUROC = 0.98, F1 = 0.93, MCC = 0.87)",medium
+R00164,P002,Unknown,Unknown,unknown,F1,0.93,0.93,decimal,unknown,unknown,P002_C85,"Proposed (AUROC = 0.98, F1 = 0.93, MCC = 0.87)",medium
+R00165,P002,Unknown,Unknown,unknown,F1,0.87,0.87,decimal,unknown,unknown,P002_C85,"Proposed (AUROC = 0.98, F1 = 0.93, MCC = 0.87)",medium
+R00166,P002,Unknown,Unknown,unknown,F1,0.99,0.99,decimal,unknown,unknown,P002_C86,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00167,P002,Unknown,Unknown,unknown,F1,0.96,0.96,decimal,unknown,unknown,P002_C86,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00168,P002,Unknown,Unknown,unknown,F1,0.92,0.92,decimal,unknown,unknown,P002_C86,"Proposed (AUROC = 0.99, F1 = 0.96, MCC = 0.92)",medium
+R00169,P002,Unknown,Unknown,unknown,F1,0.98,0.98,decimal,unknown,unknown,P002_C87,"Proposed, Specific (AUROC = 0.98, F1 = 0.93, MCC = 0.86)",medium
+R00170,P002,Unknown,Unknown,unknown,F1,0.93,0.93,decimal,unknown,unknown,P002_C87,"Proposed, Specific (AUROC = 0.98, F1 = 0.93, MCC = 0.86)",medium
+R00171,P002,Unknown,Unknown,unknown,F1,0.86,0.86,decimal,unknown,unknown,P002_C87,"Proposed, Specific (AUROC = 0.98, F1 = 0.93, MCC = 0.86)",medium
+R00172,P002,Unknown,Unknown,unknown,F1,1.00,1.0,decimal,unknown,unknown,P002_C88,"Proposed, Specific (AUROC = 1.00, F1 = 0.98, MCC = 0.96)",medium
+R00173,P002,Unknown,Unknown,unknown,F1,0.98,0.98,decimal,unknown,unknown,P002_C88,"Proposed, Specific (AUROC = 1.00, F1 = 0.98, MCC = 0.96)",medium
+R00174,P002,Unknown,Unknown,unknown,F1,0.96,0.96,decimal,unknown,unknown,P002_C88,"Proposed, Specific (AUROC = 1.00, F1 = 0.98, MCC = 0.96)",medium
+R00175,P002,Unknown,Unknown,unknown,F1,0.92,0.92,decimal,unknown,unknown,P002_C89,"Proposed, Generalization (AUROC = 0.92, F1 = 0.86, MCC = 0.70)",medium
+R00176,P002,Unknown,Unknown,unknown,F1,0.86,0.86,decimal,unknown,unknown,P002_C89,"Proposed, Generalization (AUROC = 0.92, F1 = 0.86, MCC = 0.70)",medium
+R00177,P002,Unknown,Unknown,unknown,F1,0.70,0.7,decimal,unknown,unknown,P002_C89,"Proposed, Generalization (AUROC = 0.92, F1 = 0.86, MCC = 0.70)",medium
+R00178,P002,Unknown,Unknown,unknown,F1,0.87,0.87,decimal,unknown,unknown,P002_C90,"Proposed, Generalization (AUROC = 0.87, F1 = 0.81, MCC = 0.59)",medium
+R00179,P002,Unknown,Unknown,unknown,F1,0.81,0.81,decimal,unknown,unknown,P002_C90,"Proposed, Generalization (AUROC = 0.87, F1 = 0.81, MCC = 0.59)",medium
+R00180,P002,Unknown,Unknown,unknown,F1,0.59,0.59,decimal,unknown,unknown,P002_C90,"Proposed, Generalization (AUROC = 0.87, F1 = 0.81, MCC = 0.59)",medium
+R00181,P002,Unknown,Unknown,unknown,F1,0.61,0.61,decimal,unknown,unknown,P002_C91,"UFD (AUROC = 0.61, F1 = 0.67, MCC = 0.34)",medium
+R00182,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C91,"UFD (AUROC = 0.61, F1 = 0.67, MCC = 0.34)",medium
+R00183,P002,Unknown,Unknown,unknown,F1,0.34,0.34,decimal,unknown,unknown,P002_C91,"UFD (AUROC = 0.61, F1 = 0.67, MCC = 0.34)",medium
+R00184,P002,Unknown,Unknown,unknown,F1,0.49,0.49,decimal,unknown,unknown,P002_C92,"UFD (AUROC = 0.49, F1 = 0.67, MCC = 0.21)",medium
+R00185,P002,Unknown,Unknown,unknown,F1,0.67,0.67,decimal,unknown,unknown,P002_C92,"UFD (AUROC = 0.49, F1 = 0.67, MCC = 0.21)",medium
+R00186,P002,Unknown,Unknown,unknown,F1,0.21,0.21,decimal,unknown,unknown,P002_C92,"UFD (AUROC = 0.49, F1 = 0.67, MCC = 0.21)",medium
+R00187,P002,Unknown,Unknown,unknown,F1,0.43,0.43,decimal,unknown,unknown,P002_C93,"Wang et al. (AUROC = 0.43, F1 = 0.30, MCC = 0.03)",medium
+R00188,P002,Unknown,Unknown,unknown,F1,0.30,0.3,decimal,unknown,unknown,P002_C93,"Wang et al. (AUROC = 0.43, F1 = 0.30, MCC = 0.03)",medium
+R00189,P002,Unknown,Unknown,unknown,F1,0.03,0.03,decimal,unknown,unknown,P002_C93,"Wang et al. (AUROC = 0.43, F1 = 0.30, MCC = 0.03)",medium
+R00190,P002,Unknown,Unknown,unknown,F1,0.44,0.44,decimal,unknown,unknown,P002_C94,"Wang et al. (AUROC = 0.44, F1 = 0.32, MCC = 0.00)",medium
+R00191,P002,Unknown,Unknown,unknown,F1,0.32,0.32,decimal,unknown,unknown,P002_C94,"Wang et al. (AUROC = 0.44, F1 = 0.32, MCC = 0.00)",medium
+R00192,P002,Unknown,Unknown,unknown,F1,0.00,0.0,decimal,unknown,unknown,P002_C94,"Wang et al. (AUROC = 0.44, F1 = 0.32, MCC = 0.00)",medium
+R00193,P002,Unknown,Unknown,unknown,F1,0.81,0.81,decimal,unknown,unknown,P002_C95,"Mandelli et al. (AUROC = 0.81, F1 = 0.81, MCC = 0.61)",medium
+R00194,P002,Unknown,Unknown,unknown,F1,0.81,0.81,decimal,unknown,unknown,P002_C95,"Mandelli et al. (AUROC = 0.81, F1 = 0.81, MCC = 0.61)",medium
+R00195,P002,Unknown,Unknown,unknown,F1,0.61,0.61,decimal,unknown,unknown,P002_C95,"Mandelli et al. (AUROC = 0.81, F1 = 0.81, MCC = 0.61)",medium
+R00196,P002,Unknown,Unknown,unknown,F1,0.77,0.77,decimal,unknown,unknown,P002_C96,"Mandelli et al. (AUROC = 0.77, F1 = 0.77, MCC = 0.51)",medium
+R00197,P002,Unknown,Unknown,unknown,F1,0.77,0.77,decimal,unknown,unknown,P002_C96,"Mandelli et al. (AUROC = 0.77, F1 = 0.77, MCC = 0.51)",medium
+R00198,P002,Unknown,Unknown,unknown,F1,0.51,0.51,decimal,unknown,unknown,P002_C96,"Mandelli et al. (AUROC = 0.77, F1 = 0.77, MCC = 0.51)",medium
+R00199,P002,Unknown,Unknown,unknown,F1,0.98,0.98,decimal,unknown,unknown,P002_C97,"Corvi et al. (AUROC = 0.98, F1 = 0.94, MCC = 0.89)",medium
+R00200,P002,Unknown,Unknown,unknown,F1,0.94,0.94,decimal,unknown,unknown,P002_C97,"Corvi et al. (AUROC = 0.98, F1 = 0.94, MCC = 0.89)",medium
