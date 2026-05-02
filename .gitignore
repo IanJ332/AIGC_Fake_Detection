@@ -9,7 +9,7 @@ env/
 venv/
 ENV/
 
-# Project specific
+# Project specific - large data dirs excluded from Git
 corpus/raw_metadata/
 corpus/logs/
 corpus/pdfs/
@@ -19,9 +19,11 @@ corpus/parsed/
 corpus/sections/
 corpus/tables/
 corpus/parse_logs/
-# Allow evaluation questions and gold answers
+
+# JSONL files (large), except eval and artifact outputs
 *.jsonl
 !eval/*.jsonl
+!artifacts/reports/*.jsonl
 
 # User specific
 .gemini/
@@ -36,11 +38,15 @@ corpus/reports/
 corpus/checkpoints/
 *.duckdb
 
-# Manifests and Registry
-# We want to keep manifest_100.csv and document_registry.csv
+# Allow manifest files
+!corpus/manifest.csv
 !corpus/manifest_100.csv
+!corpus/manifest_executable_100.csv
 !corpus/document_registry.csv
 !corpus/parse_registry.csv
 
-# Allow artifact eval outputs
-!artifacts/reports/*.jsonl
+# Internal scaffolding - not for submission
+DAY8_SELF_AUDIT_PLAN.md
+LOCAL_DATA_INVENTORY.json
+LOCAL_DATA_INVENTORY.md
+Take_home.md

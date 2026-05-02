@@ -92,8 +92,8 @@ def main():
     parser = argparse.ArgumentParser(description="Download accessible corpus PDFs.")
     parser.add_argument(
         "--manifest",
-        default="corpus/manifest_100.csv",
-        help="Path to manifest CSV (must have paper_id and pdf_url columns).",
+        default="corpus/manifest.csv",
+        help="Path to manifest CSV (must have id/paper_id and pdf_url columns).",
     )
     parser.add_argument(
         "--out-dir",
@@ -126,8 +126,10 @@ def main():
 
     df = pd.read_csv(manifest_path)
 
-    # Synthesise paper_id if missing
-    if "paper_id" not in df.columns:
+    # Synthesise paper_id if missing (handle 'id' column from manifest.csv)
+    if "paper_id" not in df.columns and "id" in df.columns:
+        df["paper_id"] = df["id"]
+    elif "paper_id" not in df.columns:
         df["paper_id"] = [f"P{i+1:03d}" for i in range(len(df))]
 
     if "pdf_url" not in df.columns:

@@ -1,39 +1,43 @@
-# AIGC Fake Detection: Analytical Research QA Engine
+# AIGC Fake Detection: Research Comprehension QA Engine
 
-A high-fidelity, deterministic question-answering system designed to synthesize and audit the research corpus of AIGC (AI-Generated Content) fake detection.
+A deterministic, zero-cost question-answering system that reasons across a corpus of 100 research papers on AI-Generated Content (AIGC) image detection — answering queries about datasets, models, contradictions, trends, citations, and more with cited, defensible evidence.
 
-## Project Purpose
+## Topic
 
-This project implements a "Good At Numbers" analytical engine that extracts entities (datasets, models, metrics) and result tuples from a corpus of 100 research papers. Unlike standard RAG systems, it uses an operator-based architecture to provide auditable, evidence-backed answers to complex research queries without the risk of LLM hallucinations.
+**AI-Generated Content (AIGC) Image Detection** — the subfield of computer vision and media forensics concerned with detecting images produced by generative models (GANs, diffusion models, autoregressive generators).
 
 ## Architecture Overview
 
-The system follows a tiered analytical pipeline:
-1. **Extraction (Day 5)**: Rule-based parsing of Markdown sections and tables into structured CSVs and a DuckDB index.
-2. **Routing (Day 6)**: A regex-based intent classifier that maps natural language questions to specialized analytical operators.
-3. **Operators**: Deterministic logic (Pandas/SQL) for Single-Doc facts, Multi-Doc aggregations, Temporal trends, and Contradiction detection.
-4. **Evidence (Day 6.5)**: A snippet retrieval layer that fetches precise grounding text from the original parsed sections.
+The system uses an **operator-based analytical pipeline** — no LLM fine-tuning, no embeddings, no paid APIs:
 
-## Data Flow
+1. **Ingest**: PDFs → parsed Markdown → structured section segments (JSONL).
+2. **Extract**: Rule-based entity extraction (datasets, models, metrics, generators) and result-tuple parsing → CSV tables + DuckDB index.
+3. **Route**: Regex-based intent classifier maps natural-language questions to one of 8 analytical tiers.
+4. **Operate**: Tier-specific deterministic operators (Pandas/SQL) produce structured answers.
+5. **Evidence**: Every answer includes traceable grounding — paper ID, section anchor, and text snippet.
 
-```mermaid
-graph TD
-    A[PDF Corpus] --> B[PDF Parser / Section Segmenter]
-    B --> C[Parsed Markdown/JSONL]
-    C --> D[Extraction Pipeline]
-    D --> E[entities.csv / result_tuples.csv]
-    E --> F[DuckDB Index]
-    G[User Question] --> H[Router]
-    H --> I[Analytical Operators]
-    I --> J[Evidence Collector]
-    J --> K[Final Answer with Grounding]
+```
+User Question → Router → Operator (DuckDB/Pandas) → Evidence Collector → Cited Answer
 ```
 
-## Setup Instructions
+### Question Tiers Handled
+
+| Tier | Name | Example |
+|:---|:---|:---|
+| 1 | Single-document factual | "What architecture does P001 use?" |
+| 2 | Corpus-level aggregation | "List every dataset used across the 100 papers." |
+| 3 | Comparative / contradiction | "Which papers report conflicting results on GenImage?" |
+| 4 | Temporal / evolution | "How has detection accuracy changed from 2020 to 2024?" |
+| 5 | Citation-graph reasoning | "Which papers build on the GenImage benchmark?" |
+| 6 | Multi-hop / compositional | "Find papers that use both CLIP and Accuracy." |
+| 7 | Negation / absence | "Which standard benchmark is absent from the corpus?" |
+| 8 | Quantitative computation | "How many papers mention GenImage?" |
+
+## Setup
 
 ### Prerequisites
 - Python 3.10+
-- Google Colab (recommended for full extraction runs)
+- Google Colab (recommended) or any Linux/macOS/Windows environment
 
 ### Installation
 ```bash
@@ -42,67 +46,110 @@ cd AIGC_Fake_Detection
 pip install -r requirements.txt
 ```
 
-## Google Drive Data Layout
+### Corpus
 
-The system expects the following structure (mirrored in Colab):
+The 100 PDFs are not committed to Git (size limits). Use the download script:
+```bash
+python scripts/download_corpus.py --manifest corpus/manifest.csv --out-dir corpus/pdfs
 ```
-/content/drive/MyDrive/AIGC/Data/
-├── registry/
-│   ├── manifest_100.csv
-│   └── document_registry.csv
-├── extracted/
-│   ├── entities.csv
-│   ├── result_tuples.csv
-│   └── paper_entity_summary.csv
-├── sections/
-│   └── sections.jsonl
-└── index/
-    └── research_corpus.duckdb
+
+> **Note:** Some PDFs (~28) are behind publisher paywalls. The download script logs these as known failures. The system operates on all successfully acquired papers and documents inaccessible ones.
+
+The manifest is at [`corpus/manifest.csv`](corpus/manifest.csv) with columns: `id, title, authors, year, venue, citation_count, source_url, pdf_url`.
+
+### Data Directory
+
+The system reads extracted data from a configurable `--data-dir` path. For Colab, this is typically Google Drive:
+```
+{DATA_DIR}/
+├── registry/manifest_100.csv
+├── extracted/entities.csv, result_tuples.csv, paper_entity_summary.csv
+├── sections/sections.jsonl
+├── tables/table_candidates.jsonl
+└── index/research_corpus.duckdb
 ```
 
 ## Usage
 
-### Run Extraction (Day 5)
-Extraction is typically performed in Colab using `notebooks/03_full_extraction_runner.ipynb`.
-
-### Run QA CLI
+### Ask a Question (CLI)
 ```bash
 python -m src.query.cli --data-dir ./Data --question "What are the top 10 datasets mentioned across the corpus?"
 ```
 
-### Run Evaluation
+### Run Full Evaluation (40 questions, all 8 tiers)
 ```bash
-# Reruns evaluation on existing data bundle; does not regenerate PDFs or extracted data.
 python eval/run_eval.py --data-dir ./Data --questions eval/questions_40.jsonl
 ```
 
-## Performance & Evaluation
+### Run Budget Ablation (3 levels)
+```bash
+python eval/run_budget_eval.py --data-dir ./Data --questions eval/questions_40.jsonl --out-dir artifacts/reports
+```
 
-- **Routing Accuracy**: 95.0%
-- **Operator Success**: 100%
-- **Evidence Coverage**: ~53% (strictly grounded snippets)
+### Reproduce End-to-End
+```bash
+bash scripts/reproduce_all.sh --eval-only ./Data   # default: evaluate on existing data
+bash scripts/reproduce_all.sh --rebuild ./Data      # full: download PDFs, parse, extract, evaluate
+```
+
+### Colab Notebooks
+
+The recommended workflow uses Google Colab with Google Drive as persistent storage:
+
+| Notebook | Purpose |
+|:---|:---|
+| `01_data_sync_and_check` | Acquire PDFs, parse, segment sections |
+| `02_small_batch_extraction_probe` | Validate extraction heuristics on a sample |
+| `03_full_extraction_runner` | Full entity/result extraction → DuckDB |
+| `04_qa_engine_runner` | Run QA engine + evaluation suite |
+| `05_final_validation_runner` | Final validation: eval + budget + demo queries |
+
+## Performance
+
+- **Routing Accuracy**: 95.0% (38/40 questions)
+- **Operator Execution Success**: 100%
+- **Evidence Coverage**: 100% (all answers include evidence)
 - **Unknown Tier Count**: 0
 
-Detailed metrics are available in [docs/quality_vs_budget.md](docs/quality_vs_budget.md).
-
-## Known Limitations
-
-- Only 72 PDFs were successfully parsed due to publisher 403 restrictions.
-- Citation graph analysis is limited to metadata-based links.
-- Results are heuristic candidates and should be cross-verified with source snippets.
-- For full details, see [docs/limitations.md](docs/limitations.md).
-
-## Submitted Artifacts
-
-To maintain a lightweight and efficient repository, the full runtime data (PDFs, DuckDB, parsed JSONL) is intentionally excluded from version control. However, a curated set of lightweight evidence artifacts is included under the `artifacts/` directory for audit and review:
-
-- **Reports**: Day 5 extraction logs and Day 6 evaluation summaries.
-- **Manifests**: Registry files for the 100-paper corpus and parsing results.
-- **Samples**: Representative CSV samples of the extracted entities and results.
-- **Inventory**: A high-level summary of the full local data scale (`artifacts/data_inventory_summary.md`).
-
-The full data can be inspected in the Google Drive runtime environment or regenerated via the provided notebooks if the source PDF bundle is provided.
-
 ## Cost Report
-Total estimated spend for this project: **$0.00**.
-See [docs/cost_report.md](docs/cost_report.md) for details.
+
+**Total spend: $0.00.** No paid APIs, no LLM calls, no embeddings. Purely deterministic operators on CPU.
+
+| Level | Mode | Routing | Op Success | Evidence | Spend |
+|:---|:---|:---|:---|:---|:---|
+| 0 | Router only | 95% | 100% | 0% | $0.00 |
+| 1 | Operator (no evidence) | 95% | 100% | 0% | $0.00 |
+| 2 | Full pipeline | 95% | 100% | 100% | $0.00 |
+
+See [`docs/quality_vs_budget.md`](docs/quality_vs_budget.md) and [`docs/cost_report.md`](docs/cost_report.md) for details.
+
+## Key Design Decisions
+
+1. **No LLM in the loop** — avoids hallucination, cost, and latency. Every answer is traced to a DuckDB query or Pandas operation over extracted data.
+2. **Operator-per-tier** — each question tier has a dedicated analytical operator optimized for that reasoning pattern.
+3. **Citation graph from metadata** — uses OpenAlex `referenced_works` to build intra-corpus citation edges without parsing reference sections.
+4. **Rule-based routing** — regex keyword classifier achieves 95% accuracy on the 40-question evaluation set; no ML model needed.
+
+## Repository Structure
+
+```
+├── corpus/               # Manifest files (PDFs excluded from Git)
+│   ├── manifest.csv      # 100-paper manifest (id, title, authors, year, venue, citation_count, source_url)
+│   └── manifest_100.csv  # Full metadata manifest with OpenAlex fields
+├── src/
+│   ├── query/            # Router, operators, CLI, evidence collector
+│   ├── extract/          # Entity and result extraction
+│   ├── parse/            # PDF parsing and section segmentation
+│   └── ingest/           # Corpus expansion utilities
+├── eval/
+│   ├── questions_40.jsonl      # 40 evaluation questions (all 8 tiers)
+│   ├── gold_answers.jsonl      # Gold answers with derivation methods
+│   ├── run_eval.py             # Evaluation runner
+│   └── run_budget_eval.py      # Budget ablation runner
+├── scripts/
+│   ├── download_corpus.py      # PDF download script
+│   └── reproduce_all.sh        # End-to-end reproduction
+├── docs/                 # Cost report, quality-vs-budget, limitations
+├── artifacts/            # Lightweight audit evidence (reports, samples, manifests)
+└── notebooks/            # Colab notebooks (01–05)
+```

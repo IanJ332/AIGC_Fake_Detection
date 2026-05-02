@@ -54,7 +54,7 @@ pip install -r requirements.txt -q
 if [ "$MODE" = "rebuild" ]; then
     echo "[2/5] Downloading accessible corpus PDFs..."
     python scripts/download_corpus.py \
-        --manifest corpus/manifest_100.csv \
+        --manifest corpus/manifest.csv \
         --out-dir "$DATA_DIR/pdfs" \
         --report "$DATA_DIR/download_report.json"
 

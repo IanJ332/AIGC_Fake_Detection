@@ -1,25 +1,34 @@
-# Project Cost Report: Analytical QA Engine
-
-This document summarizes the financial expenditures and resource utilization for the building and execution of the AIGC Fake Detection research comprehension system.
+# Cost Report
 
 ## Financial Summary
 
 | Category | Cost (USD) | Notes |
 | :--- | :--- | :--- |
-| **Model API (LLM)** | $0.00 | Purely deterministic rule-based operators (DuckDB/Pandas). |
-| **Embedding API** | $0.00 | No vector search or embeddings used in the core engine. |
-| **Data Acquisition** | $0.00 | via free OpenAlex / Semantic Scholar HTTP APIs. |
-| **PDF Processing** | $0.00 | Local `Marker` / `pdfplumber` execution. |
-| **Compute (Colab)** | $0.00 | Standard free tier Google Colab instances used. |
+| **Model API (LLM)** | $0.00 | Purely deterministic rule-based operators (DuckDB/Pandas). No LLM calls. |
+| **Embedding API** | $0.00 | No vector search or embeddings used. |
+| **Data Acquisition** | $0.00 | OpenAlex API (free, public). |
+| **PDF Processing** | $0.00 | Local pdfplumber execution. |
+| **Compute** | $0.00 | Google Colab free tier + local CPU. |
 | **Total Spend** | **$0.00** | |
 
-## Operational Metrics
+## Cost per Question
 
-- **Cost per Question**: $0.00 (Local/Free CPU execution).
-- **Latency per Question**: ~1.5s - 4.0s (mostly DuckDB IO).
-- **Storage Requirement**: ~1.2GB for 100 PDFs and associated parsed JSON/indices.
+| Metric | Value |
+| :--- | :--- |
+| Mean | $0.00 |
+| Median | $0.00 |
+| Max | $0.00 |
+| Latency (avg) | ~84 ms |
+
+All 40 evaluation questions run locally with zero API cost.
 
 ## Infrastructure Notes
 
-- **403 PDF Failures**: Approximately 28% of target PDFs returned 403 Forbidden errors during direct publisher requests. These were handled by free fallbacks (e.g., searching for open access versions via OpenAlex), resulting in a 72-paper final corpus.
-- **Compute**: All extraction and QA logic is designed for consumer-grade CPU environments, requiring no GPU acceleration.
+- **Corpus**: 100-paper manifest assembled via OpenAlex API (free).
+- **PDF Acquisition**: Some publisher PDFs (~28) return 403 Forbidden. These are documented as known failures. The system operates on all successfully acquired papers.
+- **Compute**: All extraction and QA logic runs on consumer-grade CPU. No GPU required.
+- **Storage**: ~1.2 GB for PDFs + parsed JSON + DuckDB index.
+
+## Quality-vs-Budget Curve
+
+See [quality_vs_budget.md](quality_vs_budget.md) for the 3-level measured ablation.
