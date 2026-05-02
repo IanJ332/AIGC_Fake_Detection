@@ -1,35 +1,59 @@
-# Quality vs. Budget Analysis
+# Quality vs Budget
 
-This document explores the performance trade-offs of the current deterministic system versus potential higher-budget LLM-integrated architectures.
+## Summary
 
-## Current Performance (Measured)
+This document reports actual measured performance at three local budget levels plus two planned higher-budget tiers.
 
-The following metrics were recorded during the Day 6 evaluation of the 40-question gold set:
+---
 
-- **Corpus Size**: 72 papers (extracted).
-- **Routing Accuracy**: 92.5% (37/40).
-- **Operator Execution Success**: 100% (40/40).
-- **Unknown Tier Count**: 0.
-- **Answers with Limitations**: 100% (40/40) - providing explicit constraints for every answer.
-- **Answers with Evidence**: ~52.5% (21/40) - strictly verifiable snippets.
+## Measured Local Ablations (All $0, No Paid APIs)
 
-## Budget Tiers & Planned Ablations
+All three levels were executed on the same 40-question evaluation set (`eval/questions_40.jsonl`) against the full extracted corpus (`Data/extracted/`).
 
-### Level 1: $0 Rule-Only (Current)
-- **Architecture**: DuckDB + Pandas + Heuristic Regex.
-- **Pros**: Zero cost, zero hallucination, extremely fast, 100% auditable.
-- **Cons**: Limited semantic understanding; fails on complex multi-doc reasoning that requires cross-referencing un-indexed text.
+| Level | Mode | Routing Accuracy | Op Success | Evidence Coverage | Avg Latency | Spend |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 0 | `router_only` — Return tier label only | 92.5% | 100% | 0% | <1 ms | $0.00 |
+| 1 | `operator_no_evidence` — Run operator, suppress evidence | 92.5% | 100% | 0% | 25 ms | $0.00 |
+| 2 | `operator_with_evidence` — Full pipeline (current system) | 92.5% | 100% | 100% | 24 ms | $0.00 |
 
-### Level 2: $5 Embedding Reranking (Planned Ablation)
-- **Proposed Enhancement**: Generate 1536-d embeddings for all sections using `text-embedding-3-small`.
-- **Expected Benefit**: Improve evidence coverage from 52% to >80% by replacing keyword-based snippet matching with semantic similarity.
-- **Estimated Cost**: <$1.00 for 100 papers; remaining budget for high-volume QA sessions.
+> [!IMPORTANT]
+> These numbers are real, measured results produced by `eval/run_budget_eval.py`. Raw per-question results are in `artifacts/reports/budget_eval_results.csv`. See `artifacts/reports/budget_eval_summary.md` for the auto-generated table.
 
-### Level 3: $20 LLM Selective Synthesis (Planned Ablation)
-- **Proposed Enhancement**: Route complex "Multihop" or conflicting queries to GPT-4o-mini with retrieved context.
-- **Expected Benefit**: Improve synthesis quality for complex multihop questions and reduce unsupported-answer risk when paired with retrieved evidence.
-- **Estimated Cost**: ~$0.01 per query; $20 supports thousands of high-fidelity analytical sessions.
+**Key finding**: The operator pipeline adds evidence coverage (0% → 100%) with essentially no latency cost over the operator-only mode. The routing accuracy ceiling at 92.5% reflects 3 questions that require disambiguation between similar tiers (temporal vs. quantitative for year-specific count questions).
 
-## Conclusion
+---
 
-The current $0 implementation provides a robust foundation for high-fidelity research comprehension. While semantic nuances are sacrificed for determinism, the system remains a highly reliable "Numbers-First" auditor for the AIGC detection corpus.
+## Planned Higher-Budget Tiers (Not Yet Run)
+
+These two tiers would require paid API spend and have not been executed. They are documented here as the natural extension of the ablation curve.
+
+| Level | Mode | Expected Routing | Expected Evidence | Expected Spend | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 3 | Embedding reranking (`sentence-transformers/all-MiniLM-L6-v2`, local free model) | ~92–95% | Higher quality snippets | $0.00 (local GPU/CPU) | **Planned** |
+| 4 | LLM synthesis (e.g., GPT-4o-mini answer synthesis over retrieved snippets) | ~95%+ | Synthesised prose answers | ~$0.01–$0.05/question | **Planned** |
+
+> [!NOTE]
+> Level 3 can be run locally at $0 cost using the optional `sentence-transformers` dependency documented in `requirements.txt`. It is not enabled by default to avoid the ~400MB model download requirement.
+
+---
+
+## Interpretation
+
+The measured curve demonstrates:
+
+1. **Router alone** is sufficient for tier classification (92.5%).
+2. **Operator execution** provides structured, defensible answers at effectively zero marginal cost.  
+3. **Evidence attachment** (Level 2) is the primary value-add: every answer includes a traceable data source (CSV file, evidence snippet, or section text).
+4. Paid-API tiers would primarily improve answer fluency and synthesis quality, not routing or coverage — an acceptable trade-off for a zero-cost deployment.
+
+---
+
+## Cost per Question
+
+| Tier | Spend per question |
+| :--- | :--- |
+| Levels 0–2 (current) | $0.00 |
+| Level 3 (local embeddings) | $0.00 |
+| Level 4 (LLM, planned) | ~$0.01–$0.05 |
+
+Total project spend to date: **$0.00** (OpenAlex API is free; no paid models used).

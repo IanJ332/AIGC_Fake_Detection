@@ -1,3 +1,5 @@
+import ast
+import re
 import pandas as pd
 import duckdb
 import json
@@ -98,6 +100,56 @@ def load_context(data_dir):
         except:
             pass
                 
+    # Build internal citation graph from manifest referenced_works
+    manifest_paths = [
+        data_dir / "registry" / "manifest_100.csv",
+        Path("corpus") / "manifest_100.csv",
+        Path("artifacts") / "manifests" / "manifest_100.csv",
+    ]
+    for mp in manifest_paths:
+        if mp.exists():
+            try:
+                mdf = pd.read_csv(mp)
+                if "paper_id" not in mdf.columns:
+                    mdf["paper_id"] = [f"P{i+1:03d}" for i in range(len(mdf))]
+                # Map openalex_id -> paper_id
+                oa_to_pid = {}
+                if "openalex_id" in mdf.columns:
+                    for _, r in mdf.iterrows():
+                        oa = str(r["openalex_id"]).strip()
+                        if oa and oa.lower() not in {"nan", "none", ""}:
+                            oa_to_pid[oa] = str(r["paper_id"])
+                # Build cite counts: how many corpus papers cite each corpus paper
+                cite_counts = {pid: 0 for pid in oa_to_pid.values()}
+                paper_cited_by = {pid: [] for pid in oa_to_pid.values()}
+                if "referenced_works" in mdf.columns:
+                    for _, r in mdf.iterrows():
+                        citing_pid = str(r["paper_id"])
+                        rw_raw = r.get("referenced_works", "")
+                        if pd.isna(rw_raw) or not str(rw_raw).strip():
+                            continue
+                        try:
+                            refs = ast.literal_eval(str(rw_raw))
+                        except Exception:
+                            refs = []
+                        for ref in refs:
+                            ref = str(ref).strip()
+                            if ref in oa_to_pid:
+                                target_pid = oa_to_pid[ref]
+                                cite_counts[target_pid] = cite_counts.get(target_pid, 0) + 1
+                                paper_cited_by.setdefault(target_pid, []).append(citing_pid)
+                ctx["cite_counts"] = cite_counts
+                ctx["paper_cited_by"] = paper_cited_by
+                ctx["oa_to_pid"] = oa_to_pid
+            except Exception:
+                pass
+            break
+
+    if "cite_counts" not in ctx:
+        ctx["cite_counts"] = {}
+        ctx["paper_cited_by"] = {}
+        ctx["oa_to_pid"] = {}
+
     return ctx
 
 def answer_single_doc(question, route, ctx):
@@ -239,55 +291,259 @@ def answer_temporal(question, route, ctx):
     return ans, evidence, ["Temporal analysis is based on extraction summary metadata."]
 
 def answer_citation_graph(question, route, ctx):
-    return "Citation graph analysis is currently limited. Data for reference links was not extracted in the primary pipeline.", [], ["Citation data missing in current index."]
+    cite_counts = ctx.get("cite_counts", {})
+    paper_cited_by = ctx.get("paper_cited_by", {})
+
+    if not cite_counts:
+        return (
+            "Citation graph is not available: referenced_works data was not loaded.",
+            [],
+            ["manifest_100.csv not found or missing referenced_works/openalex_id columns."]
+        )
+
+    q = question.lower()
+
+    # --- Most-cited within corpus ---
+    if any(k in q for k in ["most cited", "highly cited", "most influential", "cited most"]):
+        ranked = sorted(cite_counts.items(), key=lambda x: x[1], reverse=True)
+        top = [(pid, cnt) for pid, cnt in ranked if cnt > 0][:10]
+        if not top:
+            return "No internal citations found in the corpus.", [], ["All papers have 0 internal citations."]
+        meta = ctx.get("paper_meta", {})
+        ans = "Most-cited papers within the corpus (internal citation count):\n"
+        for pid, cnt in top:
+            m = meta.get(pid, {})
+            title = m.get("title", pid)
+            ans += f"  {pid} — {title[:80]}: cited by {cnt} corpus paper(s)\n"
+        evidence = [{"paper_id": "DATA_BASIS", "title": "manifest_100.csv referenced_works",
+                     "year": "N/A", "anchor": "citation_graph",
+                     "snippet": f"Internal graph built from {len(cite_counts)} corpus papers."}]
+        return ans, evidence, ["Internal citation graph only; does not include external citations."]
+
+    # --- Papers citing a specific paper / building on a specific work ---
+    meta = ctx.get("paper_meta", {})
+    for pid, m in meta.items():
+        title_snippet = m.get("title", "").lower()
+        # Check if question mentions a paper title fragment or paper_id
+        pid_lower = pid.lower()
+        if pid_lower in q or (len(title_snippet) > 5 and title_snippet[:30] in q):
+            citers = paper_cited_by.get(pid, [])
+            if citers:
+                ans = f"Papers in the corpus that cite {pid} ({m.get('title', '')[:60]}):\n"
+                for c in citers:
+                    cm = meta.get(c, {})
+                    ans += f"  {c} — {cm.get('title', c)[:70]}\n"
+            else:
+                ans = f"{pid} is not cited by other papers in this corpus."
+            evidence = [{"paper_id": "DATA_BASIS", "title": "manifest_100.csv referenced_works",
+                         "year": "N/A", "anchor": "citation_graph", "snippet": f"Citation edges for {pid}."}]
+            return ans, evidence, ["Internal corpus citations only."]
+
+    # --- Fallback: show top 5 most-cited ---
+    ranked = sorted(cite_counts.items(), key=lambda x: x[1], reverse=True)
+    top = [(pid, cnt) for pid, cnt in ranked if cnt > 0][:5]
+    ans = "Citation graph loaded. Top internally-cited papers:\n"
+    for pid, cnt in top:
+        m = meta.get(pid, {})
+        ans += f"  {pid} — {m.get('title', pid)[:70]}: {cnt} internal citation(s)\n"
+    evidence = [{"paper_id": "DATA_BASIS", "title": "manifest_100.csv referenced_works",
+                 "year": "N/A", "anchor": "citation_graph",
+                 "snippet": f"Graph built from {len(cite_counts)} corpus papers."}]
+    return ans, evidence, ["Question did not match a specific paper; showing top-cited as fallback."]
+
 
 def answer_multihop(question, route, ctx):
     df_ent = ctx["dfs"].get("entities")
-    if df_ent is None: return "Missing entity data.", [], ["entities.csv missing"]
-    
-    # Intersection of paper_ids logic (placeholder/simple)
-    ans = "Multi-condition search result (Intersection of entities):\n"
-    ans += "Currently returning general multi-entity intersections."
-    
-    # Add data basis to evidence
-    evidence = [{"paper_id": "DATA_BASIS", "title": "entities.csv", "year": "N/A", "anchor": "index", "snippet": "Intersection search over entity index."}]
-    return ans, evidence, ["Full semantic multihop requires complex SQL joins or LLM reasoning."]
+    if df_ent is None:
+        return "Missing entity data.", [], ["entities.csv missing"]
+
+    q = question.lower()
+
+    # Extract up to two entity terms from the question using known entity dictionaries
+    # We search for any entity name that appears in the question text
+    all_entities = df_ent["entity"].dropna().unique()
+    matched = [e for e in all_entities if str(e).lower() in q and len(str(e)) > 2]
+
+    # Year filter
+    year_match = re.search(r'\b(20\d{2})\b', question)
+    year_filter = int(year_match.group(1)) if year_match else None
+
+    if not matched and year_filter is None:
+        ans = "Could not identify specific entities in question for multihop intersection.\n"
+        ans += "Try phrasing as: 'Papers using [EntityA] and [EntityB]'"
+        evidence = [{"paper_id": "DATA_BASIS", "title": "entities.csv", "year": "N/A",
+                     "anchor": "index", "snippet": "No entity terms matched from question."}]
+        return ans, evidence, ["Entity names must appear verbatim in the question."]
+
+    # Build intersection of paper_id sets
+    paper_sets = []
+    for entity in matched[:3]:  # cap at 3 conditions
+        pids = set(df_ent[df_ent["entity"].str.lower() == entity.lower()]["paper_id"].dropna())
+        paper_sets.append((entity, pids))
+
+    if paper_sets:
+        intersection = paper_sets[0][1]
+        for _, s in paper_sets[1:]:
+            intersection &= s
+    else:
+        intersection = set(df_ent["paper_id"].dropna())
+
+    # Year filter
+    if year_filter:
+        meta = ctx.get("paper_meta", {})
+        intersection = {p for p in intersection
+                        if str(meta.get(p, {}).get("year", "")) == str(year_filter)}
+
+    intersection = sorted(intersection)
+    meta = ctx.get("paper_meta", {})
+    conditions = [e for e, _ in paper_sets]
+    if year_filter:
+        conditions.append(f"year={year_filter}")
+
+    if not intersection:
+        ans = f"No papers found matching all conditions: {', '.join(conditions)}"
+    else:
+        ans = f"Papers matching all conditions ({', '.join(conditions)}):\n"
+        for pid in intersection[:20]:
+            m = meta.get(pid, {})
+            ans += f"  {pid} — {m.get('title', pid)[:70]}\n"
+        if len(intersection) > 20:
+            ans += f"  ... and {len(intersection) - 20} more."
+
+    evidence_rows = [{"paper_id": p} for p in intersection[:5]]
+    evidence = collect_evidence(evidence_rows, ctx["data_dir"], paper_meta=meta)
+    if not evidence:
+        evidence = [{"paper_id": "DATA_BASIS", "title": "entities.csv", "year": "N/A",
+                     "anchor": "index", "snippet": f"Intersection of {len(paper_sets)} entity condition(s)."}]
+    return ans, evidence, ["Entity matching is string-based; acronym variants may be missed."]
+
 
 def answer_negation(question, route, ctx):
     df_reg = ctx["dfs"].get("extraction_registry")
     df_sect = ctx["dfs"].get("paper_section_stats")
-    
+    df_ent = ctx["dfs"].get("entities")
+
+    q = question.lower()
+    all_pids = set(df_reg["paper_id"].dropna()) if df_reg is not None else set()
+    evidence = []
+
+    # --- Entity-specific absence ---
+    if df_ent is not None:
+        all_entities = df_ent["entity"].dropna().unique()
+        matched = [e for e in all_entities if str(e).lower() in q and len(str(e)) > 2]
+        if matched:
+            entity = matched[0]
+            papers_with_entity = set(df_ent[df_ent["entity"].str.lower() == entity.lower()]["paper_id"].dropna())
+            papers_without = sorted(all_pids - papers_with_entity)
+            ans = f"Papers with no mention of '{entity}':\n"
+            ans += f"  Count: {len(papers_without)}\n"
+            ans += f"  Sample: {', '.join(papers_without[:15])}"
+            evidence = [{"paper_id": "DATA_BASIS", "title": "entities.csv", "year": "N/A",
+                         "anchor": "negation", "snippet": f"Set difference: all_papers minus papers mentioning '{entity}'."}]
+            return ans, evidence, ["Entity matching is string-based; partial name variants may affect results."]
+
+    # --- Section-based absence ---
     if df_reg is None or df_sect is None:
         return "Missing registry or section stats data.", [], ["extraction_registry.csv or paper_section_stats.csv missing"]
-    
-    missing_results = df_reg[df_reg["result_tuple_count"] == 0]["paper_id"].tolist()
-    ans = f"Identified {len(missing_results)} papers with no extracted result tuples.\n"
-    ans += f"Sample IDs: {', '.join(missing_results[:10])}\n"
-    
-    # Negation logic for sections
-    q = question.lower()
-    if "method" in q:
-        no_method = df_sect[df_sect["has_method"] == False]["paper_id"].tolist()
-        ans += f"Papers missing method section: {len(no_method)} (e.g., {', '.join(no_method[:5])})"
-    
-    # Add data basis to evidence
-    evidence = [{"paper_id": "DATA_BASIS", "title": "paper_section_stats.csv", "year": "N/A", "anchor": "index", "snippet": "Gap analysis via section presence flags."}]
-    return ans, evidence, ["Papers might have content that failed rule-based section segmentation."]
+
+    if "abstract" in q:
+        no_abs = df_sect[df_sect["has_abstract"] == False]["paper_id"].tolist() if "has_abstract" in df_sect.columns else []
+        ans = f"Papers missing an abstract section: {len(no_abs)}\n  {', '.join(no_abs[:15])}"
+    elif "method" in q:
+        no_method = df_sect[df_sect["has_method"] == False]["paper_id"].tolist() if "has_method" in df_sect.columns else []
+        ans = f"Papers missing a method section: {len(no_method)}\n  {', '.join(no_method[:15])}"
+    elif "result" in q or "tuple" in q:
+        missing_results = df_reg[df_reg["result_tuple_count"] == 0]["paper_id"].tolist()
+        ans = f"Papers with no extracted result tuples: {len(missing_results)}\n  {', '.join(missing_results[:15])}"
+    elif "entit" in q:
+        no_ent = df_reg[df_reg["entity_count"] == 0]["paper_id"].tolist() if "entity_count" in df_reg.columns else []
+        ans = f"Papers with no extracted entities: {len(no_ent)}\n  {', '.join(no_ent[:15])}"
+    else:
+        missing_results = df_reg[df_reg["result_tuple_count"] == 0]["paper_id"].tolist()
+        ans = f"Papers with no extracted result tuples: {len(missing_results)}\n  Sample: {', '.join(missing_results[:10])}"
+
+    evidence = [{"paper_id": "DATA_BASIS", "title": "paper_section_stats.csv",
+                 "year": "N/A", "anchor": "negation", "snippet": "Gap analysis via section presence flags."}]
+    return ans, evidence, ["Section detection is heuristic; a missing flag may reflect parser failure, not true absence."]
+
 
 def answer_quantitative(question, route, ctx):
     df_sum = ctx["dfs"].get("paper_entity_summary")
     df_res = ctx["dfs"].get("result_tuples")
-    
-    if df_sum is None: return "Missing summary data.", [], ["paper_entity_summary.csv missing"]
-    
+    df_ent = ctx["dfs"].get("entities")
+    df_sect = ctx["dfs"].get("paper_section_stats")
+    df_reg = ctx["dfs"].get("extraction_registry")
+
+    if df_sum is None:
+        return "Missing summary data.", [], ["paper_entity_summary.csv missing"]
+
+    q = question.lower()
     paper_count = len(df_sum)
     result_count = len(df_res) if df_res is not None else 0
-    
+
+    # --- Entity-specific count ---
+    if df_ent is not None:
+        all_entities = df_ent["entity"].dropna().unique()
+        matched = [e for e in all_entities if str(e).lower() in q and len(str(e)) > 2]
+        if matched:
+            entity = matched[0]
+            papers_with = df_ent[df_ent["entity"].str.lower() == entity.lower()]["paper_id"].nunique()
+            ans = f"Papers mentioning '{entity}': {papers_with} out of {paper_count} corpus papers."
+            evidence = [{"paper_id": "DATA_BASIS", "title": "entities.csv", "year": "N/A",
+                         "anchor": "count", "snippet": f"Distinct paper_id count for entity='{entity}'."}]
+            return ans, evidence, []
+
+    # --- Percentage questions ---
+    if "percent" in q or "%" in q:
+        if "method" in q and df_sect is not None and "has_method" in df_sect.columns:
+            pct = 100 * df_sect["has_method"].mean()
+            ans = f"Percentage of papers with a method section: {pct:.1f}%"
+        elif "result" in q and df_reg is not None and "result_tuple_count" in df_reg.columns:
+            has_results = (df_reg["result_tuple_count"] > 0).sum()
+            pct = 100 * has_results / len(df_reg)
+            ans = f"Percentage of papers with at least one result tuple: {pct:.1f}%"
+        else:
+            ans = f"Corpus coverage: {paper_count} papers extracted out of 100 in manifest."
+        evidence = [{"paper_id": "DATA_BASIS", "title": "paper_section_stats.csv",
+                     "year": "N/A", "anchor": "percent", "snippet": "Percentage computed from section/registry flags."}]
+        return ans, evidence, []
+
+    # --- Median/average sections ---
+    if ("median" in q or "average" in q or "mean" in q) and "section" in q:
+        if df_sect is not None and "total_sections" in df_sect.columns:
+            med = df_sect["total_sections"].median()
+            avg = df_sect["total_sections"].mean()
+            ans = f"Sections per paper — Median: {med:.1f}, Average: {avg:.1f}"
+        else:
+            ans = "Section stats not available."
+        evidence = [{"paper_id": "DATA_BASIS", "title": "paper_section_stats.csv",
+                     "year": "N/A", "anchor": "median", "snippet": "Computed from total_sections column."}]
+        return ans, evidence, []
+
+    # --- Average results per paper ---
+    if "average" in q or "mean" in q:
+        avg = result_count / paper_count if paper_count else 0
+        ans = f"Average result tuples per paper: {avg:.1f} (across {paper_count} papers, {result_count} total tuples)"
+        evidence = [{"paper_id": "DATA_BASIS", "title": "result_tuples.csv",
+                     "year": "N/A", "anchor": "average", "snippet": "Mean computed from extraction_registry."}]
+        return ans, evidence, []
+
+    # --- Total entity count ---
+    if "total" in q and "entit" in q and df_reg is not None and "entity_count" in df_reg.columns:
+        total_ent = int(df_reg["entity_count"].sum())
+        ans = f"Total entities extracted across corpus: {total_ent:,}"
+        evidence = [{"paper_id": "DATA_BASIS", "title": "extraction_registry.csv",
+                     "year": "N/A", "anchor": "total", "snippet": f"Sum of entity_count: {total_ent}."}]
+        return ans, evidence, []
+
+    # --- Generic fallback ---
     ans = f"Quantitative Corpus Summary:\n"
-    ans += f"- Total papers: {paper_count}\n"
+    ans += f"- Total papers with extraction: {paper_count}\n"
     ans += f"- Total result tuples: {result_count}\n"
-    ans += f"- Avg results per paper: {result_count/paper_count:.1f}"
-    
-    # Add data basis to evidence
-    evidence = [{"paper_id": "DATA_BASIS", "title": "paper_entity_summary.csv", "year": "N/A", "anchor": "index", "snippet": f"Numeric aggregation over {paper_count} papers."}]
+    ans += f"- Avg results per paper: {result_count/paper_count:.1f}\n"
+    if df_ent is not None:
+        ans += f"- Total entity mentions: {len(df_ent):,}"
+    evidence = [{"paper_id": "DATA_BASIS", "title": "paper_entity_summary.csv",
+                 "year": "N/A", "anchor": "summary",
+                 "snippet": f"Numeric aggregation over {paper_count} papers."}]
     return ans, evidence, []
