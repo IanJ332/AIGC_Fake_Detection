@@ -30,7 +30,7 @@ def load_context(data_dir):
         if p.exists():
             ctx["dfs"][name] = pd.read_csv(p)
             
-    # Metadata priority should be:
+    # Metadata priority: 
     # 1. document_registry.csv
     # 2. manifest_100.csv
     # 3. extraction_registry.csv
@@ -46,6 +46,12 @@ def load_context(data_dir):
         if ms.exists():
             try:
                 df = pd.read_csv(ms)
+                
+                # Synthesize paper_id for manifest if missing
+                if ms.name == "manifest_100.csv" and "paper_id" not in df.columns:
+                    df = df.copy()
+                    df["paper_id"] = [f"P{i+1:03d}" for i in range(len(df))]
+                
                 if "paper_id" in df.columns:
                     for _, row in df.iterrows():
                         pid = str(row["paper_id"])

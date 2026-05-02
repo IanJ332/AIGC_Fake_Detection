@@ -5,6 +5,12 @@ def build_final_answer(ans_text, evidence, limitations):
     if evidence:
         output += "Evidence:\n"
         for ev in evidence:
+            if ev["paper_id"] == "DATA_BASIS":
+                output += f"- Data Basis: {ev['title']}\n"
+                output += f"  Anchor: {ev['anchor']}\n"
+                output += f"  Snippet: {ev['snippet']}\n"
+                continue
+            
             output += f"- {ev['paper_id']} ({ev['title']}, {ev['year']})\n"
             output += f"  Anchor: {ev['anchor']}\n"
             output += f"  Snippet: {ev['snippet']}\n"

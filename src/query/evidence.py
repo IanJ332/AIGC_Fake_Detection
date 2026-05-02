@@ -1,6 +1,12 @@
 import json
 from pathlib import Path
 
+def is_valid_value(v):
+    if v is None:
+        return False
+    s = str(v).strip()
+    return s != "" and s.lower() not in {"unknown", "nan", "none", "null"}
+
 def format_evidence_anchor(anchor):
     return str(anchor) if anchor else "unknown"
 
@@ -11,34 +17,42 @@ def get_section_snippet(paper_id, data_dir, section_type=None, anchor=None, max_
     if not sections_path.exists():
         return f"Evidence snippet unavailable (missing {sections_path})"
     
-    try:
-        with open(sections_path, "r", encoding="utf-8-sig") as f:
-            for line in f:
-                if not line.strip(): continue
-                row = json.loads(line)
-                if str(row["paper_id"]) != str(paper_id):
-                    continue
-                
-                # If anchor is provided, match it
-                if anchor and row.get("evidence_anchor") == anchor:
-                    text = row.get("text", "")
-                    return text[:max_chars].replace("\n", " ") + ("..." if len(text) > max_chars else "")
-                
-                # If section_type is provided, match it (handle list of types)
-                if section_type:
-                    stypes = [section_type] if isinstance(section_type, str) else section_type
-                    if row.get("section_type") in stypes:
+    def try_find(stype=None, anc=None):
+        try:
+            with open(sections_path, "r", encoding="utf-8-sig") as f:
+                for line in f:
+                    if not line.strip(): continue
+                    row = json.loads(line)
+                    if str(row["paper_id"]) != str(paper_id):
+                        continue
+                    
+                    # Match anchor if provided
+                    if anc and row.get("evidence_anchor") == anc:
                         text = row.get("text", "")
                         return text[:max_chars].replace("\n", " ") + ("..." if len(text) > max_chars else "")
-                
-                # Fallback to any section if nothing specific matched and we are just looking for a paper snippet
-                if not anchor and not section_type:
-                    text = row.get("text", "")
-                    return text[:max_chars].replace("\n", " ") + ("..." if len(text) > max_chars else "")
-    except Exception as e:
-        return f"Error retrieving snippet: {e}"
+                    
+                    # Match section_type if provided
+                    if stype:
+                        stypes = [stype] if isinstance(stype, str) else stype
+                        if row.get("section_type") in stypes:
+                            text = row.get("text", "")
+                            return text[:max_chars].replace("\n", " ") + ("..." if len(text) > max_chars else "")
+                    
+                    # Fallback if no specific target
+                    if not anc and not stype:
+                        text = row.get("text", "")
+                        return text[:max_chars].replace("\n", " ") + ("..." if len(text) > max_chars else "")
+        except:
+            pass
+        return None
+
+    snippet = try_find(section_type, anchor)
+    
+    # If specific match failed, try any section for this paper
+    if snippet is None and (section_type or anchor):
+        snippet = try_find()
         
-    return "No matching evidence snippet found in sections."
+    return snippet if snippet else "No matching evidence snippet found in sections."
 
 def collect_evidence(rows, data_dir, paper_meta=None, max_items=5):
     evidence = []
@@ -55,7 +69,7 @@ def collect_evidence(rows, data_dir, paper_meta=None, max_items=5):
         if pid == "DATA_BASIS":
             evidence.append({
                 "paper_id": "DATA_BASIS",
-                "title": f"Data Basis: {row.get('paper_title', 'Unknown Source')}",
+                "title": row.get("title") or row.get("paper_title") or "Unknown Source",
                 "year": "N/A",
                 "anchor": "csv_index",
                 "snippet": row.get("snippet", "Statistical aggregation source.")
@@ -70,12 +84,18 @@ def collect_evidence(rows, data_dir, paper_meta=None, max_items=5):
             continue
         seen.add(key)
         
-        # Use provided snippet if available, else fetch it
-        snippet = row.get("snippet") or get_section_snippet(pid, data_dir, section_type=section_type, anchor=anchor)
+        # Fetch snippet
+        snippet = get_section_snippet(pid, data_dir, section_type=section_type, anchor=anchor)
         
         meta = paper_meta.get(pid, {})
-        title = row.get("paper_title") or meta.get("title") or "Unknown"
-        year = row.get("year") or meta.get("year") or "Unknown"
+        row_title = row.get("paper_title") or row.get("title")
+        row_year = row.get("year") or row.get("publish_year")
+
+        title = row_title if is_valid_value(row_title) else meta.get("title")
+        year = row_year if is_valid_value(row_year) else meta.get("year")
+
+        title = title if is_valid_value(title) else "Unknown"
+        year = year if is_valid_value(year) else "Unknown"
         
         evidence.append({
             "paper_id": pid,
