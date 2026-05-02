@@ -25,6 +25,15 @@ corpus/parse_logs/
 .gemini/
 .antigravity/
 
+# Data and Extraction Outputs (Google Drive symmetry)
+Data/
+corpus/extracted/
+corpus/index/
+corpus/probes/
+corpus/reports/
+corpus/checkpoints/
+*.duckdb
+
 # Manifests and Registry
 # We want to keep manifest_100.csv and document_registry.csv
 !corpus/manifest_100.csv
