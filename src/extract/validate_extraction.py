@@ -33,28 +33,36 @@ def validate_extraction(data_dir):
     
     entity_count = len(df_entities)
     result_count = len(df_results)
-    papers_with_entities = df_summary[df_summary["entity_count"] > 0]["paper_id"].nunique()
-    papers_with_results = df_summary[df_summary["result_tuple_count"] > 0]["paper_id"].nunique()
+    
+    papers_with_entities = 0
+    if not df_summary.empty and "entity_count" in df_summary.columns:
+        papers_with_entities = df_summary[df_summary["entity_count"] > 0]["paper_id"].nunique()
+        
+    papers_with_results = 0
+    if not df_summary.empty and "result_tuple_count" in df_summary.columns:
+        papers_with_results = df_summary[df_summary["result_tuple_count"] > 0]["paper_id"].nunique()
     
     status = "PROCEED"
     if entity_count < 1000 or result_count < 500:
         status = "CAUTION"
     if papers_with_entities < 50 or papers_with_results < 30:
         status = "CAUTION"
-    if entity_count == 0:
+    
+    if entities_path.exists() and entity_count == 0:
+        status = "BLOCKED"
+    if not entities_path.exists() or not summary_path.exists():
         status = "BLOCKED"
 
     # 3. Top Distributions
     def get_top_20(df, col):
-        if df.empty or col not in df.columns: return []
-        # Entities are often comma separated in summary, but here we use entities.csv
+        if df.empty or col not in df.columns: return {}
         return df[col].value_counts().head(20).to_dict()
 
     # If using entities.csv for distributions
-    top_datasets = get_top_20(df_entities[df_entities["entity_type"] == "dataset"], "entity")
-    top_models = get_top_20(df_entities[df_entities["entity_type"] == "model_backbone"], "entity")
-    top_metrics = get_top_20(df_entities[df_entities["entity_type"] == "metric"], "entity")
-    top_generators = get_top_20(df_entities[df_entities["entity_type"] == "generator_family"], "entity")
+    top_datasets = get_top_20(df_entities[df_entities["entity_type"] == "dataset"], "entity") if "entity_type" in df_entities.columns else {}
+    top_models = get_top_20(df_entities[df_entities["entity_type"] == "model_backbone"], "entity") if "entity_type" in df_entities.columns else {}
+    top_metrics = get_top_20(df_entities[df_entities["entity_type"] == "metric"], "entity") if "entity_type" in df_entities.columns else {}
+    top_generators = get_top_20(df_entities[df_entities["entity_type"] == "generator_family"], "entity") if "entity_type" in df_entities.columns else {}
 
     # 4. Generate Report
     report_path = reports_dir / "day5_full_extraction_report.md"
@@ -68,6 +76,12 @@ def validate_extraction(data_dir):
         f.write(f"- **Papers with Entities**: {papers_with_entities}\n")
         f.write(f"- **Papers with Results**: {papers_with_results}\n\n")
         
+        if issues:
+            f.write("## Critical Issues\n")
+            for issue in issues:
+                f.write(f"- {issue}\n")
+            f.write("\n")
+
         f.write("## Distributions\n")
         
         def write_dict_table(title, d):
@@ -89,7 +103,7 @@ def validate_extraction(data_dir):
         if status == "CAUTION":
             f.write("- **WARNING**: Extraction yields are below target thresholds (1000 entities / 500 results).\n")
         elif status == "BLOCKED":
-            f.write("- **ERROR**: Critical extraction failure. Zero entities found.\n")
+            f.write("- **ERROR**: Extraction pipeline failed or yielded no critical data.\n")
         else:
             f.write("- Pipeline met all success criteria.\n")
 

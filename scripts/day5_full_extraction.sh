@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Day 5 Full Extraction Pipeline Orchestrator
+set -euo pipefail
+set -x
 
 DATA_DIR=${1:-"/content/drive/MyDrive/AIGC/Data"}
 
