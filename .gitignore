@@ -19,7 +19,9 @@ corpus/parsed/
 corpus/sections/
 corpus/tables/
 corpus/parse_logs/
+# Allow evaluation questions and gold answers
 *.jsonl
+!eval/*.jsonl
 
 # User specific
 .gemini/
