@@ -1,6 +1,6 @@
 # Final Demo Questions
 
-This document provides a set of sample questions categorized by their analytical tier, along with the CLI commands to execute them.
+This document provides a set of sample questions categorized by their analytical tier, along with the CLI commands to execute them. These questions map to the 8 core analytical capabilities of the system.
 
 ## 1. Single-Doc (Fact Retrieval)
 **Question**: "What does paper P001 propose?"
@@ -44,7 +44,13 @@ python -m src.query.cli --data-dir ./Data --question "Which papers do not mentio
 python -m src.query.cli --data-dir ./Data --question "Find papers that use both the CLIP model and the Accuracy metric."
 ```
 
-## 8. Unknown (Out of Scope)
+## 8. Citation Graph (Relationship Search)
+**Question**: "Which papers in the corpus build on the GenImage benchmark?"
+```bash
+python -m src.query.cli --data-dir ./Data --question "Which papers in the corpus build on the GenImage benchmark?"
+```
+
+## 9. Optional: Unknown (Out of Scope)
 **Question**: "Who is the lead author of paper P001?"
 ```bash
 # This will be routed to 'unknown' as author metadata was not a primary extraction target.

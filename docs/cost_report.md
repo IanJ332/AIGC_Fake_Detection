@@ -8,7 +8,7 @@ This document summarizes the financial expenditures and resource utilization for
 | :--- | :--- | :--- |
 | **Model API (LLM)** | $0.00 | Purely deterministic rule-based operators (DuckDB/Pandas). |
 | **Embedding API** | $0.00 | No vector search or embeddings used in the core engine. |
-| **Data Acquisition** | $0.00 | OpenAlex/Semantic Scholar free tier APIs used via `pyalex` and `scholarly`. |
+| **Data Acquisition** | $0.00 | via free OpenAlex / Semantic Scholar HTTP APIs. |
 | **PDF Processing** | $0.00 | Local `Marker` / `pdfplumber` execution. |
 | **Compute (Colab)** | $0.00 | Standard free tier Google Colab instances used. |
 | **Total Spend** | **$0.00** | |

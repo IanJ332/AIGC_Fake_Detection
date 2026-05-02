@@ -20,14 +20,14 @@ The following metrics were recorded during the Day 6 evaluation of the 40-questi
 - **Pros**: Zero cost, zero hallucination, extremely fast, 100% auditable.
 - **Cons**: Limited semantic understanding; fails on complex multi-doc reasoning that requires cross-referencing un-indexed text.
 
-### Level 2: $5 Embedding Reranking (Planned)
+### Level 2: $5 Embedding Reranking (Planned Ablation)
 - **Proposed Enhancement**: Generate 1536-d embeddings for all sections using `text-embedding-3-small`.
 - **Expected Benefit**: Improve evidence coverage from 52% to >80% by replacing keyword-based snippet matching with semantic similarity.
 - **Estimated Cost**: <$1.00 for 100 papers; remaining budget for high-volume QA sessions.
 
-### Level 3: $20 LLM Selective Synthesis (Planned)
-- **Proposed Enhancement**: Route "Unknown" or complex "Multihop" queries to GPT-4o-mini with retrieved context.
-- **Expected Benefit**: Resolve 100% of reasoning queries; provide fluent natural language synthesis instead of bulleted findings.
+### Level 3: $20 LLM Selective Synthesis (Planned Ablation)
+- **Proposed Enhancement**: Route complex "Multihop" or conflicting queries to GPT-4o-mini with retrieved context.
+- **Expected Benefit**: Improve synthesis quality for complex multihop questions and reduce unsupported-answer risk when paired with retrieved evidence.
 - **Estimated Cost**: ~$0.01 per query; $20 supports thousands of high-fidelity analytical sessions.
 
 ## Conclusion

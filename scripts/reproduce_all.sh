@@ -1,5 +1,7 @@
 #!/bin/bash
 # Reproduction script for AIGC Fake Detection Research QA Engine
+# This script reruns evaluation on an existing data bundle. 
+# It does not regenerate PDFs or extracted data unless explicitly modified.
 
 set -e
 

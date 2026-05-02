@@ -18,7 +18,7 @@ The system follows a tiered analytical pipeline:
 
 ```mermaid
 graph TD
-    A[PDF Corpus] --> B[Marker Parser]
+    A[PDF Corpus] --> B[PDF Parser / Section Segmenter]
     B --> C[Parsed Markdown/JSONL]
     C --> D[Extraction Pipeline]
     D --> E[entities.csv / result_tuples.csv]
@@ -72,6 +72,7 @@ python -m src.query.cli --data-dir ./Data --question "What are the top 10 datase
 
 ### Run Evaluation
 ```bash
+# Reruns evaluation on existing data bundle; does not regenerate PDFs or extracted data.
 python eval/run_eval.py --data-dir ./Data --questions eval/questions_40.jsonl
 ```
 
