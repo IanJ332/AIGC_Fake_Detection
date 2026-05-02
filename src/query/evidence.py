@@ -12,8 +12,9 @@ def get_section_snippet(paper_id, data_dir, section_type=None, anchor=None, max_
         return f"Evidence snippet unavailable (missing {sections_path})"
     
     try:
-        with open(sections_path, "r", encoding="utf-8") as f:
+        with open(sections_path, "r", encoding="utf-8-sig") as f:
             for line in f:
+                if not line.strip(): continue
                 row = json.loads(line)
                 if str(row["paper_id"]) != str(paper_id):
                     continue
@@ -49,6 +50,18 @@ def collect_evidence(rows, data_dir, paper_meta=None, max_items=5):
             break
             
         pid = str(row.get("paper_id"))
+        
+        # Handle DATA_BASIS pseudo-evidence
+        if pid == "DATA_BASIS":
+            evidence.append({
+                "paper_id": "DATA_BASIS",
+                "title": f"Data Basis: {row.get('paper_title', 'Unknown Source')}",
+                "year": "N/A",
+                "anchor": "csv_index",
+                "snippet": row.get("snippet", "Statistical aggregation source.")
+            })
+            continue
+
         anchor = row.get("evidence_anchor")
         section_type = row.get("section_type")
         key = (pid, anchor, section_type)

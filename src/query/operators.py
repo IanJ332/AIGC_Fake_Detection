@@ -1,7 +1,14 @@
 import pandas as pd
 import duckdb
+import json
 from pathlib import Path
 from .evidence import collect_evidence
+
+def is_valid_meta_value(v):
+    if v is None or pd.isna(v):
+        return False
+    s = str(v).strip()
+    return s != "" and s.lower() not in {"unknown", "nan", "none", "null"}
 
 def load_context(data_dir):
     data_dir = Path(data_dir)
@@ -23,16 +30,19 @@ def load_context(data_dir):
         if p.exists():
             ctx["dfs"][name] = pd.read_csv(p)
             
-    # Build robust paper metadata map
-    # Priority: paper_entity_summary > extraction_registry > document_registry > manifest_100
+    # Metadata priority should be:
+    # 1. document_registry.csv
+    # 2. manifest_100.csv
+    # 3. extraction_registry.csv
+    # 4. paper_entity_summary.csv
     meta_sources = [
-        data_dir / "extracted" / "paper_entity_summary.csv",
-        data_dir / "extracted" / "extraction_registry.csv",
         data_dir / "registry" / "document_registry.csv",
-        data_dir / "registry" / "manifest_100.csv"
+        data_dir / "registry" / "manifest_100.csv",
+        data_dir / "extracted" / "extraction_registry.csv",
+        data_dir / "extracted" / "paper_entity_summary.csv"
     ]
     
-    for ms in reversed(meta_sources): # Reverse to ensure higher priority overwrites
+    for ms in meta_sources:
         if ms.exists():
             try:
                 df = pd.read_csv(ms)
@@ -40,19 +50,47 @@ def load_context(data_dir):
                     for _, row in df.iterrows():
                         pid = str(row["paper_id"])
                         if pid not in ctx["paper_meta"]:
-                            ctx["paper_meta"][pid] = {}
+                            ctx["paper_meta"][pid] = {"title": "Unknown", "year": "Unknown"}
                         
-                        # Map title
+                        # Merge title: only overwrite if current is invalid
                         for col in ["title", "paper_title"]:
-                            if col in df.columns and pd.notna(row[col]):
-                                ctx["paper_meta"][pid]["title"] = row[col]
+                            if col in df.columns and is_valid_meta_value(row[col]):
+                                if not is_valid_meta_value(ctx["paper_meta"][pid].get("title")):
+                                    ctx["paper_meta"][pid]["title"] = str(row[col])
                         
-                        # Map year
+                        # Merge year: only overwrite if current is invalid
                         for col in ["year", "publish_year"]:
-                            if col in df.columns and pd.notna(row[col]):
-                                ctx["paper_meta"][pid]["year"] = row[col]
+                            if col in df.columns and is_valid_meta_value(row[col]):
+                                if not is_valid_meta_value(ctx["paper_meta"][pid].get("year")):
+                                    ctx["paper_meta"][pid]["year"] = row[col]
             except:
                 continue
+
+    # Fallback title extraction from sections
+    sections_path = data_dir / "sections" / "sections.jsonl"
+    if sections_path.exists():
+        try:
+            with open(sections_path, "r", encoding="utf-8-sig") as f:
+                seen_papers = set()
+                for line in f:
+                    if not line.strip(): continue
+                    row = json.loads(line)
+                    pid = str(row["paper_id"])
+                    if pid in seen_papers: continue
+                    
+                    if not is_valid_meta_value(ctx["paper_meta"].get(pid, {}).get("title")):
+                        text = row.get("text", "").strip()
+                        if text:
+                            # Take first line or first 160 chars
+                            first_line = text.split("\n")[0].strip()
+                            fallback_title = first_line[:160]
+                            if pid not in ctx["paper_meta"]:
+                                ctx["paper_meta"][pid] = {"title": fallback_title, "year": "Unknown"}
+                            else:
+                                ctx["paper_meta"][pid]["title"] = fallback_title
+                    seen_papers.add(pid)
+        except:
+            pass
                 
     return ctx
 
@@ -191,7 +229,7 @@ def answer_temporal(question, route, ctx):
         ans += f"- {yr}: {count} papers\n"
         
     # Add data basis to evidence
-    evidence = [{"paper_id": "DATA_BASIS", "paper_title": "paper_entity_summary.csv", "year": "N/A", "snippet": f"Summary count over {len(years)} years."}]
+    evidence = [{"paper_id": "DATA_BASIS", "title": "paper_entity_summary.csv", "year": "N/A", "anchor": "index", "snippet": f"Summary count over {len(years)} years."}]
     return ans, evidence, ["Temporal analysis is based on extraction summary metadata."]
 
 def answer_citation_graph(question, route, ctx):
@@ -206,7 +244,7 @@ def answer_multihop(question, route, ctx):
     ans += "Currently returning general multi-entity intersections."
     
     # Add data basis to evidence
-    evidence = [{"paper_id": "DATA_BASIS", "paper_title": "entities.csv", "year": "N/A", "snippet": "Intersection search over entity index."}]
+    evidence = [{"paper_id": "DATA_BASIS", "title": "entities.csv", "year": "N/A", "anchor": "index", "snippet": "Intersection search over entity index."}]
     return ans, evidence, ["Full semantic multihop requires complex SQL joins or LLM reasoning."]
 
 def answer_negation(question, route, ctx):
@@ -227,7 +265,7 @@ def answer_negation(question, route, ctx):
         ans += f"Papers missing method section: {len(no_method)} (e.g., {', '.join(no_method[:5])})"
     
     # Add data basis to evidence
-    evidence = [{"paper_id": "DATA_BASIS", "paper_title": "paper_section_stats.csv", "year": "N/A", "snippet": "Gap analysis via section presence flags."}]
+    evidence = [{"paper_id": "DATA_BASIS", "title": "paper_section_stats.csv", "year": "N/A", "anchor": "index", "snippet": "Gap analysis via section presence flags."}]
     return ans, evidence, ["Papers might have content that failed rule-based section segmentation."]
 
 def answer_quantitative(question, route, ctx):
@@ -245,5 +283,5 @@ def answer_quantitative(question, route, ctx):
     ans += f"- Avg results per paper: {result_count/paper_count:.1f}"
     
     # Add data basis to evidence
-    evidence = [{"paper_id": "DATA_BASIS", "paper_title": "paper_entity_summary.csv", "year": "N/A", "snippet": f"Numeric aggregation over {paper_count} papers."}]
+    evidence = [{"paper_id": "DATA_BASIS", "title": "paper_entity_summary.csv", "year": "N/A", "anchor": "index", "snippet": f"Numeric aggregation over {paper_count} papers."}]
     return ans, evidence, []

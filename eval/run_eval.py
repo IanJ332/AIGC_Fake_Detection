@@ -56,7 +56,7 @@ def run_eval(data_dir, questions_path):
                     output_text = result.stdout
                     # Improved evidence detection criteria
                     has_p_evidence = "Evidence:" in output_text and "- P" in output_text
-                    has_data_basis = any(csv in output_text for csv in ["entities.csv", "result_tuples.csv", "paper_entity_summary.csv", "paper_section_stats.csv"])
+                    has_data_basis = "Data Basis:" in output_text or any(csv in output_text for csv in ["entities.csv", "result_tuples.csv", "paper_entity_summary.csv", "paper_section_stats.csv", "extraction_registry.csv"])
                     has_graph_limit = "Citation data missing" in output_text
                     
                     has_evidence = has_p_evidence or has_data_basis or has_graph_limit
