@@ -31,13 +31,17 @@ def classify_question(question: str) -> dict:
             "confidence": 0.85
         }
 
-    # 4. Citation Graph: cited by, references, builds on, follow-up
-    if any(k in q for k in ["cited by", "citation", "references", "builds on", "follow-up", "influential", "pioneering", "cited"]):
+    # 4. Citation Graph: cited by, references, builds on, based on, etc.
+    if any(k in q for k in [
+        "cited by", "cites", "cite ", "cite?", " cite", " cited", "citation", 
+        "references", "reference", "referenced", "build on", "builds on", "built on",
+        "based on", "follow-up", "influential", "pioneering", "citation graph", "influenced by"
+    ]):
         return {
             "tier": "citation_graph",
             "intent": "relationship_lookup",
             "entities": {},
-            "confidence": 0.8
+            "confidence": 0.85
         }
 
     # 5. Quantitative: how many, sum, median, average, count, total

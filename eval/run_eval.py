@@ -5,10 +5,10 @@ import pandas as pd
 from pathlib import Path
 from src.query.router import classify_question
 
-def run_eval(data_dir, questions_path):
+def run_eval(data_dir, questions_path, output_dir=None):
     questions_path = Path(questions_path)
     data_dir = Path(data_dir)
-    results_dir = Path("eval/results")
+    results_dir = Path(output_dir) if output_dir else Path("eval/results")
     results_dir.mkdir(parents=True, exist_ok=True)
     
     outputs = []
@@ -118,5 +118,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", default="/content/drive/MyDrive/AIGC/Data")
     parser.add_argument("--questions", default="eval/questions_40.jsonl")
+    parser.add_argument("--output-dir", default=None)
     args = parser.parse_args()
-    run_eval(args.data_dir, args.questions)
+    run_eval(args.data_dir, args.questions, args.output_dir)

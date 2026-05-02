@@ -322,22 +322,55 @@ def answer_citation_graph(question, route, ctx):
 
     # --- Papers citing a specific paper / building on a specific work ---
     meta = ctx.get("paper_meta", {})
-    for pid, m in meta.items():
-        title_snippet = m.get("title", "").lower()
-        # Check if question mentions a paper title fragment or paper_id
-        pid_lower = pid.lower()
-        if pid_lower in q or (len(title_snippet) > 5 and title_snippet[:30] in q):
-            citers = paper_cited_by.get(pid, [])
+    df_ent = ctx["dfs"].get("entities")
+    
+    # Identify target papers from question (PID, title fragment, or entity mention)
+    targets = []
+    # 1. Check for PIDs
+    pid_match = re.search(r"\b(p\d{3})\b", q)
+    if pid_match:
+        targets.append(pid_match.group(1).upper())
+    
+    # 2. Check for entities mentioned in question that might be 'the work' being built on
+    if not targets and df_ent is not None:
+        all_entities = df_ent["entity"].dropna().unique()
+        # Find entities in question, prioritising longer matches
+        matched_entities = sorted([e for e in all_entities if str(e).lower() in q and len(str(e)) > 3], key=len, reverse=True)
+        if matched_entities:
+            entity = matched_entities[0]
+            # Find papers that 'own' this entity (e.g. title contains it or it's a dataset they introduced)
+            for pid, m in meta.items():
+                if entity.lower() in m.get("title", "").lower():
+                    targets.append(pid)
+    
+    # 3. Check for title fragments
+    if not targets:
+        for pid, m in meta.items():
+            t = m.get("title", "").lower()
+            if len(t) > 10 and t in q:
+                targets.append(pid)
+
+    if targets:
+        targets = list(set(targets)) # unique
+        all_citers = []
+        for target_pid in targets:
+            citers = paper_cited_by.get(target_pid, [])
             if citers:
-                ans = f"Papers in the corpus that cite {pid} ({m.get('title', '')[:60]}):\n"
-                for c in citers:
-                    cm = meta.get(c, {})
-                    ans += f"  {c} — {cm.get('title', c)[:70]}\n"
-            else:
-                ans = f"{pid} is not cited by other papers in this corpus."
+                all_citers.extend([(target_pid, c) for c in citers])
+        
+        if all_citers:
+            ans = "Citation Graph: Papers in the corpus identified as building on or citing the target work(s):\n"
+            for target_pid, citer_pid in all_citers:
+                tm = meta.get(target_pid, {})
+                cm = meta.get(citer_pid, {})
+                ans += f"  - {citer_pid} ({cm.get('title', citer_pid)[:60]}) -> builds on {target_pid} ({tm.get('title', target_pid)[:40]})\n"
             evidence = [{"paper_id": "DATA_BASIS", "title": "manifest_100.csv referenced_works",
-                         "year": "N/A", "anchor": "citation_graph", "snippet": f"Citation edges for {pid}."}]
+                         "year": "N/A", "anchor": "citation_graph", "snippet": f"Found {len(all_citers)} citation edges."}]
             return ans, evidence, ["Internal corpus citations only."]
+        else:
+            target_str = ", ".join(targets)
+            ans = f"No papers in this corpus were found to internally cite or build on the work(s): {target_str}."
+            return ans, [], ["Found the target papers but no internal citation edges exist in this 100-paper subset."]
 
     # --- Fallback: show top 5 most-cited ---
     ranked = sorted(cite_counts.items(), key=lambda x: x[1], reverse=True)
