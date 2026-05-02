@@ -41,3 +41,6 @@ corpus/checkpoints/
 !corpus/manifest_100.csv
 !corpus/document_registry.csv
 !corpus/parse_registry.csv
+
+# Allow artifact eval outputs
+!artifacts/reports/*.jsonl
