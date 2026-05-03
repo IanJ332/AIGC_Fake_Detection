@@ -53,20 +53,32 @@ def parse_pdf(pdf_path, paper_id, metadata):
 
 def main():
     parser = argparse.ArgumentParser(description="Parse PDFs into JSON.")
-    parser.add_argument("--registry", default="corpus/document_registry.csv", help="Path to document registry")
+    parser.add_argument("--registry", default=None, help="Path to document registry")
+    parser.add_argument("--data-dir", default=None, help="Base data directory")
     args = parser.parse_args()
 
-    if not os.path.exists(args.registry):
-        print(f"Error: Registry {args.registry} not found.")
+    data_dir = args.data_dir if args.data_dir else "corpus"
+    registry_path = args.registry if args.registry else f"{data_dir}/registry/document_registry.csv"
+    # Fallback to older path structure if not found in registry folder
+    if not os.path.exists(registry_path) and not args.registry:
+        if os.path.exists(f"{data_dir}/document_registry.csv"):
+            registry_path = f"{data_dir}/document_registry.csv"
+
+    if not os.path.exists(registry_path):
+        print(f"Error: Registry {registry_path} not found.")
         return
 
-    df = pd.read_csv(args.registry)
+    df = pd.read_csv(registry_path)
     parse_results = []
     
-    os.makedirs("corpus/parsed", exist_ok=True)
-    os.makedirs("corpus/parse_logs", exist_ok=True)
+    parsed_out = f"{data_dir}/parsed"
+    logs_out = f"{data_dir}/parse_logs"
+    os.makedirs(parsed_out, exist_ok=True)
+    os.makedirs(logs_out, exist_ok=True)
     
-    pdf_rows = df[df["pdf_downloaded"] == True]
+    pdf_rows = df[df["pdf_downloaded"] == True] if "pdf_downloaded" in df.columns else df
+    # Some registries may not have pdf_downloaded column directly, but rather just pdfs in the folder
+
     print(f"Parsing {len(pdf_rows)} PDFs...")
     
     for idx, row in df.iterrows():
@@ -81,32 +93,34 @@ def main():
             "error": None
         }
         
-        if row.get("pdf_downloaded") == True:
-            pdf_path = f"corpus/pdfs/{paper_id}.pdf"
-            if os.path.exists(pdf_path):
-                data, error = parse_pdf(pdf_path, paper_id, row)
-                if data:
-                    output_path = f"corpus/parsed/{paper_id}.json"
-                    with open(output_path, "w", encoding="utf-8") as f:
-                        json.dump(data, f, indent=2, ensure_ascii=False)
+        # Check if PDF exists instead of relying entirely on pdf_downloaded column (which may be missing)
+        pdf_path = f"{data_dir}/pdfs/{paper_id}.pdf"
+        
+        if os.path.exists(pdf_path):
+            data, error = parse_pdf(pdf_path, paper_id, row)
+            if data:
+                output_path = f"{parsed_out}/{paper_id}.json"
+                with open(output_path, "w", encoding="utf-8") as f:
+                    json.dump(data, f, indent=2, ensure_ascii=False)
                     
-                    parse_status["parse_success"] = True
-                    parse_status["total_chars"] = data["total_chars"]
-                    parse_status["page_count"] = data["page_count"]
-                    if data["total_chars"] < 500:
-                        parse_status["needs_ocr"] = True
-                else:
-                    parse_status["error"] = error
+                parse_status["parse_success"] = True
+                parse_status["total_chars"] = data["total_chars"]
+                parse_status["page_count"] = data["page_count"]
+                if data["total_chars"] < 500:
+                    parse_status["needs_ocr"] = True
             else:
-                parse_status["error"] = "File missing despite registry status"
+                parse_status["error"] = error
         else:
+            parse_status["error"] = "File missing despite registry status"
             parse_status["error"] = "No PDF available"
             
         parse_results.append(parse_status)
 
     # Save parse registry
     parse_df = pd.DataFrame(parse_results)
-    parse_df.to_csv("corpus/parse_registry.csv", index=False)
+    parse_reg_path = f"{data_dir}/registry/parse_registry.csv"
+    os.makedirs(os.path.dirname(parse_reg_path), exist_ok=True)
+    parse_df.to_csv(parse_reg_path, index=False)
     
     # Save report
     success_df = parse_df[parse_df["parse_success"] == True]
@@ -117,11 +131,11 @@ def main():
         "needs_ocr_count": int(parse_df["needs_ocr"].sum()),
         "avg_chars": float(success_df["total_chars"].mean()) if not success_df.empty else 0.0
     }
-    with open("corpus/parse_logs/parse_report.json", "w") as f:
+    with open(f"{logs_out}/parse_report.json", "w") as f:
         json.dump(report, f, indent=4)
         
     print(f"Parsing complete. Successfully parsed {report['success_count']} PDFs.")
-    print(f"Registry: corpus/parse_registry.csv")
+    print(f"Registry: {parse_reg_path}")
 
 if __name__ == "__main__":
     main()

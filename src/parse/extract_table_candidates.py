@@ -20,9 +20,10 @@ def is_numeric_dense(text):
 def main():
     parser = argparse.ArgumentParser(description="Extract table candidates from sections.")
     parser.add_argument("--sections", default="corpus/sections/sections.jsonl", help="Path to sections JSONL")
+    parser.add_argument("--out", default="corpus/tables/table_candidates.jsonl", help="Path to output table_candidates JSONL")
     args = parser.parse_args()
     
-    output_path = "corpus/tables/table_candidates.jsonl"
+    output_path = args.out
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     if not os.path.exists(args.sections):

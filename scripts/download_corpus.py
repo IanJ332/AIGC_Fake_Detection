@@ -111,6 +111,11 @@ def main():
         default="corpus/download_report.json",
         help="Path to write the download report JSON.",
     )
+    parser.add_argument(
+        "--data-dir",
+        default=None,
+        help="Root directory for Data_V2 structure. Overrides --out-dir and --report.",
+    )
     args = parser.parse_args()
 
     manifest_path = Path(args.manifest)
@@ -121,7 +126,14 @@ def main():
         print(f"[ERROR] Manifest not found at {args.manifest} or artifacts/manifests/manifest_100.csv")
         return
 
-    out_dir = Path(args.out_dir)
+    if args.data_dir:
+        data_dir = Path(args.data_dir)
+        out_dir = data_dir / "pdfs"
+        report_path = data_dir / "download_logs" / "download_report.json"
+    else:
+        out_dir = Path(args.out_dir)
+        report_path = Path(args.report)
+        
     out_dir.mkdir(parents=True, exist_ok=True)
 
     df = pd.read_csv(manifest_path)
@@ -166,8 +178,8 @@ def main():
         "summary": counts,
         "results": results,
     }
-    Path(args.report).parent.mkdir(parents=True, exist_ok=True)
-    with open(args.report, "w") as f:
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(report_path, "w") as f:
         json.dump(report, f, indent=2)
 
     print(f"\n=== Download Report ===")
@@ -175,7 +187,7 @@ def main():
     print(f"  Skipped  : {counts.get('skipped', 0)} (already exists or paywalled)")
     print(f"  Blocked  : {counts.get('blocked', 0)} (HTTP 403/429 or non-PDF response)")
     print(f"  Failed   : {counts.get('failed', 0)}")
-    print(f"\nReport written to: {args.report}")
+    print(f"\nReport written to: {report_path}")
 
 
 if __name__ == "__main__":

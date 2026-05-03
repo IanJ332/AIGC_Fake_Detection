@@ -71,23 +71,26 @@ def segment_sections(data):
 
 def main():
     parser = argparse.ArgumentParser(description="Segment parsed JSON into sections.")
-    parser.add_argument("--parsed-dir", default="corpus/parsed", help="Directory with parsed JSONs")
+    parser.add_argument("--parsed-dir", default=None, help="Directory with parsed JSONs")
+    parser.add_argument("--data-dir", default=None, help="Base data directory")
     args = parser.parse_args()
     
-    output_path = "corpus/sections/sections.jsonl"
+    data_dir = args.data_dir if args.data_dir else "corpus"
+    parsed_dir = args.parsed_dir if args.parsed_dir else f"{data_dir}/parsed"
+    output_path = f"{data_dir}/sections/sections.jsonl"
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
-    if not os.path.exists(args.parsed_dir):
-        print(f"Error: Directory {args.parsed_dir} not found.")
+    if not os.path.exists(parsed_dir):
+        print(f"Error: Directory {parsed_dir} not found.")
         return
 
-    files = [f for f in os.listdir(args.parsed_dir) if f.endswith(".json")]
+    files = [f for f in os.listdir(parsed_dir) if f.endswith(".json")]
     print(f"Segmenting {len(files)} files...")
     
     with open(output_path, "w", encoding="utf-8") as out_f:
         for filename in files:
             try:
-                with open(os.path.join(args.parsed_dir, filename), "r", encoding="utf-8") as f:
+                with open(os.path.join(parsed_dir, filename), "r", encoding="utf-8") as f:
                     data = json.load(f)
                     
                 paper_id = data["paper_id"]
