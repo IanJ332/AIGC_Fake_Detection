@@ -8,12 +8,25 @@ from pathlib import Path
 import time
 import re
 
-def normalize_columns(df):
-    if "id" in df.columns and "paper_id" not in df.columns:
-        df["paper_id"] = df["id"]
+def normalize_columns(df, prefix="P"):
+    df = df.copy()
+
+    if "paper_id" not in df.columns:
+        df["paper_id"] = ""
+
+    if "id" in df.columns:
+        missing = df["paper_id"].isna() | (df["paper_id"].astype(str).str.strip() == "") | (df["paper_id"].astype(str).str.lower() == "nan")
+        df.loc[missing, "paper_id"] = df.loc[missing, "id"].astype(str)
+
+    missing = df["paper_id"].isna() | (df["paper_id"].astype(str).str.strip() == "") | (df["paper_id"].astype(str).str.lower() == "nan")
+    df.loc[missing, "paper_id"] = [f"{prefix}{i+1:03d}" for i in range(missing.sum())]
+
+    df["paper_id"] = df["paper_id"].astype(str).str.replace(r"[^A-Za-z0-9_-]+", "_", regex=True)
+
     for col in ["title", "year", "citation_count", "source_url", "pdf_url", "abstract", "referenced_works"]:
         if col not in df.columns:
             df[col] = ""
+
     return df
 
 def check_relevance(title, abstract):
@@ -52,7 +65,7 @@ def main():
         return
 
     seed_df = pd.read_csv(args.seed_manifest)
-    seed_df = normalize_columns(seed_df)
+    seed_df = normalize_columns(seed_df, prefix="P")
 
     candidate_pool_used = ""
     candidates_rows = 0
@@ -60,7 +73,7 @@ def main():
     candidates_df = pd.DataFrame()
     if os.path.exists(args.candidate_pool):
         candidates_df = pd.read_csv(args.candidate_pool)
-        candidates_df = normalize_columns(candidates_df)
+        candidates_df = normalize_columns(candidates_df, prefix="C")
         candidate_pool_used = args.candidate_pool
         candidates_rows = len(candidates_df)
         if "scope_family" not in candidates_df.columns:
@@ -87,6 +100,11 @@ def main():
     all_df = all_df.sort_values(by=['is_seed', 'relevant', 'has_pdf', 'citation_count', 'year'], ascending=[False, False, False, False, False])
     all_df = all_df.drop_duplicates(subset=['title_norm'], keep='first')
     
+    # Handle duplicated paper_ids
+    if all_df["paper_id"].duplicated().any():
+        dup_mask = all_df["paper_id"].duplicated(keep='first')
+        all_df.loc[dup_mask, "paper_id"] = [f"D{i+1:04d}" for i in range(dup_mask.sum())]
+    
     # We only want to process up to target_parsed + buffer
     # The pool is all_df. We take batches from it.
     
@@ -107,6 +125,14 @@ def main():
         
         active_manifest.extend(batch)
         active_df = pd.DataFrame(active_manifest)
+        
+        assert active_df["paper_id"].notna().all()
+        assert not active_df["paper_id"].astype(str).str.lower().eq("nan").any()
+        nan_count = active_df["paper_id"].isna().sum() + active_df["paper_id"].astype(str).str.lower().eq("nan").sum()
+        dup_count = active_df["paper_id"].duplicated().sum()
+        print(f"Candidate paper_id null count: {nan_count}")
+        print(f"Candidate paper_id duplicate count: {dup_count}")
+        
         active_manifest_path = data_dir / "registry" / "active_manifest.csv"
         active_manifest_path.parent.mkdir(parents=True, exist_ok=True)
         active_df.to_csv(active_manifest_path, index=False)
@@ -164,6 +190,8 @@ def main():
         "candidate_pool_used": candidate_pool_used,
         "candidate_pool_rows": candidates_rows,
         "scope_family_distribution": scope_dist,
+        "nan_paper_id_count": int(final_df["paper_id"].isna().sum() + final_df["paper_id"].astype(str).str.lower().eq("nan").sum()),
+        "duplicate_paper_id_count": int(final_df["paper_id"].duplicated().sum()),
         "final_status": status
     }
     with open(data_dir / "probes" / "executable_corpus_status.json", "w") as f:

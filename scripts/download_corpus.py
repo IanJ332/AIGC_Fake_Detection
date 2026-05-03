@@ -20,6 +20,7 @@ from pathlib import Path
 
 import pandas as pd
 import requests
+import re
 
 
 BLOCKED_DOMAINS = [
@@ -44,7 +45,11 @@ def is_likely_blocked(url: str) -> bool:
 def download_pdf(url: str, dest: Path, delay: float = 1.0) -> dict:
     """Attempt to download a PDF. Returns a status dict."""
     if dest.exists():
-        return {"status": "skipped", "reason": "already_exists", "url": url}
+        size_kb = dest.stat().st_size / 1024
+        if size_kb >= 10:
+            return {"status": "success", "reason": "already_exists", "size_kb": round(size_kb, 1), "url": url}
+        else:
+            dest.unlink()
 
     if is_likely_blocked(url):
         return {"status": "skipped", "reason": "likely_paywalled", "url": url}
@@ -161,7 +166,13 @@ def main():
 
     total = len(df)
     for i, row in df.iterrows():
-        pid = str(row["paper_id"])
+        pid = str(row.get("paper_id", "")).strip()
+        if not pid or pid.lower() == "nan":
+            pid = str(row.get("id", "")).strip()
+        if not pid or pid.lower() == "nan":
+            pid = f"P{i+1:03d}"
+        pid = re.sub(r"[^A-Za-z0-9_-]+", "_", pid)
+        
         url = str(row.get("pdf_url", "")).strip()
         dest = out_dir / f"{pid}.pdf"
 

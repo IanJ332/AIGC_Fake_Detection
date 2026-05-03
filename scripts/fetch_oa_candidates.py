@@ -74,6 +74,9 @@ def fetch_candidates(max_results=500):
             data = resp.json()
             for work in data.get("results", []):
                 work_id = work.get("id", "").split("/")[-1]
+                if not work_id:
+                    work_id = f"OA{len(candidates)+1:04d}"
+                    
                 if work_id in seen_ids:
                     continue
                     
@@ -103,6 +106,7 @@ def fetch_candidates(max_results=500):
                 venue_name = venue.get("display_name", "") if venue else ""
                 
                 candidates.append({
+                    "paper_id": f"C{len(candidates)+1:04d}",
                     "id": work_id,
                     "title": work.get("title", ""),
                     "authors": authors,
