@@ -101,6 +101,7 @@ def main():
         active_manifest.extend(batch)
         active_df = pd.DataFrame(active_manifest)
         active_manifest_path = data_dir / "registry" / "active_manifest.csv"
+        active_manifest_path.parent.mkdir(parents=True, exist_ok=True)
         active_df.to_csv(active_manifest_path, index=False)
         
         print(f"Downloading batch of {len(batch)} papers (total active: {len(active_manifest)})...")
@@ -137,7 +138,9 @@ def main():
     print(f"\nFinal Status: {status} ({parsed} parsed)")
     
     # Save final tracking files
-    pd.DataFrame(active_manifest).to_csv(data_dir / "registry" / "executable_manifest.csv", index=False)
+    reg_file = data_dir / "registry" / "executable_manifest.csv"
+    reg_file.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(active_manifest).to_csv(reg_file, index=False)
     
     status_data = {
         "target": args.target_parsed,

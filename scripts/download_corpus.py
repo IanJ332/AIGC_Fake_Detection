@@ -217,6 +217,7 @@ def main():
         f.write(f"- Failed: {counts.get('failed', 0)}\n")
         
     registry_df = pd.DataFrame(registry_rows)
+    registry_path.parent.mkdir(parents=True, exist_ok=True)
     registry_df.to_csv(registry_path, index=False)
 
     print(f"\n=== Download Report ===")
