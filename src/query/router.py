@@ -3,7 +3,21 @@ import re
 def classify_question(question: str) -> dict:
     q = question.lower().strip()
     
-    # 1. Single-doc: Detect P### pattern (Highest priority)
+    # 1. Citation Graph: cited by, references, builds on, based on, etc. (Highest priority)
+    if any(k in q for k in [
+        "cited by", "cites", "cite ", "cite?", " cite", " cited", "citation", 
+        "references", "reference", "referenced", "build on", "builds on", "built on",
+        "based on", "follow-up", "follow up", "influential", "pioneering", "citation graph", "influenced by",
+        "related to p", "chain"
+    ]):
+        return {
+            "tier": "citation_graph",
+            "intent": "relationship_lookup",
+            "entities": {},
+            "confidence": 0.85
+        }
+
+    # 1b. Single-doc: Detect P### pattern
     pid_match = re.search(r"\b(p\d{3})\b", q)
     if pid_match:
         return {
@@ -31,18 +45,7 @@ def classify_question(question: str) -> dict:
             "confidence": 0.85
         }
 
-    # 4. Citation Graph: cited by, references, builds on, based on, etc.
-    if any(k in q for k in [
-        "cited by", "cites", "cite ", "cite?", " cite", " cited", "citation", 
-        "references", "reference", "referenced", "build on", "builds on", "built on",
-        "based on", "follow-up", "influential", "pioneering", "citation graph", "influenced by"
-    ]):
-        return {
-            "tier": "citation_graph",
-            "intent": "relationship_lookup",
-            "entities": {},
-            "confidence": 0.85
-        }
+
 
     # 5. Quantitative: how many, sum, median, average, count, total
     if any(k in q for k in ["how many", "sum", "median", "average", "avg", "total", "count", "percentage", "yield", "mean"]):

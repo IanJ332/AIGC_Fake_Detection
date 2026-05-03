@@ -101,17 +101,27 @@ def load_context(data_dir):
             pass
                 
     # Build internal citation graph from manifest referenced_works
+    repo_root = Path(__file__).resolve().parents[2]
     manifest_paths = [
         data_dir / "registry" / "manifest_100.csv",
-        Path("corpus") / "manifest_100.csv",
-        Path("artifacts") / "manifests" / "manifest_100.csv",
+        data_dir / "registry" / "manifest.csv",
+        repo_root / "corpus" / "manifest_100.csv",
+        repo_root / "corpus" / "manifest.csv",
+        repo_root / "artifacts" / "manifests" / "manifest_100.csv"
     ]
     for mp in manifest_paths:
         if mp.exists():
             try:
                 mdf = pd.read_csv(mp)
+                if "openalex_id" not in mdf.columns and "referenced_works" not in mdf.columns:
+                    continue # Try next manifest
+                
                 if "paper_id" not in mdf.columns:
-                    mdf["paper_id"] = [f"P{i+1:03d}" for i in range(len(mdf))]
+                    if "id" in mdf.columns:
+                        mdf["paper_id"] = mdf["id"]
+                    else:
+                        mdf["paper_id"] = [f"P{i+1:03d}" for i in range(len(mdf))]
+                        
                 # Map openalex_id -> paper_id
                 oa_to_pid = {}
                 if "openalex_id" in mdf.columns:
@@ -119,6 +129,7 @@ def load_context(data_dir):
                         oa = str(r["openalex_id"]).strip()
                         if oa and oa.lower() not in {"nan", "none", ""}:
                             oa_to_pid[oa] = str(r["paper_id"])
+                
                 # Build cite counts: how many corpus papers cite each corpus paper
                 cite_counts = {pid: 0 for pid in oa_to_pid.values()}
                 paper_cited_by = {pid: [] for pid in oa_to_pid.values()}
@@ -128,22 +139,32 @@ def load_context(data_dir):
                         rw_raw = r.get("referenced_works", "")
                         if pd.isna(rw_raw) or not str(rw_raw).strip():
                             continue
-                        try:
-                            refs = ast.literal_eval(str(rw_raw))
-                        except Exception:
-                            refs = []
+                        rw_str = str(rw_raw).strip()
+                        refs = []
+                        if rw_str.startswith("["):
+                            try:
+                                refs = ast.literal_eval(rw_str)
+                            except Exception:
+                                try:
+                                    refs = json.loads(rw_str.replace("'", '"'))
+                                except Exception:
+                                    pass
+                        if not refs:
+                            refs = [x.strip() for x in re.split(r'[,|]', rw_str) if x.strip()]
                         for ref in refs:
                             ref = str(ref).strip()
                             if ref in oa_to_pid:
                                 target_pid = oa_to_pid[ref]
                                 cite_counts[target_pid] = cite_counts.get(target_pid, 0) + 1
                                 paper_cited_by.setdefault(target_pid, []).append(citing_pid)
-                ctx["cite_counts"] = cite_counts
-                ctx["paper_cited_by"] = paper_cited_by
-                ctx["oa_to_pid"] = oa_to_pid
+                
+                if cite_counts:
+                    ctx["cite_counts"] = cite_counts
+                    ctx["paper_cited_by"] = paper_cited_by
+                    ctx["oa_to_pid"] = oa_to_pid
+                    break
             except Exception:
                 pass
-            break
 
     if "cite_counts" not in ctx:
         ctx["cite_counts"] = {}
@@ -225,14 +246,43 @@ def answer_aggregation(question, route, ctx):
 
 def answer_contradiction(question, route, ctx):
     df_res = ctx["dfs"].get("result_tuples")
+    df_ent = ctx["dfs"].get("entities")
     if df_res is None or df_res.empty:
         return "Result tuple data not available for contradiction analysis.", [], ["result_tuples.csv missing or empty"]
     
+    # Identify target terms from the question
+    q = question.lower()
+    target_term = None
+    target_pids = set()
+    
+    if df_ent is not None:
+        all_entities = df_ent["entity"].dropna().unique()
+        matched = sorted([e for e in all_entities if str(e).lower() in q and len(str(e)) > 3], key=len, reverse=True)
+        if matched:
+            target_term = matched[0]
+            target_pids = set(df_ent[df_ent["entity"].str.lower() == target_term.lower()]["paper_id"].dropna())
+
     # Filter for valid numeric values
     df_num = df_res.dropna(subset=["value_numeric"])
     
+    filtered_df = df_num
+    if target_term:
+        # Filter by dataset_guess, metric_guess, or paper_id
+        mask = (
+            (df_num["dataset_guess"].str.lower() == target_term.lower()) |
+            (df_num["metric_guess"].str.lower() == target_term.lower()) |
+            (df_num["paper_id"].isin(target_pids))
+        )
+        # Also check condition or general matches in the evidence string if available
+        if "evidence" in df_num.columns:
+            mask = mask | df_num["evidence"].str.lower().str.contains(target_term.lower(), na=False)
+            
+        candidate_filtered = df_num[mask]
+        if not candidate_filtered.empty:
+            filtered_df = candidate_filtered
+
     # Group by dataset and metric
-    groups = df_num.groupby(["dataset_guess", "metric_guess"])
+    groups = filtered_df.groupby(["dataset_guess", "metric_guess"])
     
     contradictions = []
     for (ds, met), group in groups:
@@ -244,7 +294,7 @@ def answer_contradiction(question, route, ctx):
         spread = v_max - v_min
         
         # Heuristic threshold: >5 for percentages, >0.05 for decimals
-        scale = group["value_scale_guess"].iloc[0]
+        scale = group["value_scale_guess"].iloc[0] if "value_scale_guess" in group.columns else "percentage"
         threshold = 5.0 if scale == "percentage" else 0.05
         
         if spread > threshold:
@@ -258,13 +308,37 @@ def answer_contradiction(question, route, ctx):
                 "rows": group.to_dict('records')
             })
             
+    prefix_msg = ""
+    if not contradictions and target_term and not filtered_df.equals(df_num):
+        prefix_msg = f"No comparable numeric contradictions found for '{target_term}'; showing closest corpus-level candidates.\n"
+        # Fallback to global
+        groups = df_num.groupby(["dataset_guess", "metric_guess"])
+        for (ds, met), group in groups:
+            if ds == "unknown" or len(group["paper_id"].unique()) < 2:
+                continue
+            v_min = group["value_numeric"].min()
+            v_max = group["value_numeric"].max()
+            spread = v_max - v_min
+            scale = group["value_scale_guess"].iloc[0] if "value_scale_guess" in group.columns else "percentage"
+            threshold = 5.0 if scale == "percentage" else 0.05
+            if spread > threshold:
+                contradictions.append({
+                    "dataset": ds,
+                    "metric": met,
+                    "spread": spread,
+                    "min": v_min,
+                    "max": v_max,
+                    "papers": group["paper_id"].unique().tolist(),
+                    "rows": group.to_dict('records')
+                })
+
     if not contradictions:
-        return "No significant numeric result contradictions detected among papers reporting comparable metrics.", [], []
+        return prefix_msg + "No significant numeric result contradictions detected among papers reporting comparable metrics.", [], []
         
     # Sort by spread
     contradictions = sorted(contradictions, key=lambda x: x["spread"], reverse=True)[:3]
     
-    ans = "Potential result disagreements detected:\n"
+    ans = prefix_msg + "Potential result disagreements detected:\n"
     all_evidence_rows = []
     for c in contradictions:
         ans += f"- {c['dataset']} ({c['metric']}): Values range from {c['min']} to {c['max']} (spread: {c['spread']:.2f}) across papers {', '.join(c['papers'])}\n"
@@ -275,20 +349,51 @@ def answer_contradiction(question, route, ctx):
 
 def answer_temporal(question, route, ctx):
     df_sum = ctx["dfs"].get("paper_entity_summary")
+    meta_dict = ctx.get("paper_meta", {})
+    df_ent = ctx["dfs"].get("entities")
+    
     if df_sum is None:
         return "Metadata not available for temporal analysis.", [], ["paper_entity_summary.csv missing"]
-    
-    # Group by year
-    years_data = df_sum[df_sum["year"] != "Unknown"]["year"].dropna()
-    years = sorted(years_data.unique())
-    ans = "Research trends over time:\n"
-    for yr in years:
-        count = len(df_sum[df_sum["year"] == yr])
-        ans += f"- {yr}: {count} papers\n"
         
-    # Add data basis to evidence
-    evidence = [{"paper_id": "DATA_BASIS", "title": "paper_entity_summary.csv", "year": "N/A", "anchor": "index", "snippet": f"Summary count over {len(years)} years."}]
-    return ans, evidence, ["Temporal analysis is based on extraction summary metadata."]
+    df = df_sum.copy()
+    
+    # Fill missing years from ctx["paper_meta"]
+    def get_year(row):
+        y = str(row.get("year", ""))
+        if not is_valid_meta_value(y):
+            pid = str(row.get("paper_id", ""))
+            y = str(meta_dict.get(pid, {}).get("year", ""))
+        return y
+
+    df["resolved_year"] = df.apply(get_year, axis=1)
+    df["resolved_year"] = pd.to_numeric(df["resolved_year"], errors="coerce")
+    df = df.dropna(subset=["resolved_year"])
+    
+    if df.empty:
+        return "Temporal metadata unavailable after checking paper_entity_summary, document_registry, and manifest.", [], []
+
+    q = question.lower()
+    target_term = None
+    if df_ent is not None:
+        all_entities = df_ent["entity"].dropna().unique()
+        matched = sorted([e for e in all_entities if str(e).lower() in q and len(str(e)) > 3], key=len, reverse=True)
+        if matched:
+            target_term = matched[0]
+            target_pids = set(df_ent[df_ent["entity"].str.lower() == target_term.lower()]["paper_id"].dropna())
+            df = df[df["paper_id"].isin(target_pids)]
+            
+    if df.empty:
+        ans = f"No temporal data found for papers mentioning '{target_term}'." if target_term else "No temporal data found."
+        return ans, [], []
+
+    years = sorted(df["resolved_year"].unique())
+    ans = f"Research trends over time (for '{target_term}')\n" if target_term else "Research trends over time:\n"
+    for yr in years:
+        count = len(df[df["resolved_year"] == yr])
+        ans += f"- {int(yr)}: {count} papers\n"
+        
+    evidence = [{"paper_id": "DATA_BASIS", "title": "temporal summary", "year": "N/A", "anchor": "index", "snippet": f"Summary count over {len(years)} years."}]
+    return ans, evidence, ["Temporal analysis is based on resolved publication years."]
 
 def answer_citation_graph(question, route, ctx):
     cite_counts = ctx.get("cite_counts", {})
@@ -369,8 +474,9 @@ def answer_citation_graph(question, route, ctx):
             return ans, evidence, ["Internal corpus citations only."]
         else:
             target_str = ", ".join(targets)
-            ans = f"No papers in this corpus were found to internally cite or build on the work(s): {target_str}."
-            return ans, [], ["Found the target papers but no internal citation edges exist in this 100-paper subset."]
+            ans = f"Citation graph loaded, but no internal citation edges were found building on the work(s): {target_str}."
+            evidence = [{"paper_id": "DATA_BASIS", "title": "manifest_100.csv", "year": "N/A", "anchor": "citation_graph", "snippet": "Citation graph loaded, zero edges found for target."}]
+            return ans, evidence, ["Found the target papers but no internal citation edges exist in this corpus."]
 
     # --- Fallback: show top 5 most-cited ---
     ranked = sorted(cite_counts.items(), key=lambda x: x[1], reverse=True)

@@ -119,15 +119,15 @@ The recommended workflow uses Google Colab with Google Drive as persistent stora
 - **Spend**: $0.00
 - **Branch/reproducibility**: main
 
-## Cost Report
+## Quality vs Budget Tiers
 
-**Total spend: $0.00.** No paid APIs, no LLM calls, no embeddings. Purely deterministic operators on CPU. OpenAlex and OA backfill use no paid APIs.
+The submitted system intentionally uses zero paid APIs. I therefore report three measured zero-cost execution profiles: router_only, operator_no_evidence, and operator_with_evidence. These quantify the quality/cost trade-off inside the zero-paid-API design. Paid API tiers were not used because the design goal was maximum performance per dollar under a $0 spend strategy.
 
 | Level | Mode | Routing Accuracy | Operator Success | Evidence Coverage | Avg Latency | Spend |
 |:---|:---|:---|:---|:---|:---|:---|
-| 0 | router_only | 95.0% | 100.0% | 0.0% | 0.000s | $0.00 |
-| 1 | operator_no_evidence | 95.0% | 100.0% | 0.0% | 0.165s | $0.00 |
-| 2 | operator_with_evidence | 95.0% | 100.0% | 92.5% | 0.135s | $0.00 |
+| 0 | router_only | 97.5% | 100.0% | 0.0% | 0.000s | $0.00 |
+| 1 | operator_no_evidence | 97.5% | 100.0% | 0.0% | 0.045s | $0.00 |
+| 2 | operator_with_evidence | 97.5% | 100.0% | 90.0% | 0.044s | $0.00 |
 
 See [`docs/quality_vs_budget.md`](docs/quality_vs_budget.md) and [`docs/cost_report.md`](docs/cost_report.md) for details.
 

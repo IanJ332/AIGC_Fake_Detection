@@ -84,7 +84,8 @@ def run_eval(data_dir, questions_path, output_dir=None):
                         "actual_tier": actual_tier,
                         "routing_correct": is_tier_correct,
                         "status": "success",
-                        "output_snippet": output_text[:500] + "..."
+                        "system_output": output_text,
+                        "output_snippet": output_text[:1000] + "..."
                     })
                 else:
                     summary["operator_failure"] += 1
