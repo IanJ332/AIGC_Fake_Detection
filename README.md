@@ -57,7 +57,7 @@ The 100 PDFs are not committed to Git (size limits). Use the download script:
 python scripts/download_corpus.py --manifest corpus/manifest.csv --out-dir corpus/pdfs
 ```
 
-> **Note:** Some PDFs (~28) are behind publisher paywalls. The download script logs these as known failures. The system operates on all successfully acquired papers and documents inaccessible ones.
+> **Note:** The seed manifest includes 100 highly cited papers. When seed PDFs were inaccessible, the Data_V2 pipeline used a scoped OpenAlex/OA backfill to add topic-compatible open-access candidates. The final executable corpus contains 117 parsed papers. Blocked or unavailable seed PDFs are logged rather than retried aggressively. Full PDFs and the DuckDB index are excluded from Git due to size limits, but the `main` reproducibility branch contains all necessary rebuild scripts, manifests, and Data_V2 Colab notebooks to reconstruct the system.
 
 The manifest is at [`corpus/manifest.csv`](corpus/manifest.csv) with columns: `id, title, authors, year, venue, citation_count, source_url, pdf_url`.
 

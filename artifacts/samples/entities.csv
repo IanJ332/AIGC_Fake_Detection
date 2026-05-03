@@ -1,2 +1,247 @@
-paper_id,entity_id,entity_type,entity_text
-P001,E1,Dataset,ImageNet
+entity_id,paper_id,paper_title,year,entity_type,entity,normalized_entity,section_type,section_heading,evidence_anchor,context_snippet,char_start,char_end
+E00001,P016,Unknown,Unknown,method_keyword,frequency,frequency,unknown,,P016:p1-p1:unknown,The Thirty-Eighth AAAI Conference on Artiﬁcial Intelligence (AAAI-24) Frequency-Aware Deepfake Detection: Improving Generalizability through Frequency Space Domain Learning Chuang,70,79
+E00002,P016,Unknown,Unknown,method_keyword,frequency,frequency,unknown,,P016:p1-p1:unknown,"ﬁcial Intelligence (AAAI-24) Frequency-Aware Deepfake Detection: Improving Generalizability through Frequency Space Domain Learning Chuangchuang Tan1,2, Yao Zhao1,2*, Shikui Wei1,2, Guanghua Gu3,4, Ping Liu5,",141,150
+E00003,P016,Unknown,Unknown,dataset,ArtiFact,artifact,abstract,Abstract,P016:p1-p2:abstract,Abstract real or fake? Conv  Residual  block Conv  Residual  block image freq-level artifact CNN classifier (a) Conventional frequency-based methods Phase  Conv FFT iFFT Conv Conv Conv real or,84,92
+E00004,P016,Unknown,Unknown,dataset,DeepFakeDetection,deepfakedetection,abstract,Abstract,P016:p1-p2:abstract,le requiring fewer parameters. The code is available at https://github.com/chuangchuangtan/FreqNet- DeepfakeDetection. Introduction The proliferation of Generative Adversarial Networks (GANs) (Goodfellow et al. 2014;,2227,2244
+E00005,P016,Unknown,Unknown,model_backbone,CNN,cnn,abstract,Abstract,P016:p1-p2:abstract,Abstract real or fake? Conv  Residual  block Conv  Residual  block image freq-level artifact CNN classifier (a) Conventional frequency-based methods Phase  Conv FFT iFFT Conv Conv Conv real or fak,93,96
+E00006,P016,Unknown,Unknown,generator_family,GAN,gan,abstract,Abstract,P016:p1-p2:abstract,"ency-based paradigms have relied on frequency- level artifacts introduced during the up-sampling in GAN pipelines to detect forgeries. However, the rapid advance- ments in synthesis technology have led t",919,922
+E00007,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,nv  Residual  block Conv  Residual  block image freq-level artifact CNN classifier (a) Conventional frequency-based methods Phase  Conv FFT iFFT Conv Conv Conv real or fake? High-Freq Amplitude  Conv image hig,125,134
+E00008,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,FT Conv Conv Conv real or fake? High-Freq Amplitude  Conv image high-freq component Classifier with frequency learning (b) FreqNet: Frequency space learning Network Figure 1: Frequency space learning network.,267,276
+E00009,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,High-Freq Amplitude  Conv image high-freq component Classifier with frequency learning (b) FreqNet: Frequency space learning Network Figure 1: Frequency space learning network. (a) The traditional studies are,299,308
+E00010,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,omponent Classifier with frequency learning (b) FreqNet: Frequency space learning Network Figure 1: Frequency space learning network. (a) The traditional studies are usually limited to developing frequency-lev,342,351
+E00011,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"1: Frequency space learning network. (a) The traditional studies are usually limited to developing frequency-level artifacts. (b) Distinguishing itself from prior frequency-based research, our approach shifts",438,447
+E00012,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"s are usually limited to developing frequency-level artifacts. (b) Distinguishing itself from prior frequency-based research, our approach shifts its focus to the frequency-related attributes of the features w",502,511
+E00013,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"(b) Distinguishing itself from prior frequency-based research, our approach shifts its focus to the frequency-related attributes of the features within the de- tector. This research addresses the challenge of",565,574
+E00014,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,or that can effectively identify un- seen deepfake images despite limited training data. Exist- ing frequency-based paradigms have relied on frequency- level artifacts introduced during the up-sampling in GAN,814,823
+E00015,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"deepfake images despite limited training data. Exist- ing frequency-based paradigms have relied on frequency- level artifacts introduced during the up-sampling in GAN pipelines to detect forgeries. However, t",855,864
+E00016,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"a, leading to suboptimal performance on unseen sources. To address this issue, we introduce a novel frequency-aware approach called FreqNet, centered around frequency domain learning, specifically designed to",1336,1345
+E00017,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"o address this issue, we introduce a novel frequency-aware approach called FreqNet, centered around frequency domain learning, specifically designed to enhance the generalizability of deepfake detectors. Our m",1393,1402
+E00018,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"eneralizability of deepfake detectors. Our method forces the detector to continuously focus on high-frequency infor- mation, exploiting high-frequency representation of features across spatial and channel dime",1558,1567
+E00019,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"r method forces the detector to continuously focus on high-frequency infor- mation, exploiting high-frequency representation of features across spatial and channel dimensions. Additionally, we in- corporate a",1599,1608
+E00020,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"of features across spatial and channel dimensions. Additionally, we in- corporate a straightforward frequency domain learning mod- ule to learn source-agnostic features. It involves convolu- tional layers appl",1724,1733
+E00021,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,"ly, prior investigations (Frank et al. 2020; Durall et al. 2020) have substantiated the efficacy of frequency artifacts in the realm of deepfake detection, notably in the context of facial de- tection (Qian et",3730,3739
+E00022,P016,Unknown,Unknown,method_keyword,frequency,frequency,abstract,Abstract,P016:p1-p2:abstract,ank et al. 2020; Durall et al. 2020) have unveiled the presence of significant artifacts within the frequency domain 5052 The Thirty-Eighth AAAI Conference on Artiﬁcial Intelligence (AAAI-24) Apple CycleGAN-Ap,3987,3996
+E00023,P016,Unknown,Unknown,method_keyword,spectrum,spectrum,abstract,Abstract,P016:p1-p2:abstract,ule to learn source-agnostic features. It involves convolu- tional layers applied to both the phase spectrum and am- plitude spectrum between the Fast Fourier Transform (FFT) and Inverse Fast Fourier Transfor,1855,1863
+E00024,P016,Unknown,Unknown,method_keyword,spectrum,spectrum,abstract,Abstract,P016:p1-p2:abstract,tic features. It involves convolu- tional layers applied to both the phase spectrum and am- plitude spectrum between the Fast Fourier Transform (FFT) and Inverse Fast Fourier Transform (iFFT). Extensive exper,1880,1888
+E00025,P016,Unknown,Unknown,method_keyword,artifact,artifact,abstract,Abstract,P016:p1-p2:abstract,Abstract real or fake? Conv  Residual  block Conv  Residual  block image freq-level artifact CNN classifier (a) Conventional frequency-based methods Phase  Conv FFT iFFT Conv Conv Conv real or,84,92
+E00026,P016,Unknown,Unknown,method_keyword,generalizable,generalizable,abstract,Abstract,P016:p1-p2:abstract,"domains, such as those in- volving unfamiliar generation models or novel categories. The pursuit of Generalizable Deepfake Detection strives to create a universal detector capable of effectively identify- ing deep",3357,3370
+E00027,P016,Unknown,Unknown,method_keyword,universal detector,universal detector,abstract,Abstract,P016:p1-p2:abstract,"ion models or novel categories. The pursuit of Generalizable Deepfake Detection strives to create a universal detector capable of effectively identify- ing deepfake images even when faced with limited training data, a",3410,3428
+E00028,P016,Unknown,Unknown,dataset,ImageNet,imagenet,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,Lsun-Bedroom StyleGAN-Bedroom BigGAN ImageNet Dataset Figure 2: Frequency analysis on various sources. This mean FFT spectrum computation involve,37,45
+E00029,P016,Unknown,Unknown,dataset,ArtiFact,artifact,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"to achieve fake face image detection. Other image-based de- tection methods have developed specific artifact detection in 1ProGAN, StyleGAN, StyleGAN2, BigGAN, CycleGAN, Star- GAN, GauGAN, Deepfake, AttGAN, B",1948,1956
+E00030,P016,Unknown,Unknown,dataset,ArtiFact,artifact,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"raordinary advancements in synthesis technology, an increasing array of distinctive frequency-level artifact representations have emerged. In Figure 2, we present the mean Fast Fourier Transform (FFT) (Cooley",2495,2503
+E00031,P016,Unknown,Unknown,dataset,ArtiFact,artifact,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"dology de- tailed in (Frank et al. 2020). Notably, the results exhibit dis- cernible differences in artifact characteristics across differ- ent GANs, further accentuated by variations within the same GAN arch",2858,2866
+E00032,P016,Unknown,Unknown,dataset,ArtiFact,artifact,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"requency domain. We deliberately refrain from directly utilizing the frequency in- formation as the artifact representation to train a CNN clas- sifier. Instead, we strategically compel the detector to ac- qu",3849,3857
+E00033,P016,Unknown,Unknown,dataset,ArtiFact,artifact,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"dies have been proposed for generalized detection. BiHPF (Jeong et al. 2022a) emphasizes amplifying artifact magnitudes through the utilization of dual high-pass filters. The FreGAN model, introduced by (Jeon",9604,9612
+E00034,P016,Unknown,Unknown,dataset,ArtiFact,artifact,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"viously unseen sources. In contrast, our approach not only employs the frequency information as the artifact representation. We also introduce frequency space learning as a strategy to significantly enhance t",13890,13898
+E00035,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"le deepfake detection. Our approach strategically incorporates frequency do- main learning within a CNN classifier, resulting in a sig- nificant enhancement of the detector’s ability to general- ize acro",737,740
+E00036,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"frain from directly utilizing the frequency in- formation as the artifact representation to train a CNN clas- sifier. Instead, we strategically compel the detector to ac- quire its understanding within t",3884,3887
+E00037,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"lightweight approach named FreqNet, which integrates fre- quency domain learning into a lightweight CNN classifier, aimed at enhancing the generalization capabilities of the detector. Diverging from exis",4269,4272
+E00038,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"development of both frequency- domain information derived from images and the features extracted by CNN model. Specifically, our approach intro- duces two critical modules: the high-frequency represen- t",4640,4643
+E00039,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"dology, we introduce practical and compact frequency learning plugin modules designed to compel the CNN classifier to operate within the frequency domain. These modules include the high-frequency represe",7911,7914
+E00040,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,convolu- tional layer. The modular nature of these components allows seamless integration into the CNN classifier. This architec- tural innovation has culminated in the creation of a novel and lightweig,8139,8142
+E00041,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"eight detector, FreqNet, incorporating the frequency learning plugins alongside a limited number of CNN layers. Frequency-based Deepfake Detection The research by (Frank et al. 2020; Durall et al. 2020),",8339,8342
+E00042,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ectively. We im- plement two distinct high-frequency component extractors, each targeting different CNN layers within our method. This strategic differentiation allows us to leverage the unique in- forma",13236,13239
+E00043,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"hes follow a paradigm of ex- tracting frequency information from images and employing it to train a CNN classifier. However, this approach often results in the detector overfitting to the specifics of th",13615,13618
+E00044,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"eneralization ability of the detector. Specifically, within our approach, the feature maps from the CNN layers are initially transformed from the feature space to the frequency domain. Following this tra",14102,14105
+E00045,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,ritical features present in this space. Let’s consider the given feature maps M k ∈RW ×H×C from kth CNN layer. The learning process within the fre- quency space can be formally defined as follows: (7) (b,16001,16004
+E00046,P016,Unknown,Unknown,model_backbone,CNN,cnn,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"d iFFT, fam, fph are amplitude spectrum and phase spectrum of feature maps M k, and Lconv denotes a CNN layer, g fam, f fph are the learned amplitude spectrum and phase spectrum of feature maps M k. Subs",16481,16484
+E00047,P016,Unknown,Unknown,model_backbone,Xception,xception,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,spa- tial information from images. Rossler et al.(Rossler et al. 2019) utilize images to train the Xception (Chollet 2017) to achieve fake face image detection. Other image-based de- tection methods have dev,1824,1832
+E00048,P016,Unknown,Unknown,generator_family,GAN,gan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"have developed specific artifact detection in 1ProGAN, StyleGAN, StyleGAN2, BigGAN, CycleGAN, Star- GAN, GauGAN, Deepfake, AttGAN, BEGAN, CramerGAN, Info- MaxGAN, MMDGAN, RelGAN, S3GAN, SNGAN, STGAN stem",2024,2027
+E00049,P016,Unknown,Unknown,generator_family,GAN,gan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"N, Info- MaxGAN, MMDGAN, RelGAN, S3GAN, SNGAN, STGAN stemming from the upsampling operations within GAN ar- chitectures. Consequently, this revelation has spurred the de- velopment of numerous frequency-",2170,2173
+E00050,P016,Unknown,Unknown,generator_family,GAN,gan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"artifact characteristics across differ- ent GANs, further accentuated by variations within the same GAN architecture when training on dissimilar datasets. The frequency attributes of images indeed posses",2958,2961
+E00051,P016,Unknown,Unknown,generator_family,GAN,gan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"s effectively emphasizes the represen- High-Frequency Representation of Feature Indeed, the varying GAN architectures incorporate distinct frequency patterns, which can potentially lead the detector to o",14633,14636
+E00052,P016,Unknown,Unknown,generator_family,GAN,gan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,",000 real images sourced from Celeba-HQ (Karras et al. 2018), and 60,000 fake face images from Pro- GAN (Karras et al. 2018), StyleGAN (Karras et al. 2019), and StyleGAN2 (Karras et al. 2020).",17281,17284
+E00053,P016,Unknown,Unknown,generator_family,StyleGAN,stylegan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,Lsun-Bedroom StyleGAN-Bedroom BigGAN ImageNet Dataset Figure 2: Frequency analysis on various sources. This mean FFT spec,13,21
+E00054,P016,Unknown,Unknown,generator_family,StyleGAN,stylegan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ction. Other image-based de- tection methods have developed specific artifact detection in 1ProGAN, StyleGAN, StyleGAN2, BigGAN, CycleGAN, Star- GAN, GauGAN, Deepfake, AttGAN, BEGAN, CramerGAN, Info- MaxGAN,",1979,1987
+E00055,P016,Unknown,Unknown,generator_family,StyleGAN,stylegan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ayer. The learning process within the fre- quency space can be formally defined as follows: (7) (b) StyleGAN (a) ProGAN (c) CelabA-HQ f = fam + fphi = FW,H(M k) g fam = Lconv(fam) f fph = Lconv(fph) g M k = I",16106,16114
+E00056,P016,Unknown,Unknown,generator_family,StyleGAN,stylegan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"rom Celeba-HQ (Karras et al. 2018), and 60,000 fake face images from Pro- GAN (Karras et al. 2018), StyleGAN (Karras et al. 2019), and StyleGAN2 (Karras et al. 2020).",17307,17315
+E00057,P016,Unknown,Unknown,generator_family,BigGAN,biggan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,Lsun-Bedroom StyleGAN-Bedroom BigGAN ImageNet Dataset Figure 2: Frequency analysis on various sources. This mean FFT spectrum computatio,30,36
+E00058,P016,Unknown,Unknown,generator_family,BigGAN,biggan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"sed de- tection methods have developed specific artifact detection in 1ProGAN, StyleGAN, StyleGAN2, BigGAN, CycleGAN, Star- GAN, GauGAN, Deepfake, AttGAN, BEGAN, CramerGAN, Info- MaxGAN, MMDGAN, RelGAN, S3G",2000,2006
+E00059,P016,Unknown,Unknown,generator_family,ProGAN,progan,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"rning process within the fre- quency space can be formally defined as follows: (7) (b) StyleGAN (a) ProGAN (c) CelabA-HQ f = fam + fphi = FW,H(M k) g fam = Lconv(fam) f fph = Lconv(fph) g M k = IFW,H(g fam",16119,16125
+E00060,P016,Unknown,Unknown,metric,AP,ap,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ffectively enhance deepfake detection capa- bilities. The comprehensive architecture of the FreqNet ap- proach is depicted in Figure 3. Within our methodology, we introduce practical and compact frequen",7759,7761
+E00061,P016,Unknown,Unknown,distortion,perturbation,perturbation,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"his issue, chooses to disregard frequency-level ar- tifacts in images by devising a frequency-level perturbation generator. However, this solution introduces complexity and incurs considerable computational expen",3518,3530
+E00062,P016,Unknown,Unknown,distortion,perturbation,perturbation,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,niously mitigates the impact of frequency-level artifacts through the deployment of frequency-level perturbation maps. (Wang et al. 2023) introduces dynamic graph learning to exploit the relation- aware features,9832,9844
+E00063,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"Lsun-Bedroom StyleGAN-Bedroom BigGAN ImageNet Dataset Figure 2: Frequency analysis on various sources. This mean FFT spectrum computation involves averaging over 2,000 image",64,73
+E00064,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"a remarkable improvement of 9.8%. Our paper makes the following contributions: • We present a novel frequency space learning network, FreqNet, to achieve generalizable deepfake detection. Our approach strategi",572,581
+E00065,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"work, FreqNet, to achieve generalizable deepfake detection. Our approach strategically incorporates frequency do- main learning within a CNN classifier, resulting in a sig- nificant enhancement of the detector",700,709
+E00066,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"state-of-the-art model featuring 304 million pa- rameters, attributed mainly to its utilization of frequency domain learning. Related Work In this section, we present a concise survey of deepfake de- tection",1359,1368
+E00067,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ke de- tection methodologies, categorizing them into two primary classes: image-based detection and frequency-based detec- tion. Image-based Deepfake Detection There has been a significant effort in the field",1553,1562
+E00068,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"within GAN ar- chitectures. Consequently, this revelation has spurred the de- velopment of numerous frequency-based methods aimed at detecting images with pronounced frequency-related char- acteristics. Noneth",2263,2272
+E00069,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"red the de- velopment of numerous frequency-based methods aimed at detecting images with pronounced frequency-related char- acteristics. Nonetheless, owing to the extraordinary advancements in synthesis techno",2329,2338
+E00070,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"owing to the extraordinary advancements in synthesis technology, an increasing array of distinctive frequency-level artifact representations have emerged. In Figure 2, we present the mean Fast Fourier Transfor",2479,2488
+E00071,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,ccentuated by variations within the same GAN architecture when training on dissimilar datasets. The frequency attributes of images indeed possess the capacity to unveil distinctions between real and generated,3017,3026
+E00072,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"enge, the primary approach entails the development of a robust classifier specifically designed for frequency representations. (Jeong et al. 2022c), in ad- dressing this issue, chooses to disregard frequency-l",3352,3361
+E00073,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"r frequency representations. (Jeong et al. 2022c), in ad- dressing this issue, chooses to disregard frequency-level ar- tifacts in images by devising a frequency-level perturbation generator. However, this sol",3450,3459
+E00074,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"n ad- dressing this issue, chooses to disregard frequency-level ar- tifacts in images by devising a frequency-level perturbation generator. However, this solution introduces complexity and incurs considerable",3502,3511
+E00075,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"of deepfake detection, it is imperative to factor in the notion of the detector learning within the frequency domain. We deliberately refrain from directly utilizing the frequency in- formation as the artifact",3748,3757
+E00076,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"detector learning within the frequency domain. We deliberately refrain from directly utilizing the frequency in- formation as the artifact representation to train a CNN clas- sifier. Instead, we strategically",3818,3827
+E00077,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"as- sifier. Instead, we strategically compel the detector to ac- quire its understanding within the frequency space. This nu- anced strategy holds the key to achieving a more generaliz- able deepfake detection",3990,3999
+E00078,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"sifier, aimed at enhancing the generalization capabilities of the detector. Diverging from existing frequency-based studies that predominantly focus on the frequency domain of im- ages, the principal innovatio",4377,4386
+E00079,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"es of the detector. Diverging from existing frequency-based studies that predominantly focus on the frequency domain of im- ages, the principal innovation of our FreqNet method re- sides in the simultaneous de",4433,4442
+E00080,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"s, the principal innovation of our FreqNet method re- sides in the simultaneous development of both frequency- domain information derived from images and the features extracted by CNN model. Specifically, our",4560,4569
+E00081,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ures extracted by CNN model. Specifically, our approach intro- duces two critical modules: the high-frequency represen- tation and the frequency convolutional layer, each meticu- lously designed to facilitate",4722,4731
+E00082,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ically, our approach intro- duces two critical modules: the high-frequency represen- tation and the frequency convolutional layer, each meticu- lously designed to facilitate frequency space learning. The first",4757,4766
+E00083,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"represen- tation and the frequency convolutional layer, each meticu- lously designed to facilitate frequency space learning. The first module serves to compel the detector to consistently prioritize high-freq",4831,4840
+E00084,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ency space learning. The first module serves to compel the detector to consistently prioritize high-frequency information, augmenting its sensi- tivity to significant details. Additionally, to capture broader",4936,4945
+E00085,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ensi- tivity to significant details. Additionally, to capture broader forgery indicators within the frequency domain, we incor- porate a frequency convolutional layer, which effectively di- minishes the relian",5075,5084
+E00086,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"Additionally, to capture broader forgery indicators within the frequency domain, we incor- porate a frequency convolutional layer, which effectively di- minishes the reliance on source-specific characteristics",5112,5121
+E00087,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,", which effectively di- minishes the reliance on source-specific characteristics. By virtue of this frequency domain-based learning strategy, our proposed FreqNet remarkably extends its generalizability to pre",5241,5250
+E00088,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ture With the primary objective of bolstering generalizability to unseen sources, we have devised a frequency domain learn- ing network to effectively enhance deepfake detection capa- bilities. The comprehensi",7619,7628
+E00089,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"qNet ap- proach is depicted in Figure 3. Within our methodology, we introduce practical and compact frequency learning plugin modules designed to compel the CNN classifier to operate within the frequency domai",7854,7863
+E00090,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,mpact frequency learning plugin modules designed to compel the CNN classifier to operate within the frequency domain. These modules include the high-frequency representation and the frequency convolu- tional l,7948,7957
+E00091,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,to compel the CNN classifier to operate within the frequency domain. These modules include the high-frequency representation and the frequency convolu- tional layer. The modular nature of these components allo,7997,8006
+E00092,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,perate within the frequency domain. These modules include the high-frequency representation and the frequency convolu- tional layer. The modular nature of these components allows seamless integration into the,8030,8039
+E00093,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"tion has culminated in the creation of a novel and lightweight detector, FreqNet, incorporating the frequency learning plugins alongside a limited number of CNN layers. Frequency-based Deepfake Detection The r",8282,8291
+E00094,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"or, FreqNet, incorporating the frequency learning plugins alongside a limited number of CNN layers. Frequency-based Deepfake Detection The research by (Frank et al. 2020; Durall et al. 2020), which highlights",8351,8360
+E00095,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"tion The research by (Frank et al. 2020; Durall et al. 2020), which highlights the effectiveness of frequency artifacts in the domain of deepfake detection, has significantly influ- enced subsequent studies. T",8481,8490
+E00096,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,many im- age forgery detectors to shift their attention toward capturing unique patterns within the frequency domain. The work by Masi et al. (Masi et al. 2020) stands out as it meticulously investigates artif,8713,8722
+E00097,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"2020) stands out as it meticulously investigates artifacts present in both the color space and the frequency domains, while F 3-Net (Qian et al. 2020) sug- gests using the discrepancy of frequency statistics",8867,8876
+E00098,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"ace and the frequency domains, while F 3-Net (Qian et al. 2020) sug- gests using the discrepancy of frequency statistics between real and forged images as a means to differentiate face im- age manipulations. A",8955,8964
+E00099,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,between real and forged images as a means to differentiate face im- age manipulations. An adaptive frequency features learning is designed by FDFL (Li et al. 2021) to mine subtle arti- facts from the frequenc,9075,9084
+E00100,P016,Unknown,Unknown,method_keyword,frequency,frequency,dataset,"Lsun-Bedroom StyleGAN-Bedroom
+BigGAN
+ImageNet Dataset",P016:p2-p5:dataset,"requency features learning is designed by FDFL (Li et al. 2021) to mine subtle arti- facts from the frequency domain, enabling the detection of forged images. Moreover, ADD (Woo et al. 2022) incor- porates two",9176,9185

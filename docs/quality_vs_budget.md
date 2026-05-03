@@ -2,7 +2,7 @@
 
 ## Summary
 
-This document reports actual measured performance at three local budget levels plus two planned higher-budget tiers.
+This document reports actual measured performance for three budget profiles under a zero-paid-API strategy, plus two planned higher-budget tiers. These levels represent distinct measured execution profiles, not paid API spend increments.
 
 ---
 

@@ -52,21 +52,31 @@ pip install -r requirements.txt -q
 
 # ── 2. Rebuild mode: download PDFs and re-extract ─────────────────────────
 if [ "$MODE" = "rebuild" ]; then
-    echo "[2/5] Downloading accessible corpus PDFs..."
-    python scripts/download_corpus.py \
-        --manifest corpus/manifest.csv \
-        --out-dir "$DATA_DIR/pdfs" \
-        --report "$DATA_DIR/download_report.json"
+    echo "[2/5] Building executable corpus via OA backfill..."
+    python scripts/fetch_oa_candidates.py \
+      --out corpus/manifest_candidates_v3.csv \
+      --max-results 500
 
-    echo "[3/5] Parsing PDFs and extracting sections..."
-    python src/parse/parse_pdfs.py --data-dir "$DATA_DIR"
-    python src/parse/segment_sections.py --data-dir "$DATA_DIR"
+    python scripts/build_executable_corpus.py \
+      --seed-manifest corpus/manifest.csv \
+      --candidate-pool corpus/manifest_candidates_v3.csv \
+      --data-dir "$DATA_DIR" \
+      --target-parsed 100 \
+      --max-candidates 300 \
+      --batch-size 25 \
+      --delay 1.5
+
+    echo "[3/5] Extracting table candidates..."
+    python -m src.parse.extract_table_candidates \
+      --sections "$DATA_DIR/sections/sections.jsonl" \
+      --out "$DATA_DIR/tables/table_candidates.jsonl"
 
     echo "[4/5] Running entity and result extraction..."
-    python src/extract/extract_entities.py --data-dir "$DATA_DIR"
-    python src/extract/extract_results.py --data-dir "$DATA_DIR"
-    python src/extract/build_paper_summaries.py --data-dir "$DATA_DIR"
-    python src/extract/build_duckdb.py --data-dir "$DATA_DIR"
+    python -m src.extract.extract_entities --data-dir "$DATA_DIR"
+    python -m src.extract.extract_results --data-dir "$DATA_DIR"
+    python -m src.extract.build_paper_summaries --data-dir "$DATA_DIR"
+    python -m src.extract.build_duckdb --data-dir "$DATA_DIR"
+    python -m src.extract.validate_extraction --data-dir "$DATA_DIR"
 else
     echo "[2-4/5] Skipping extraction (eval-only mode)."
     echo "  → Verifying required data files..."
@@ -75,7 +85,9 @@ else
     for f in \
         "$DATA_DIR/extracted/entities.csv" \
         "$DATA_DIR/extracted/result_tuples.csv" \
-        "$DATA_DIR/index/research_corpus.duckdb"; do
+        "$DATA_DIR/index/research_corpus.duckdb" \
+        "$DATA_DIR/reports/day9_eval/day6_eval_summary.md" \
+        "$DATA_DIR/reports/day9_budget_eval/budget_eval_summary.md"; do
         if [ ! -f "$f" ]; then
             echo "  [MISSING] $f"
             MISSING=1
@@ -94,14 +106,18 @@ else
 fi
 
 # ── 5. Run evaluation ──────────────────────────────────────────────────────
-echo "[5/5] Running 40-question evaluation suite..."
-mkdir -p "$DATA_DIR/reports/day6_eval"
+echo "[5/5] Running evaluation and budget suites..."
 
 python eval/run_eval.py \
     --data-dir "$DATA_DIR" \
     --questions eval/questions_40.jsonl \
-    --output-dir "$DATA_DIR/reports/day6_eval"
+    --output-dir "$DATA_DIR/reports/day9_eval"
+
+python eval/run_budget_eval.py \
+    --data-dir "$DATA_DIR" \
+    --questions eval/questions_40.jsonl \
+    --out-dir "$DATA_DIR/reports/day9_budget_eval"
 
 echo ""
 echo "=== Reproduction complete ==="
-echo "See $DATA_DIR/reports/day6_eval/ for the evaluation report."
+echo "See $DATA_DIR/reports/day9_eval/ and $DATA_DIR/reports/day9_budget_eval/ for reports."

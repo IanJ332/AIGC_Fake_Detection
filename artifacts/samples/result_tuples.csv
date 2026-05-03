@@ -1,2 +1,101 @@
-paper_id,metric,value,dataset
-P001,Accuracy,95.5,ImageNet
+result_id,paper_id,paper_title,year,dataset_guess,metric_guess,value_guess,value_numeric,value_scale_guess,condition_guess,model_guess,evidence_anchor,raw_text,confidence
+R00001,P016,Unknown,Unknown,unknown,acc,5.4,5.4,decimal,unknown,unknown,P016_C92,"these methods by 5.4% and 2.4% in mean Acc., using fewer",medium
+R00002,P016,Unknown,Unknown,unknown,acc,2.4,2.4,decimal,unknown,unknown,P016_C92,"these methods by 5.4% and 2.4% in mean Acc., using fewer",medium
+R00003,P016,Unknown,Unknown,unknown,accuracy,82.6,82.6,decimal,unknown,unknown,P016_C93,"improvement in mean accuracy, rising from 82.6% to 90.6%",medium
+R00004,P016,Unknown,Unknown,unknown,accuracy,90.6,90.6,decimal,unknown,unknown,P016_C93,"improvement in mean accuracy, rising from 82.6% to 90.6%",medium
+R00005,P016,Unknown,Unknown,unknown,accuracy,77.6,77.6,decimal,unknown,unknown,P016_C94,"ment in mean accuracy, soaring from 77.6% to an impressive",medium
+R00006,P017,Unknown,Unknown,unknown,accuracy,0.67,0.67,decimal,unknown,unknown,P017_C172,of them stopped at 0.67 accuracy. There are a lot of diﬀerent,medium
+R00007,P079,Unknown,Unknown,unknown,accuracy,99.68,99.68,decimal,unknown,unknown,P079_C397,"performances were good enough, such as InceptionV3 gained 99.68% accuracy,",medium
+R00008,P079,Unknown,Unknown,unknown,accuracy,99.19,99.19,decimal,unknown,unknown,P079_C398,"ResNet152V2 got an accuracy of 99.19%, and DenseNet201 performed with",medium
+R00009,P079,Unknown,Unknown,unknown,accuracy,99.81,99.81,decimal,unknown,unknown,P079_C399,"99.81% accuracy. However, InceptionResNetV2 achieved the highest accuracy",medium
+R00010,P079,Unknown,Unknown,unknown,accuracy,90.22,90.22,decimal,unknown,unknown,P079_C405,validation accuracy of 90.22%. The Convolutional Neural Network (CNN) [24] is very effective and,medium
+R00011,P079,Unknown,Unknown,unknown,accuracy,85.7,85.7,decimal,unknown,unknown,P079_C407,better classiﬁcation.Their best-performing architecture gave a validation accuracy of 85.7%. DenseNet is,medium
+R00012,P079,Unknown,Unknown,unknown,accuracy,90.2,90.2,decimal,unknown,unknown,P079_C410,accuracy of 90.2%. Other researchers [28] implemented CNN algorithms for feature extraction from,medium
+R00013,P079,Unknown,Unknown,unknown,accuracy,91.56,91.56,decimal,unknown,unknown,P079_C411,"architecture gave a validation accuracy of 91.56%. By increasing accuracy, the proposed model achieved",medium
+R00014,P079,Unknown,Unknown,unknown,accuracy,97.83,97.83,decimal,unknown,unknown,P079_C413,region to detect deep fakes. Their best-performing architecture gave a validation accuracy of 97.83%.,medium
+R00015,P079,Unknown,Unknown,unknown,unknown,0.2,0.2,decimal,unknown,unknown,P079_C422,"datasets. To prevent this issue from happening, the proposed method implements a dropout of 0.2 before",low
+R00016,P079,Unknown,Unknown,unknown,accuracy,99.81,99.81,decimal,unknown,unknown,P079_C428,InceptionResNetV2. DenseNet201 achieved a validation accuracy of 99.81% along with a validation loss,medium
+R00017,P079,Unknown,Unknown,unknown,accuracy,0.71,0.71,decimal,unknown,unknown,P079_C429,of 0.71%. ResNet152V2 achieved a validation accuracy of 99.19% along with a 3.93% validation loss.,medium
+R00018,P079,Unknown,Unknown,unknown,accuracy,99.19,99.19,decimal,unknown,unknown,P079_C429,of 0.71%. ResNet152V2 achieved a validation accuracy of 99.19% along with a 3.93% validation loss.,medium
+R00019,P079,Unknown,Unknown,unknown,accuracy,3.93,3.93,decimal,unknown,unknown,P079_C429,of 0.71%. ResNet152V2 achieved a validation accuracy of 99.19% along with a 3.93% validation loss.,medium
+R00020,P079,Unknown,Unknown,unknown,accuracy,99.68,99.68,decimal,unknown,unknown,P079_C430,InceptionV3 achieved a validation accuracy of 99.68% along with a validation loss of 1.33%.,medium
+R00021,P079,Unknown,Unknown,unknown,accuracy,1.33,1.33,decimal,unknown,unknown,P079_C430,InceptionV3 achieved a validation accuracy of 99.68% along with a validation loss of 1.33%.,medium
+R00022,P079,Unknown,Unknown,unknown,accuracy,99.86,99.86,decimal,unknown,unknown,P079_C432,"But compared to the other models, InceptionResNetV2 achieved the highest accuracy of 99.86%. The",medium
+R00023,P079,Unknown,Unknown,unknown,accuracy,95.18,95.18,decimal,unknown,unknown,P079_C436,"In Fig. 5, for InceptionResNetV2, the training accuracy was 95.18% in the ﬁrst epoch and subsequently",medium
+R00024,P079,Unknown,Unknown,unknown,accuracy,96.82,96.82,decimal,unknown,unknown,P079_C437,"increased with each epoch. The model’s validation accuracy was 96.82%, and it continued to rise until the",medium
+R00025,P079,Unknown,Unknown,unknown,accuracy,0.008,0.008,decimal,unknown,unknown,P079_C438,"ﬁnal epoch. After 10 epochs, the training loss was 0.008% and the validation accuracy was 99.82%. In the",medium
+R00026,P079,Unknown,Unknown,unknown,accuracy,99.82,99.82,decimal,unknown,unknown,P079_C438,"ﬁnal epoch. After 10 epochs, the training loss was 0.008% and the validation accuracy was 99.82%. In the",medium
+R00027,P079,Unknown,Unknown,unknown,accuracy,99.87,99.87,decimal,unknown,unknown,P079_C439,"ﬁnal epoch, validation accuracy was 99.87% and the training loss was almost nil.",medium
+R00028,P079,Unknown,Unknown,unknown,accuracy,96.37,96.37,decimal,unknown,unknown,P079_C441,"In Fig. 6, for DenseNet201, the training accuracy was 96.37% in the ﬁrst epoch and subsequently",medium
+R00029,P079,Unknown,Unknown,unknown,accuracy,70.4,70.4,decimal,unknown,unknown,P079_C442,"increased with each epoch. The model’s validation accuracy was 70.40%, and it continued to rise until",medium
+R00030,P079,Unknown,Unknown,unknown,accuracy,0.27,0.27,decimal,unknown,unknown,P079_C443,"the ﬁnal epoch. After 10 epochs, the training loss was 0.27% and the validation accuracy was 99.35%. In",medium
+R00031,P079,Unknown,Unknown,unknown,accuracy,99.35,99.35,decimal,unknown,unknown,P079_C443,"the ﬁnal epoch. After 10 epochs, the training loss was 0.27% and the validation accuracy was 99.35%. In",medium
+R00032,P079,Unknown,Unknown,unknown,accuracy,99.81,99.81,decimal,unknown,unknown,P079_C444,"the ﬁnal epoch, validation accuracy was 99.81% and the training loss was almost nil.",medium
+R00033,P079,Unknown,Unknown,unknown,accuracy,91.7,91.7,decimal,unknown,unknown,P079_C447,"In Fig. 7, for InceptionV3, the training accuracy was 91.70% in the ﬁrst epoch and subsequently",medium
+R00034,P079,Unknown,Unknown,unknown,accuracy,94.39,94.39,decimal,unknown,unknown,P079_C448,"increased with each epoch. The model’s validation accuracy was 94.39%, and it continued to rise until",medium
+R00035,P079,Unknown,Unknown,unknown,accuracy,1.27,1.27,decimal,unknown,unknown,P079_C449,"the ﬁnal epoch. After 10 epochs, the training loss was 1.27%, and the validation accuracy was 97.69%. In",medium
+R00036,P079,Unknown,Unknown,unknown,accuracy,97.69,97.69,decimal,unknown,unknown,P079_C449,"the ﬁnal epoch. After 10 epochs, the training loss was 1.27%, and the validation accuracy was 97.69%. In",medium
+R00037,P079,Unknown,Unknown,unknown,accuracy,99.68,99.68,decimal,unknown,unknown,P079_C450,"the ﬁnal epoch, validation accuracy was 99.68% and the training loss was almost nil.",medium
+R00038,P079,Unknown,Unknown,unknown,accuracy,83.01,83.01,decimal,unknown,unknown,P079_C452,"In Fig. 8, for ResNet152V2, the training accuracy was 83.01% in the ﬁrst epoch and subsequently",medium
+R00039,P079,Unknown,Unknown,unknown,accuracy,88.72,88.72,decimal,unknown,unknown,P079_C453,"increased with each epoch. The model’s validation accuracy was 88.72%, and it continued to rise until",medium
+R00040,P079,Unknown,Unknown,unknown,accuracy,0.9,0.9,decimal,unknown,unknown,P079_C454,"the ﬁnal epoch. After 10 epochs, the training loss was 0.9% and the validation accuracy was 98.94%. In",medium
+R00041,P079,Unknown,Unknown,unknown,accuracy,98.94,98.94,decimal,unknown,unknown,P079_C454,"the ﬁnal epoch. After 10 epochs, the training loss was 0.9% and the validation accuracy was 98.94%. In",medium
+R00042,P079,Unknown,Unknown,unknown,accuracy,99.19,99.19,decimal,unknown,unknown,P079_C455,"the ﬁnal epoch, validation accuracy was 99.19% and the training loss was almost nil.",medium
+R00043,P079,Unknown,Unknown,unknown,accuracy,99.87,99.87,decimal,unknown,unknown,P079_C463,The accuracy of the proposed model (InceptionResNetV2) was 99.87%. The training loss in the ﬁnal,medium
+R00044,P079,Unknown,Unknown,unknown,accuracy,90.22,90.22,decimal,unknown,unknown,P079_C464,deepfake images with 90.22% accuracy. The accuracy of the study [23] is not high enough to be a stable,medium
+R00045,P079,Unknown,Unknown,unknown,accuracy,91.56,91.56,decimal,unknown,unknown,P079_C472,"achieved an accuracy of 91.56%. But the learning rate used in this research is 0.00001, which is very low",medium
+R00046,P079,Unknown,Unknown,unknown,accuracy,97.83,97.83,decimal,unknown,unknown,P079_C473,"to detect deepfake images with an accuracy achieved of 97.83%, which is good, but the model proposed",medium
+R00047,P079,Unknown,Unknown,unknown,accuracy,99.87,99.87,decimal,unknown,unknown,P079_C475,is exclusively present in this research paper. The proposed system provides 99.87% accuracy in detecting,medium
+R00048,P080,Unknown,Unknown,unknown,accuracy,6.76,6.76,decimal,unknown,unknown,P080_C529,proves about 6.76% of the accuracy. Multi-view attention,medium
+R00049,P080,Unknown,Unknown,unknown,accuracy,68.53,68.53,decimal,unknown,unknown,P080_C531,improves the accuracy up to 68.53%. The results of our ab-,medium
+R00050,P081,Unknown,Unknown,unknown,accuracy,59.53,59.53,decimal,unknown,unknown,P081_C616,"attacks and a 59.53% accuracy under combination attack,",medium
+R00051,P007,Unknown,Unknown,unknown,AP,100.0,100.0,decimal,unknown,unknown,P007_C672,works well (100.0 AP). We then test how well it general-,medium
+R00052,P007,Unknown,Unknown,unknown,AP,99.1,99.1,decimal,unknown,unknown,P007_C678,"Despite these changes, our technique performs at 99.1% AP.",medium
+R00053,P007,Unknown,Unknown,unknown,AP,100.0,100.0,decimal,unknown,unknown,P007_C679,methods obtain near 100.0 AP). The comparison results are,medium
+R00054,P007,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P007_C721,augmentation scheme as Blur+JPEG (0.5) is applied to all,low
+R00055,P007,Unknown,Unknown,unknown,AP,93.2,93.2,decimal,unknown,unknown,P007_C739,"curacy and 93.2% AP. With resizing, the model drops to",medium
+R00056,P007,Unknown,Unknown,unknown,accuracy,74.9,74.9,decimal,unknown,unknown,P007_C740,"74.9% accuracy and 82.6% AP, still well above chance",medium
+R00057,P007,Unknown,Unknown,unknown,accuracy,82.6,82.6,decimal,unknown,unknown,P007_C740,"74.9% accuracy and 82.6% AP, still well above chance",medium
+R00058,P007,Unknown,Unknown,unknown,accuracy,0.1,0.1,decimal,JPEG,unknown,P007_C744,Table 6: CycleGAN testcase. We evaluate the uncalibrated accuracy of Blur+JPEG (0.1) model tested on each CycleGAN category. We,medium
+R00059,P007,Unknown,Unknown,unknown,accuracy,0.1,0.1,decimal,unknown,unknown,P007_C747,"epochs the validation accuracy does not increase by 0.1%,",medium
+R00060,P084,Unknown,Unknown,unknown,unknown,95.85,95.85,decimal,unknown,unknown,P084_C777,deepfake pictures from regular photographs with 95.85%,low
+R00061,P084,Unknown,Unknown,unknown,accuracy,97.8,97.8,decimal,unknown,unknown,P084_C785,was employed to improve the accuracy to 97.80%.,medium
+R00062,P084,Unknown,Unknown,unknown,accuracy,90.76,90.76,decimal,unknown,unknown,P084_C798,exploration and accuracy upto 90.76%.,medium
+R00063,P084,Unknown,Unknown,unknown,unknown,95.85,95.85,decimal,unknown,unknown,P084_C808,"accuracies over the three benchmark datasets as 95.85%,",low
+R00064,P084,Unknown,Unknown,unknown,unknown,10.1,10.1,decimal,unknown,unknown,P084_C875,http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1,low
+R00065,P003,Unknown,Unknown,ImageNet,unknown,1.3,1.3,decimal,unknown,unknown,P003_C886,"ImageNet to generate 1.3 million fake images, which equals the number of real images in ImageNet.",medium
+R00066,P003,Unknown,Unknown,unknown,accuracy,99.9,99.9,decimal,unknown,unknown,P003_C897,"exceptional accuracy of 99.9%. However, we observe a substantial performance degradation when",medium
+R00067,P003,Unknown,Unknown,unknown,unknown,66.9,66.9,decimal,unknown,unknown,P003_C899,to achieve 66.9%. Our evaluation offers comprehensive insights into the capabilities of the detectors.,low
+R00068,P003,Unknown,Unknown,unknown,accuracy,73.6,73.6,decimal,unknown,unknown,P003_C906,"images. The accuracy achieved on the identical-generator testing set was only 73.6%, and even lower",medium
+R00069,P003,Unknown,Unknown,LAION,unknown,1.8,1.8,decimal,unknown,unknown,P003_C911,Laion-Art. DiffusionDB [31] is a large-scale gallery dataset with 1.8 million unique prompts.,medium
+R00070,P003,Unknown,Unknown,unknown,accuracy,95.0,95.0,decimal,unknown,unknown,P003_C914,"alization capacity, achieving over 95.0% accuracy in",medium
+R00071,P022,Unknown,Unknown,unknown,unknown,38.7,38.7,decimal,unknown,unknown,P022_C935,"38.7%. Along with this, we conduct the model capability of AI-Generated images",low
+R00072,P022,Unknown,Unknown,unknown,unknown,12.4,12.4,decimal,unknown,unknown,P022_C939,"of photographs in 1826, the global collection of photographs has expanded to an estimated 12.4",low
+R00073,P022,Unknown,Unknown,unknown,accuracy,61.3,61.3,decimal,unknown,unknown,P022_C942,"participants achieved an average accuracy of only 61.3%, implying a misclassification rate of 38.7%,",medium
+R00074,P022,Unknown,Unknown,unknown,accuracy,38.7,38.7,decimal,unknown,unknown,P022_C942,"participants achieved an average accuracy of only 61.3%, implying a misclassification rate of 38.7%,",medium
+R00075,P022,Unknown,Unknown,unknown,accuracy,67.5,67.5,decimal,unknown,unknown,P022_C953,"a relatively high accuracy rate of 67.5%, whereas they can only correctly distinguish real or fake",medium
+R00076,P022,Unknown,Unknown,unknown,accuracy,50.8,50.8,decimal,unknown,unknown,P022_C954,from the category Object with a much lower accuracy rate of 50.8%. Our results indicate a significant,medium
+R00077,P022,Unknown,Unknown,unknown,accuracy,16.7,16.7,decimal,unknown,unknown,P022_C955,16.7% difference between the accuracy rates of the easiest and most challenging categories. These,medium
+R00078,P022,Unknown,Unknown,unknown,accuracy,0.5,0.5,decimal,unknown,unknown,P022_C982,"Based on its highest total average accuracy in MPBench, we select ConvNext-S (B+J 0.5) with",medium
+R00079,P022,Unknown,Unknown,unknown,unknown,2.2,2.2,decimal,unknown,unknown,P022_C1050,"We detailed the collection process of our datasets in Section 2.2 of the main paper, now the following",low
+R00080,P022,Unknown,Unknown,unknown,accuracy,49.9,49.9,decimal,unknown,unknown,P022_C1069,"collect the accuracy of all the questionnaires, and the accuracy is only 49.9%. This highlights that",medium
+R00081,P022,Unknown,Unknown,unknown,unknown,0.1,0.1,decimal,JPEG,unknown,P022_C1104,"HFlip, RandomResizedCrop(224), GaussianBlur(0.1), JPEG(0.1)",low
+R00082,P022,Unknown,Unknown,unknown,unknown,0.1,0.1,decimal,JPEG,unknown,P022_C1104,"HFlip, RandomResizedCrop(224), GaussianBlur(0.1), JPEG(0.1)",low
+R00083,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1105,"HFlip, RandomResizedCrop(224), GaussianBlur(0.5), JPEG(0.5)",low
+R00084,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1105,"HFlip, RandomResizedCrop(224), GaussianBlur(0.5), JPEG(0.5)",low
+R00085,P022,Unknown,Unknown,unknown,unknown,0.1,0.1,decimal,JPEG,unknown,P022_C1110,"HFlip, RandomResizedCrop(224), GaussianBlur(0.1), JPEG(0.1)",low
+R00086,P022,Unknown,Unknown,unknown,unknown,0.1,0.1,decimal,JPEG,unknown,P022_C1110,"HFlip, RandomResizedCrop(224), GaussianBlur(0.1), JPEG(0.1)",low
+R00087,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1111,"HFlip, RandomResizedCrop(224), GaussianBlur(0.5), JPEG(0.5)",low
+R00088,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1111,"HFlip, RandomResizedCrop(224), GaussianBlur(0.5), JPEG(0.5)",low
+R00089,P022,Unknown,Unknown,unknown,unknown,0.1,0.1,decimal,JPEG,unknown,P022_C1115,"HFlip, RandomResizedCrop(224), GaussianBlur(0.1), JPEG(0.1)",low
+R00090,P022,Unknown,Unknown,unknown,unknown,0.1,0.1,decimal,JPEG,unknown,P022_C1115,"HFlip, RandomResizedCrop(224), GaussianBlur(0.1), JPEG(0.1)",low
+R00091,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1116,"HFlip, RandomResizedCrop(224), GaussianBlur(0.5), JPEG(0.5)",low
+R00092,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1116,"HFlip, RandomResizedCrop(224), GaussianBlur(0.5), JPEG(0.5)",low
+R00093,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1119,"HFlip(0.5), RandomResizedCrop(224), GaussianBlur(0.1), JPEG(0.1)",low
+R00094,P022,Unknown,Unknown,unknown,unknown,0.1,0.1,decimal,JPEG,unknown,P022_C1119,"HFlip(0.5), RandomResizedCrop(224), GaussianBlur(0.1), JPEG(0.1)",low
+R00095,P022,Unknown,Unknown,unknown,unknown,0.1,0.1,decimal,JPEG,unknown,P022_C1119,"HFlip(0.5), RandomResizedCrop(224), GaussianBlur(0.1), JPEG(0.1)",low
+R00096,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1120,"HFlip(0.5), RandomResizedCrop(224), GaussianBlur(0.5), JPEG(0.5)",low
+R00097,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1120,"HFlip(0.5), RandomResizedCrop(224), GaussianBlur(0.5), JPEG(0.5)",low
+R00098,P022,Unknown,Unknown,unknown,unknown,0.5,0.5,decimal,JPEG,unknown,P022_C1120,"HFlip(0.5), RandomResizedCrop(224), GaussianBlur(0.5), JPEG(0.5)",low
+R00099,P026,Unknown,Unknown,unknown,AUC,8.5,8.5,decimal,unknown,unknown,P026_C1145,"terms of mean AUC, reaching up to 8.5%. Furthermore, the standard",medium
+R00100,P025,Unknown,Unknown,unknown,accuracy,99.06,99.06,decimal,unknown,unknown,P025_C1161,"state-of-the-art accuracy with the lowest error rate. We achieved 99.06% accuracy, and 0.0569 error rate",medium

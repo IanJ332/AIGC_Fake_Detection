@@ -1,11 +1,11 @@
 # Day 6 QA Engine Evaluation Summary
 
 - **Total Questions**: 40
-- **Tier Routing Accuracy**: 37/40 (92.5%)
+- **Tier Routing Accuracy**: 38/40 (95.0%)
 - **Unknown Tier Count**: 0
-- **Operator Execution Success**: 29/40
-- **Answers with Evidence**: 29
-- **Answers with Limitations**: 29
+- **Operator Execution Success**: 40/40
+- **Answers with Evidence**: 35
+- **Answers with Limitations**: 40
 
 ## Per-Tier Distribution
 | Tier | Count |
