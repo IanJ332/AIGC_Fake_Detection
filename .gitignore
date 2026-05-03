@@ -31,6 +31,8 @@ corpus/parse_logs/
 
 # Data and Extraction Outputs (Google Drive symmetry)
 Data/
+Data_V2/
+Data_v2/
 corpus/extracted/
 corpus/index/
 corpus/probes/
