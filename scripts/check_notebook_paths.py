@@ -8,24 +8,26 @@ def check_notebook_paths():
         sys.exit(1)
 
     prohibited_strings = [
+        'DATA_PATH',
+        'RESET_DATA',
         'MIN_PDF_REQUIRED_FOR_PARSE',
         'STOP_AFTER_PDF_COUNT',
-        'DATA_PATH =',
-        'RESET_DATA =',
+        'src.acquire.validate_documents',
         'src.acquire.download_documents',
+        'corpus/document_registry.csv',
         '--registry corpus/document_registry.csv',
         '--parsed-dir corpus/parsed',
         'manifest_executable_100.csv',
         'day9-corpus-expansion-100',
-        'Data_v2',
-        '"/content/drive/MyDrive/AIGC/Data"',
-        "'/content/drive/MyDrive/AIGC/Data'"
+        'Data_v2'
     ]
 
-    required_strings = [
-        'Data_V2',
-        'corpus/manifest.csv',
-        'day9-datav2-notebook-hardfix'
+    required_strings_01 = [
+        'scripts/download_corpus.py',
+        'python -m src.parse.parse_pdfs',
+        '--data-dir /content/drive/MyDrive/AIGC/Data_V2',
+        'day9_data_status.json',
+        'day9_data_sync_report.md'
     ]
 
     failed = False
@@ -39,17 +41,18 @@ def check_notebook_paths():
             with open(filepath, 'r', encoding='utf-8') as f:
                 content = f.read()
 
-                # Check prohibited
+                # Check prohibited everywhere
                 for prohibited in prohibited_strings:
                     if prohibited in content:
                         print(f"[FAIL] {filepath} contains prohibited string: {prohibited}")
                         failed = True
-
-                # Check required
-                for req in required_strings:
-                    if req not in content:
-                        print(f"[FAIL] {filepath} is missing required string: {req}")
-                        failed = True
+                        
+                # Check specifics for notebook 01
+                if file == '01_data_sync_and_check.ipynb':
+                    for req in required_strings_01:
+                        if req not in content:
+                            print(f"[FAIL] {filepath} is missing required string: {req}")
+                            failed = True
 
     if failed:
         print("Notebook path validation FAILED.")
