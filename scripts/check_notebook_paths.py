@@ -1,5 +1,4 @@
 import os
-import json
 import sys
 
 def check_notebook_paths():
@@ -9,17 +8,24 @@ def check_notebook_paths():
         sys.exit(1)
 
     prohibited_strings = [
-        '"/content/drive/MyDrive/AIGC/Data"',
-        "'/content/drive/MyDrive/AIGC/Data'",
-        'Data_v2',
+        'MIN_PDF_REQUIRED_FOR_PARSE',
+        'STOP_AFTER_PDF_COUNT',
+        'DATA_PATH =',
+        'RESET_DATA =',
+        'src.acquire.download_documents',
+        '--registry corpus/document_registry.csv',
+        '--parsed-dir corpus/parsed',
         'manifest_executable_100.csv',
-        'day9-corpus-expansion-100'
+        'day9-corpus-expansion-100',
+        'Data_v2',
+        '"/content/drive/MyDrive/AIGC/Data"',
+        "'/content/drive/MyDrive/AIGC/Data'"
     ]
 
     required_strings = [
         'Data_V2',
         'corpus/manifest.csv',
-        'day9-datav2-pipeline-fix'
+        'day9-datav2-notebook-hardfix'
     ]
 
     failed = False

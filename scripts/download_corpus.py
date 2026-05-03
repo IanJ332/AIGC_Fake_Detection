@@ -130,9 +130,16 @@ def main():
         data_dir = Path(args.data_dir)
         out_dir = data_dir / "pdfs"
         report_path = data_dir / "download_logs" / "download_report.json"
+        report_csv_path = data_dir / "download_logs" / "download_report.csv"
+        report_md_path = data_dir / "download_logs" / "download_report.md"
+        registry_path = data_dir / "registry" / "document_registry.csv"
+        registry_path.parent.mkdir(parents=True, exist_ok=True)
     else:
         out_dir = Path(args.out_dir)
         report_path = Path(args.report)
+        report_csv_path = report_path.with_suffix(".csv")
+        report_md_path = report_path.with_suffix(".md")
+        registry_path = Path("corpus/document_registry.csv")
         
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -150,6 +157,7 @@ def main():
 
     results = []
     counts = {"success": 0, "skipped": 0, "blocked": 0, "failed": 0}
+    registry_rows = []
 
     total = len(df)
     for i, row in df.iterrows():
@@ -165,13 +173,29 @@ def main():
 
         counts[result["status"]] = counts.get(result["status"], 0) + 1
         results.append(result)
+        
+        pdf_downloaded = result["status"] in ("success", "skipped") and result.get("reason") == "already_exists" or result["status"] == "success"
+        if result["status"] == "skipped" and result.get("reason") != "already_exists":
+            pdf_downloaded = False
+            
+        registry_rows.append({
+            "paper_id": pid,
+            "title": row.get("title", ""),
+            "year": row.get("year", ""),
+            "source_url": row.get("source_url", ""),
+            "pdf_url": url,
+            "pdf_downloaded": pdf_downloaded,
+            "pdf_path": str(dest) if pdf_downloaded else "",
+            "download_status": result["status"],
+            "download_reason": result.get("reason", ""),
+            "file_size_bytes": int(result.get("size_kb", 0) * 1024) if "size_kb" in result else 0
+        })
 
         symbol = {"success": "✓", "skipped": "–", "blocked": "✗", "failed": "!"}.get(
             result["status"], "?"
         )
         print(f"[{i+1:3d}/{total}] {symbol} {pid}: {result['status']} — {result.get('reason', result.get('size_kb', ''))}")
 
-    # Write report
     report = {
         "manifest": str(manifest_path),
         "out_dir": str(out_dir),
@@ -181,6 +205,19 @@ def main():
     report_path.parent.mkdir(parents=True, exist_ok=True)
     with open(report_path, "w") as f:
         json.dump(report, f, indent=2)
+        
+    results_df = pd.DataFrame(results)
+    results_df.to_csv(report_csv_path, index=False)
+    
+    with open(report_md_path, "w") as f:
+        f.write("# Download Report\n\n")
+        f.write(f"- Success: {counts.get('success', 0)}\n")
+        f.write(f"- Skipped: {counts.get('skipped', 0)}\n")
+        f.write(f"- Blocked: {counts.get('blocked', 0)}\n")
+        f.write(f"- Failed: {counts.get('failed', 0)}\n")
+        
+    registry_df = pd.DataFrame(registry_rows)
+    registry_df.to_csv(registry_path, index=False)
 
     print(f"\n=== Download Report ===")
     print(f"  Success  : {counts.get('success', 0)}")
