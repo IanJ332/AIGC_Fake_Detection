@@ -4,9 +4,9 @@ This document outlines the known constraints and design boundaries of the Analyt
 
 ## Data and Coverage
 
-- **PDF Access Restrictions**: Only 72 out of 100 target papers were successfully parsed. 28% of papers returned HTTP 403 Forbidden errors or lacked open-access fallbacks, limiting the total corpus size.
-- **Citation Graph**: The system currently lacks a full citation graph. References were not extracted as a primary entity type, limiting the engine's ability to navigate cross-doc "Influenced-By" relationships.
-- **Paper Identification**: Metadata synthesis (P001-P100) is based on row order in the `manifest_100.csv`. Discrepancies in the initial CSV ordering could lead to mislabeled IDs if the manifest is re-sorted.
+- **PDF Access Restrictions**: The final corpus achieves 117 successfully parsed papers. While the system successfully backfills paywalled documents with Open Access candidates, total scale is ultimately bounded by the availability of high-quality OA papers.
+- **Citation Graph**: The system implements citation graph features via OpenAlex metadata mapping, but complex internal self-citations depend on extracted string matching.
+- **Paper Identification**: Candidate papers use dynamic ID generation (Cxxx) to avoid overlapping with seed IDs (Pxxx), requiring accurate metadata normalization downstream.
 
 ## Analytical Depth
 

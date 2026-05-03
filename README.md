@@ -110,20 +110,24 @@ The recommended workflow uses Google Colab with Google Drive as persistent stora
 
 ## Performance
 
+- **Executable parsed corpus**: 117 papers
+- **Entities**: 22,241
+- **Result tuples**: 893
 - **Routing Accuracy**: 95.0% (38/40 questions)
-- **Operator Execution Success**: 100%
-- **Evidence Coverage**: 100% (all answers include evidence)
-- **Unknown Tier Count**: 0
+- **Operator Execution Success**: 100.0%
+- **Evidence Coverage**: 92.5%
+- **Spend**: $0.00
+- **Branch/reproducibility**: main
 
 ## Cost Report
 
-**Total spend: $0.00.** No paid APIs, no LLM calls, no embeddings. Purely deterministic operators on CPU.
+**Total spend: $0.00.** No paid APIs, no LLM calls, no embeddings. Purely deterministic operators on CPU. OpenAlex and OA backfill use no paid APIs.
 
-| Level | Mode | Routing | Op Success | Evidence | Spend |
-|:---|:---|:---|:---|:---|:---|
-| 0 | Router only | 95% | 100% | 0% | $0.00 |
-| 1 | Operator (no evidence) | 95% | 100% | 0% | $0.00 |
-| 2 | Full pipeline | 95% | 100% | 100% | $0.00 |
+| Level | Mode | Routing Accuracy | Operator Success | Evidence Coverage | Avg Latency | Spend |
+|:---|:---|:---|:---|:---|:---|:---|
+| 0 | router_only | 95.0% | 100.0% | 0.0% | 0.000s | $0.00 |
+| 1 | operator_no_evidence | 95.0% | 100.0% | 0.0% | 0.165s | $0.00 |
+| 2 | operator_with_evidence | 95.0% | 100.0% | 92.5% | 0.135s | $0.00 |
 
 See [`docs/quality_vs_budget.md`](docs/quality_vs_budget.md) and [`docs/cost_report.md`](docs/cost_report.md) for details.
 

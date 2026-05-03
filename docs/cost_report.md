@@ -18,14 +18,14 @@
 | Mean | $0.00 |
 | Median | $0.00 |
 | Max | $0.00 |
-| Latency (avg) | ~84 ms |
+| Latency (avg) | ~135 ms |
 
 All 40 evaluation questions run locally with zero API cost.
 
 ## Infrastructure Notes
 
-- **Corpus**: 100-paper manifest assembled via OpenAlex API (free).
-- **PDF Acquisition**: Some publisher PDFs (~28) return 403 Forbidden. These are documented as known failures. The system operates on all successfully acquired papers.
+- **Corpus**: 117-paper executable corpus assembled via OpenAlex API (free). OpenAlex and OA backfill use no paid APIs.
+- **PDF Acquisition**: Some publisher PDFs return 403 Forbidden. The system successfully backfills these with Open Access candidates. The final executable corpus achieved 117 parsed papers.
 - **Compute**: All extraction and QA logic runs on consumer-grade CPU. No GPU required.
 - **Storage**: ~1.2 GB for PDFs + parsed JSON + DuckDB index.
 
