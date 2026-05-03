@@ -36,7 +36,7 @@ def check_notebook_paths():
 
     required_global = [
         'Data_V2',
-        'day9-datav2-notebook-hardfix'
+        'main'
     ]
 
     required_strings_03 = [
