@@ -19,13 +19,10 @@ def normalize_columns(df):
 def check_relevance(title, abstract):
     text = str(title).lower() + " " + str(abstract).lower()
     
-    include_kws = ["ai-generated image", "synthetic image", "fake image", "aigc", "generative", "diffusion", "gan", "image forensics", "deepfake image", "generated image detection"]
-    exclude_kws = ["medical-only", "audio-only", "speech-only", "text-only"]
+    include_kws = ["synthetic media", "multimedia forensics", "image forgery", "image manipulation", "copy-move", "splicing", "inpainting", "face forgery", "deepfake", "fake face", "manipulated image", "forged image", "visual misinformation", "generated image", "synthetic image", "ai-generated image", "gan", "diffusion", "aigc", "attribution"]
+    exclude_kws = ["audio only", "speech only", "text only", "medical diagnosis", "malnutrition", "disease", "lesion", "tumor", "segmentation only", "object detection only"]
     
     if any(ex in text for ex in exclude_kws):
-        # We allow video-only if image/deepfake detection related, but let's keep it simple
-        if "video-only" in text and not any(kw in text for kw in ["image", "deepfake detection"]):
-            return False
         return False
         
     return any(inc in text for inc in include_kws)
@@ -57,10 +54,20 @@ def main():
     seed_df = pd.read_csv(args.seed_manifest)
     seed_df = normalize_columns(seed_df)
 
+    candidate_pool_used = ""
+    candidates_rows = 0
+    
     candidates_df = pd.DataFrame()
     if os.path.exists(args.candidate_pool):
         candidates_df = pd.read_csv(args.candidate_pool)
         candidates_df = normalize_columns(candidates_df)
+        candidate_pool_used = args.candidate_pool
+        candidates_rows = len(candidates_df)
+        if "scope_family" not in candidates_df.columns:
+            candidates_df["scope_family"] = "unknown"
+    
+    if "scope_family" not in seed_df.columns:
+        seed_df["scope_family"] = "seed"
     
     # Deduplicate
     all_df = pd.concat([seed_df, candidates_df], ignore_index=True)
@@ -142,21 +149,38 @@ def main():
     reg_file.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(active_manifest).to_csv(reg_file, index=False)
     
+    # Get scope family distribution
+    final_df = pd.DataFrame(active_manifest)
+    scope_dist = {}
+    if "scope_family" in final_df.columns:
+        scope_dist = final_df["scope_family"].value_counts().to_dict()
+    pdf_count = len(list(data_dir.joinpath("pdfs").glob("*.pdf")))
+        
     status_data = {
         "target": args.target_parsed,
-        "parsed": parsed,
+        "parsed_json_count": parsed,
+        "actual_pdf_count": pdf_count,
         "attempts": attempts,
-        "status": status
+        "candidate_pool_used": candidate_pool_used,
+        "candidate_pool_rows": candidates_rows,
+        "scope_family_distribution": scope_dist,
+        "final_status": status
     }
     with open(data_dir / "probes" / "executable_corpus_status.json", "w") as f:
         json.dump(status_data, f, indent=2)
         
     with open(data_dir / "download_logs" / "backfill_report.md", "w") as f:
         f.write("# Backfill Report\n\n")
-        f.write(f"- Status: {status}\n")
-        f.write(f"- Target: {args.target_parsed}\n")
-        f.write(f"- Parsed: {parsed}\n")
-        f.write(f"- Attempts: {attempts}\n")
+        f.write(f"- **Final Status**: {status}\n")
+        f.write(f"- **Candidate Pool Used**: {candidate_pool_used}\n")
+        f.write(f"- **Candidate Pool Rows**: {candidates_rows}\n")
+        f.write(f"- **Target Parsed**: {args.target_parsed}\n")
+        f.write(f"- **Actual PDF Count**: {pdf_count}\n")
+        f.write(f"- **Parsed JSON Count**: {parsed}\n")
+        f.write(f"- **Attempts**: {attempts}\n\n")
+        f.write("## Scope Family Distribution\n")
+        for k, v in scope_dist.items():
+            f.write(f"- {k}: {v}\n")
 
 if __name__ == "__main__":
     main()

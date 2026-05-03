@@ -1,10 +1,14 @@
-# AIGC Fake Detection: Research Comprehension QA Engine
+# Synthetic Media Forensics: Research Comprehension QA Engine
 
-A deterministic, zero-cost question-answering system that reasons across a corpus of 100 research papers on AI-Generated Content (AIGC) image detection — answering queries about datasets, models, contradictions, trends, citations, and more with cited, defensible evidence.
+A deterministic, zero-cost question-answering system that reasons across a corpus of 100 research papers on Synthetic Media Forensics and AI-Generated Visual Content Detection — answering queries about datasets, models, contradictions, trends, citations, and more with cited, defensible evidence.
 
 ## Topic
 
-**AI-Generated Content (AIGC) Image Detection** — the subfield of computer vision and media forensics concerned with detecting images produced by generative models (GANs, diffusion models, autoregressive generators).
+**Synthetic Media Forensics and AI-Generated Visual Content Detection** — a coherent subfield of computer vision and media forensics concerned with detecting, attributing, and analyzing manipulated or generated visual media (including GANs, diffusion models, image forgery, copy-move, and deepfake detection).
+
+* The corpus spans generated image detection, deepfake/face forgery detection, image manipulation detection, visual media forensics, and benchmarks.
+* The topic is coherent because all papers address whether visual media is generated, manipulated, forged, or attributable to generative pipelines.
+* The scope is broad enough to support a robust 100-paper corpus while maintaining strict analytical cohesion.
 
 ## Architecture Overview
 
