@@ -21,81 +21,82 @@ C00018,P016,architecture_type,VIT,,,,,,section:dataset,section:dataset,cnn,0.8
 C00019,P016,architecture_type,VIT,,,,,,section:dataset,section:dataset,cnn,0.8
 C00020,P016,architecture_type,VIT,,,,,,section:dataset,section:dataset,cnn,0.8
 C00021,P016,architecture_type,VIT,,,,,,section:dataset,section:dataset,cnn,0.8
-C00022,P016,model_size,CNN,17.0,,17.0,,,section:experiment,section:experiment,17 model,0.8
-C00023,P016,model_size,CNN,8.0,,8.0,,,section:experiment,section:experiment,8 model,0.8
-C00024,P016,model_size,CNN,9.0,,9.0,,,section:experiment,section:experiment,9 model,0.8
-C00025,P016,sota_claim,CNN,,,,,,section:experiment,section:experiment,best performance,0.8
-C00026,P016,architecture_type,CNN,,,,,,section:experiment,section:experiment,cnn,0.8
-C00027,P016,model_size,CNN,9.0,,9.0,,,section:conclusion,section:conclusion,9 model,0.8
-C00028,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,state-of-the-art,0.8
-C00029,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,state-of-the-art,0.8
-C00030,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,achieves,0.8
-C00031,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,achieves,0.8
-C00032,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,achieves,0.8
-C00033,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,achieves,0.8
-C00034,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,achieves,0.8
-C00035,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,achieves,0.8
-C00036,P016,architecture_type,CNN,,,,,,section:conclusion,section:conclusion,cnn,0.8
-C00037,P016,architecture_type,CNN,,,,,,section:references,section:references,cnn,0.8
-C00038,P016,architecture_type,CNN,,,,,,section:references,section:references,cnn,0.8
-C00039,P017,architecture_type,CNN,,,,,,section:unknown,section:unknown,cnn,0.8
-C00040,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
-C00041,P017,sota_claim,CNN,,,,,,section:dataset,section:dataset,state-of-the-art,0.8
-C00042,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00022,P016,sota_claim,CNN,,,,,,section:experiment,section:experiment,best performance,0.8
+C00023,P016,architecture_type,CNN,,,,,,section:experiment,section:experiment,cnn,0.8
+C00024,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,state-of-the-art,0.8
+C00025,P016,sota_claim,CNN,,,,,,section:conclusion,section:conclusion,state-of-the-art,0.8
+C00026,P016,architecture_type,CNN,,,,,,section:conclusion,section:conclusion,cnn,0.8
+C00027,P016,architecture_type,CNN,,,,,,section:references,section:references,cnn,0.8
+C00028,P016,architecture_type,CNN,,,,,,section:references,section:references,cnn,0.8
+C00029,P017,architecture_type,CNN,,,,,,section:unknown,section:unknown,cnn,0.8
+C00030,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00031,P017,sota_claim,CNN,,,,,,section:dataset,section:dataset,state-of-the-art,0.8
+C00032,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00033,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00034,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00035,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00036,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00037,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00038,P017,augmentation_flag,VIT,,,,,,section:dataset,section:dataset,crop,0.8
+C00039,P017,architecture_type,VIT,,,,,,section:dataset,section:dataset,vit,0.8
+C00040,P017,architecture_type,VIT,,,,,,section:dataset,section:dataset,resnet,0.8
+C00041,P017,architecture_type,VIT,,,,,,section:dataset,section:dataset,cnn,0.8
+C00042,P017,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
 C00043,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
 C00044,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
-C00045,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00045,P017,sota_claim,CNN,,,,,,section:dataset,section:dataset,state-of-the-art,0.8
 C00046,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
 C00047,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
-C00048,P017,augmentation_flag,VIT,,,,,,section:dataset,section:dataset,crop,0.8
-C00049,P017,architecture_type,VIT,,,,,,section:dataset,section:dataset,vit,0.8
-C00050,P017,architecture_type,VIT,,,,,,section:dataset,section:dataset,resnet,0.8
-C00051,P017,architecture_type,VIT,,,,,,section:dataset,section:dataset,cnn,0.8
-C00052,P017,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
-C00053,P017,sota_claim,CNN,,,,,,section:dataset,section:dataset,achieves,0.8
-C00054,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
-C00055,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
-C00056,P017,sota_claim,CNN,,,,,,section:dataset,section:dataset,state-of-the-art,0.8
-C00057,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
-C00058,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00048,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00049,P017,sota_claim,RESNET,,,,,,section:dataset,section:dataset,state-of-the-art,0.8
+C00050,P017,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00051,P017,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00052,P017,architecture_type,CLIP,,,,,,section:dataset,section:dataset,clip,0.8
+C00053,P017,architecture_type,CLIP,,,,,,section:dataset,section:dataset,clip,0.8
+C00054,P017,architecture_type,CLIP,,,,,,section:dataset,section:dataset,clip,0.8
+C00055,P017,sota_claim,CLIP,,,,,,section:discussion,section:discussion,state-of-the-art,0.8
+C00056,P017,architecture_type,CLIP,,,,,,section:discussion,section:discussion,clip,0.8
+C00057,P017,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00058,P017,architecture_type,RESNET,,,,,,section:references,section:references,resnet,0.8
 C00059,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
-C00060,P017,sota_claim,RESNET,,,,,,section:dataset,section:dataset,state-of-the-art,0.8
-C00061,P017,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
-C00062,P017,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
-C00063,P017,architecture_type,CLIP,,,,,,section:dataset,section:dataset,clip,0.8
-C00064,P017,architecture_type,CLIP,,,,,,section:dataset,section:dataset,clip,0.8
-C00065,P017,architecture_type,CLIP,,,,,,section:dataset,section:dataset,clip,0.8
-C00066,P017,sota_claim,CLIP,,,,,,section:discussion,section:discussion,state-of-the-art,0.8
-C00067,P017,architecture_type,CLIP,,,,,,section:discussion,section:discussion,clip,0.8
-C00068,P017,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
-C00069,P017,architecture_type,RESNET,,,,,,section:references,section:references,resnet,0.8
-C00070,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
-C00071,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
-C00072,P079,dataset_size,VIT,70000.0,,70000.0,,,section:unknown,section:unknown,"70,000 images",0.8
-C00073,P079,sota_claim,VIT,,,,,,section:unknown,section:unknown,state-of-the-art,0.8
-C00074,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,vit,0.8
-C00075,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,clip,0.8
-C00076,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
-C00077,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
-C00078,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
-C00079,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
-C00080,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
-C00081,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
+C00060,P017,architecture_type,CNN,,,,,,section:dataset,section:dataset,cnn,0.8
+C00061,P079,dataset_size,VIT,70000.0,,70000.0,,,section:unknown,section:unknown,"70,000 images",0.8
+C00062,P079,sota_claim,VIT,,,,,,section:unknown,section:unknown,state-of-the-art,0.8
+C00063,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,vit,0.8
+C00064,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,clip,0.8
+C00065,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
+C00066,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
+C00067,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
+C00068,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
+C00069,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
+C00070,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,resnet,0.8
+C00071,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00072,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00073,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00074,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00075,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00076,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00077,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00078,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00079,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00080,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
+C00081,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
 C00082,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
 C00083,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00084,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00085,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00086,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00087,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00088,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00089,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00090,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00091,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00092,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00093,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00094,P079,architecture_type,VIT,,,,,,section:unknown,section:unknown,cnn,0.8
-C00095,P079,model_size,RESNET,3.0,,3.0,,,section:dataset,section:dataset,3 model,0.8
-C00096,P079,model_size,RESNET,2.7,,2.7,,,section:dataset,section:dataset,2.7 model,0.8
-C00097,P079,model_size,RESNET,2.8,,2.8,,,section:dataset,section:dataset,2.8 model,0.8
-C00098,P079,model_size,RESNET,3.2,,3.2,,,section:dataset,section:dataset,3.2 model,0.8
-C00099,P079,model_size,RESNET,2.0,,2.0,,,section:dataset,section:dataset,2 model,0.8
+C00084,P079,dataset_size,RESNET,100000.0,,100000.0,,,section:dataset,section:dataset,"100,000 images",0.8
+C00085,P079,augmentation_flag,RESNET,,,,,,section:dataset,section:dataset,data augmentation,0.8
+C00086,P079,augmentation_flag,RESNET,,,,,,section:dataset,section:dataset,data augmentation,0.8
+C00087,P079,augmentation_flag,RESNET,,,,,,section:dataset,section:dataset,data augmentation,0.8
+C00088,P079,augmentation_flag,RESNET,,,,,,section:dataset,section:dataset,data augmentation,0.8
+C00089,P079,augmentation_flag,RESNET,,,,,,section:dataset,section:dataset,data augmentation,0.8
+C00090,P079,augmentation_flag,RESNET,,,,,,section:dataset,section:dataset,crop,0.8
+C00091,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00092,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00093,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00094,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00095,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00096,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00097,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00098,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00099,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8
+C00100,P079,architecture_type,RESNET,,,,,,section:dataset,section:dataset,resnet,0.8

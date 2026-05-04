@@ -43,11 +43,11 @@ def extract_numeric_claims(data_dir):
             r"(\d+\.?\d*\s*[m|b|million|billion]?)\s*parameters",
             r"#params[:\s]*(\d+\.?\d*\s*[m|b|million|billion]?)",
             r"params[:\s]*(\d+\.?\d*\s*[m|b|million|billion]?)",
-            r"(\d+\.?\d*[m|b])\s*params",
+            r"(\d+\.?\d*[m|b|million|billion]?)\s*params",
         ],
         "model_size": [
-            r"(\d+\.?\d*\s*[m|b|million|billion]?)\s*model",
-            r"size of\s*(\d+\.?\d*\s*[m|b|million|billion]?)",
+            r"model size[:\s]*(\d+\.?\d*\s*[m|b|million|billion]?)",
+            r"size of\s*(\d+\.?\d*\s*(?:m|b|million|billion))",
         ],
         "dataset_size": [
             r"(\d+[\d,.]*\s*[m|b|million|billion]?)\s*images",
@@ -61,7 +61,6 @@ def extract_numeric_claims(data_dir):
             r"sota",
             r"outperforms previous",
             r"best performance",
-            r"achieves",
         ],
         "augmentation_flag": [
             r"data augmentation",

@@ -47,6 +47,7 @@ def run_stress_eval(data_dir, questions_path, output_dir=None):
                 )
                 
                 output_text = result.stdout
+                error_text = result.stderr
                 is_success = (result.returncode == 0)
                 
                 # Check for "defensible limitation"
@@ -64,7 +65,8 @@ def run_stress_eval(data_dir, questions_path, output_dir=None):
                     "question": question,
                     "status": "success" if is_success else "failure",
                     "is_limitation": is_limitation,
-                    "output": output_text
+                    "output": output_text,
+                    "error": error_text if not is_success else ""
                 })
                 
             except Exception as e:

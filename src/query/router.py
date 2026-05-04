@@ -37,6 +37,15 @@ def classify_question(question: str) -> dict:
             "confidence": 0.9
         }
 
+    # 2.5 SOTA over years -> Temporal (Special Case)
+    if ("sota" in q or "state-of-the-art" in q) and (re.search(r"\b20\d{2}\b", q) or "versus" in q or " vs " in q):
+        return {
+            "tier": "temporal",
+            "intent": "trend_analysis",
+            "entities": {},
+            "confidence": 0.95
+        }
+
     # 3. Contradiction / Comparison: sota, divergence, conflict, vs, compare, differ
     if any(k in q for k in ["conflict", "disagree", "contradict", "discrepancy", "sota", "state-of-the-art", "diverge", "divergence", "variation", "inconsistency", "compare", "differ"]):
         return {
