@@ -113,9 +113,9 @@ The recommended workflow uses Google Colab with Google Drive as persistent stora
 - **Executable parsed corpus**: 117 papers
 - **Entities**: 22,241
 - **Result tuples**: 893
-- **Routing Accuracy**: 95.0% (38/40 questions)
+- **Routing Accuracy**: 97.5% (39/40 questions)
 - **Operator Execution Success**: 100.0%
-- **Evidence Coverage**: 92.5%
+- **Evidence Coverage**: 100.0%
 - **Spend**: $0.00
 - **Branch/reproducibility**: main
 
@@ -126,8 +126,8 @@ The submitted system intentionally uses zero paid APIs. I therefore report three
 | Level | Mode | Routing Accuracy | Operator Success | Evidence Coverage | Avg Latency | Spend |
 |:---|:---|:---|:---|:---|:---|:---|
 | 0 | router_only | 97.5% | 100.0% | 0.0% | 0.000s | $0.00 |
-| 1 | operator_no_evidence | 97.5% | 100.0% | 0.0% | 0.045s | $0.00 |
-| 2 | operator_with_evidence | 97.5% | 100.0% | 90.0% | 0.044s | $0.00 |
+| 1 | operator_no_evidence | 97.5% | 100.0% | 0.0% | 0.038s | $0.00 |
+| 2 | operator_with_evidence | 97.5% | 100.0% | 100.0% | 0.038s | $0.00 |
 
 See [`docs/quality_vs_budget.md`](docs/quality_vs_budget.md) and [`docs/cost_report.md`](docs/cost_report.md) for details.
 
