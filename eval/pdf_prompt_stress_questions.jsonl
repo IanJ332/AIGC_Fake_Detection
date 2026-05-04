@@ -1,0 +1,10 @@
+{"id": "STRESS_001", "tier": "aggregation", "question": "List every dataset used across the corpus, deduplicated."}
+{"id": "STRESS_002", "tier": "aggregation", "question": "What is the median model size reported in the corpus?"}
+{"id": "STRESS_003", "tier": "single_doc", "question": "List papers that claim SOTA on GenImage, with their reported numbers."}
+{"id": "STRESS_004", "tier": "multihop", "question": "Find a methodological choice where the field has diverged."}
+{"id": "STRESS_005", "tier": "temporal", "question": "What was considered SOTA in 2020 versus 2024 in this field?"}
+{"id": "STRESS_006", "tier": "citation_graph", "question": "What is the citation chain from P001 to P005?"}
+{"id": "STRESS_007", "tier": "quantitative", "question": "Among papers using ImageNet, which report results without using data augmentation?"}
+{"id": "STRESS_008", "tier": "negation", "question": "Which standard benchmark for this field is conspicuously absent across these papers?"}
+{"id": "STRESS_009", "tier": "quantitative", "question": "Sum the reported parameter counts of all transformer-based models in the corpus."}
+{"id": "STRESS_010", "tier": "quantitative", "question": "What is the correlation between dataset size and reported accuracy?"}

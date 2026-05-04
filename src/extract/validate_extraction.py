@@ -12,6 +12,7 @@ def validate_extraction(data_dir):
     entities_path = extracted_dir / "entities.csv"
     results_path = extracted_dir / "result_tuples.csv"
     summary_path = extracted_dir / "paper_entity_summary.csv"
+    claims_path = extracted_dir / "numeric_claims.csv"
     duckdb_path = data_dir / "index" / "research_corpus.duckdb"
     
     issues = []
@@ -20,6 +21,7 @@ def validate_extraction(data_dir):
     if not entities_path.exists(): issues.append("entities.csv missing")
     if not results_path.exists(): issues.append("result_tuples.csv missing")
     if not summary_path.exists(): issues.append("paper_entity_summary.csv missing")
+    if not claims_path.exists(): issues.append("numeric_claims.csv missing")
     if not duckdb_path.exists(): issues.append("DuckDB index missing")
     
     if issues:
@@ -30,6 +32,7 @@ def validate_extraction(data_dir):
     df_entities = pd.read_csv(entities_path) if entities_path.exists() else pd.DataFrame()
     df_results = pd.read_csv(results_path) if results_path.exists() else pd.DataFrame()
     df_summary = pd.read_csv(summary_path) if summary_path.exists() else pd.DataFrame()
+    df_claims = pd.read_csv(claims_path) if claims_path.exists() else pd.DataFrame()
     
     entity_count = len(df_entities)
     result_count = len(df_results)
@@ -73,6 +76,7 @@ def validate_extraction(data_dir):
         f.write(f"- **Extraction Status**: {status}\n")
         f.write(f"- **Total Entities Extracted**: {entity_count}\n")
         f.write(f"- **Total Result Tuples Extracted**: {result_count}\n")
+        f.write(f"- **Total Numeric Claims Extracted**: {len(df_claims)}\n")
         f.write(f"- **Papers with Entities**: {papers_with_entities}\n")
         f.write(f"- **Papers with Results**: {papers_with_results}\n\n")
         
@@ -98,6 +102,9 @@ def validate_extraction(data_dir):
         write_dict_table("Top 20 Models/Backbones", top_models)
         write_dict_table("Top 20 Metrics", top_metrics)
         write_dict_table("Top 20 Generator Families", top_generators)
+        
+        if not df_claims.empty and "claim_type" in df_claims.columns:
+            write_dict_table("Numeric Claim Types", get_top_20(df_claims, "claim_type"))
         
         f.write("## Observations\n")
         if status == "CAUTION":

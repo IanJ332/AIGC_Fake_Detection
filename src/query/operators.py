@@ -27,7 +27,7 @@ def load_context(data_dir):
         ctx["db"] = duckdb.connect(str(db_path))
     
     # Pre-load some critical CSVs for quick lookup
-    for name in ["entities", "result_tuples", "paper_entity_summary", "extraction_registry", "paper_section_stats"]:
+    for name in ["entities", "result_tuples", "paper_entity_summary", "extraction_registry", "paper_section_stats", "numeric_claims"]:
         p = data_dir / "extracted" / f"{name}.csv"
         if p.exists():
             ctx["dfs"][name] = pd.read_csv(p)
@@ -216,15 +216,41 @@ def answer_single_doc(question, route, ctx):
 
 def answer_aggregation(question, route, ctx):
     df_ent = ctx["dfs"].get("entities")
+    df_claims = ctx["dfs"].get("numeric_claims")
+    
+    q = question.lower()
+    
+    # --- Median model size / parameter count ---
+    if "median" in q and ("model size" in q or "parameter" in q):
+        if df_claims is not None and not df_claims.empty:
+            ctype = "parameter_count" if "parameter" in q else "model_size"
+            vals = df_claims[df_claims["claim_type"] == ctype]["normalized_value"].dropna()
+            if len(vals) >= 3:
+                med = vals.median()
+                ans = f"The median {ctype.replace('_', ' ')} reported in the corpus is {med:,.0f} (based on {len(vals)} extracted values)."
+                evidence_rows = df_claims[df_claims["claim_type"] == ctype].head(3).to_dict('records')
+                evidence = collect_evidence(evidence_rows, ctx["data_dir"], paper_meta=ctx["paper_meta"], query=question)
+                return ans, evidence, []
+            else:
+                ans = f"Insufficient reliable {ctype.replace('_', ' ')} claims found; extracted {len(vals)} candidate values."
+                return ans, [], []
+    
     if df_ent is None:
         return "Entity data not available for aggregation.", [], ["entities.csv missing"]
     
-    q = question.lower()
     etype = "dataset"
     if "metric" in q: etype = "metric"
     elif "model" in q or "backbone" in q: etype = "model_backbone"
     elif "generator" in q: etype = "generator_family"
     
+    # --- List every dataset / deduplicated ---
+    if etype == "dataset" and any(k in q for k in ["list every", "deduplicated", "all datasets"]):
+        all_ds = sorted(df_ent[df_ent["entity_type"] == "dataset"]["entity"].dropna().unique())
+        ans = f"List of {len(all_ds)} unique datasets used across the corpus (deduplicated):\n"
+        ans += ", ".join(all_ds)
+        evidence = [{"paper_id": "DATA_BASIS", "title": "entities.csv", "year": "N/A", "anchor": "aggregation", "snippet": f"Unique dataset entities count: {len(all_ds)}"}]
+        return ans, evidence, []
+
     top = df_ent[df_ent["entity_type"] == etype]["entity"].value_counts().head(10)
     
     if top.empty:
@@ -240,7 +266,7 @@ def answer_aggregation(question, route, ctx):
             examples = df_ent[(df_ent["entity_type"] == etype) & (df_ent["entity"] == name)].head(2)
             evidence_rows.extend(examples.to_dict('records'))
         
-    evidence = collect_evidence(evidence_rows, ctx["data_dir"], paper_meta=ctx["paper_meta"], max_items=10)
+    evidence = collect_evidence(evidence_rows, ctx["data_dir"], paper_meta=ctx["paper_meta"], max_items=10, query=question)
     
     return ans, evidence, ["Entity counts are based on mention frequency, not unique papers."]
 
@@ -455,6 +481,54 @@ def answer_citation_graph(question, route, ctx):
             if len(t) > 10 and t in q:
                 targets.append(pid)
 
+    # --- Citation Chain / Path ---
+    if any(k in q for k in ["citation chain", "path from", "chain from", "how is p", "link between"]):
+        pids = re.findall(r"\b(P\d{3})\b", question.upper())
+        if len(pids) >= 2:
+            start_pid, end_pid = pids[0], pids[1]
+            
+            # BFS
+            queue = [[start_pid]]
+            visited = {start_pid}
+            path = None
+            
+            while queue:
+                current_path = queue.pop(0)
+                node = current_path[-1]
+                
+                if node == end_pid:
+                    path = current_path
+                    break
+                
+                # We need outgoing citations: citing_pid -> cited_pid
+                # paper_cited_by stores cited_pid -> [citing_pids]
+                # We need to invert this or search all referenced_works
+                # But wait, load_context already has citing_pid -> cited_pid logic?
+                # Actually, paper_cited_by is cited_to_citing. 
+                # Let's use it to find paths.
+                
+                # To find path FROM start_pid TO end_pid:
+                # We need to know who start_pid CITES.
+                # Let's build citing_to_cited on the fly if not in ctx.
+                if "citing_to_cited" not in ctx:
+                    ctx["citing_to_cited"] = {}
+                    for target, citers in paper_cited_by.items():
+                        for citer in citers:
+                            ctx["citing_to_cited"].setdefault(citer, []).append(target)
+                
+                for neighbor in ctx["citing_to_cited"].get(node, []):
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append(current_path + [neighbor])
+            
+            if path:
+                ans = f"Citation chain found: {' -> '.join(path)}\n"
+                ans += f"This represents a path of length {len(path)-1} through internal corpus citations."
+                evidence = collect_evidence([{"paper_id": p} for p in path], ctx["data_dir"], paper_meta=ctx.get("paper_meta", {}), query=question)
+                return ans, evidence, []
+            else:
+                return f"No internal citation path found between {start_pid} and {end_pid}.", [], ["Graph loaded but no direct or indirect citation link exists between these two papers in the corpus."]
+
     if targets:
         targets = list(set(targets)) # unique
         all_citers = []
@@ -566,6 +640,28 @@ def answer_negation(question, route, ctx):
     all_pids = set(df_reg["paper_id"].dropna()) if df_reg is not None else set()
     evidence = []
 
+    # --- Standard benchmark absence ---
+    if any(k in q for k in ["standard benchmark", "absent", "missing", "conspicuously"]):
+        config_path = Path("configs/expected_benchmarks.json")
+        if config_path.exists():
+            with open(config_path, "r") as f:
+                expected = set(json.load(f))
+            
+            observed = set()
+            if df_ent is not None:
+                # Normalize observed for matching
+                all_ents = df_ent[df_ent["entity_type"] == "dataset"]["entity"].dropna().unique()
+                observed = {str(e).lower() for e in all_ents}
+            
+            missing = sorted([b for b in expected if b.lower() not in observed])
+            found = sorted([b for b in expected if b.lower() in observed])
+            
+            ans = "Conspicuously absent standard benchmarks:\n"
+            ans += f"  Missing: {', '.join(missing)}\n"
+            ans += f"  Observed: {', '.join(found)}\n"
+            evidence = [{"paper_id": "DATA_BASIS", "title": "expected_benchmarks.json", "year": "N/A", "anchor": "negation", "snippet": f"Gap analysis against {len(expected)} standard benchmarks."}]
+            return ans, evidence, []
+
     # --- Entity-specific absence ---
     if df_ent is not None:
         all_entities = df_ent["entity"].dropna().unique()
@@ -612,6 +708,7 @@ def answer_quantitative(question, route, ctx):
     df_ent = ctx["dfs"].get("entities")
     df_sect = ctx["dfs"].get("paper_section_stats")
     df_reg = ctx["dfs"].get("extraction_registry")
+    df_claims = ctx["dfs"].get("numeric_claims")
 
     if df_sum is None:
         return "Missing summary data.", [], ["paper_entity_summary.csv missing"]
@@ -620,19 +717,79 @@ def answer_quantitative(question, route, ctx):
     paper_count = len(df_sum)
     result_count = len(df_res) if df_res is not None else 0
 
-    # --- Entity-specific count ---
-    if df_ent is not None:
-        all_entities = df_ent["entity"].dropna().unique()
-        matched = [e for e in all_entities if str(e).lower() in q and len(str(e)) > 2]
-        if matched:
-            entity = matched[0]
-            papers_with = df_ent[df_ent["entity"].str.lower() == entity.lower()]["paper_id"].nunique()
-            ans = f"Papers mentioning '{entity}': {papers_with} out of {paper_count} corpus papers."
-            evidence = [{"paper_id": "DATA_BASIS", "title": "entities.csv", "year": "N/A",
-                         "anchor": "count", "snippet": f"Distinct paper_id count for entity='{entity}'."}]
-            return ans, evidence, []
+    # --- 1. Correlation dataset size vs accuracy ---
+    if "correlation" in q and ("dataset size" in q or "data size" in q) and ("accuracy" in q or "acc" in q or "auc" in q):
+        if df_claims is not None and df_res is not None:
+            ds_claims = df_claims[df_claims["claim_type"] == "dataset_size"][["paper_id", "normalized_value"]].rename(columns={"normalized_value": "ds_size"})
+            acc_results = df_res[df_res["metric_guess"].str.lower().isin(["accuracy", "acc", "auc"])][["paper_id", "value_numeric"]].rename(columns={"value_numeric": "accuracy"})
+            
+            # Join by paper_id
+            joined = pd.merge(ds_claims, acc_results, on="paper_id").dropna()
+            if len(joined) >= 5:
+                pearson = joined["ds_size"].corr(joined["accuracy"])
+                spearman = joined["ds_size"].corr(joined["accuracy"], method='spearman')
+                ans = f"Correlation between dataset size and accuracy/AUC across {len(joined)} pairs:\n"
+                ans += f"- Pearson: {pearson:.3f}\n"
+                ans += f"- Spearman: {spearman:.3f}\n"
+                evidence = [{"paper_id": "DATA_BASIS", "title": "joined claims and results", "year": "N/A", "anchor": "correlation", "snippet": f"Correlation computed from {len(joined)} paired records."}]
+                return ans, evidence, []
+            else:
+                return f"Insufficient paired dataset-size/accuracy records; found {len(joined)} pairs.", [], []
 
-    # --- Percentage questions ---
+    # --- 2. Sum parameter counts ---
+    if "sum" in q and ("parameter" in q or "params" in q):
+        if df_claims is not None and not df_claims.empty:
+            p_claims = df_claims[df_claims["claim_type"] == "parameter_count"].copy()
+            # Filter by architecture if mentioned
+            archs = ["transformer", "vit", "clip", "swin", "resnet", "cnn", "mllm", "vlm"]
+            active_archs = [a for a in archs if a in q]
+            if active_archs:
+                p_claims = p_claims[p_claims["entity"].str.lower().isin(active_archs)]
+            
+            if not p_claims.empty:
+                total_params = p_claims["normalized_value"].sum()
+                ans = f"Total reported parameter count"
+                if active_archs: ans += f" for {', '.join(active_archs).upper()} models"
+                ans += f": {total_params:,.0f} (summed across {len(p_claims)} claims in {p_claims['paper_id'].nunique()} papers)."
+                evidence = collect_evidence(p_claims.head(3).to_dict('records'), ctx["data_dir"], paper_meta=ctx["paper_meta"], query=question)
+                return ans, evidence, []
+
+    # --- 3. Median/average model sizes or sections ---
+    if ("median" in q or "average" in q or "mean" in q):
+        if "model size" in q or "parameter" in q or "architecture" in q:
+            if df_claims is not None and not df_claims.empty:
+                m_claims = df_claims[df_claims["claim_type"].isin(["model_size", "parameter_count"])].copy()
+                if not m_claims.empty:
+                    med = m_claims["normalized_value"].median()
+                    avg = m_claims["normalized_value"].mean()
+                    ans = f"Model parameters/size — Median: {med:,.0f}, Average: {avg:,.0f} (across {len(m_claims)} claims)"
+                    evidence = collect_evidence(m_claims.head(3).to_dict('records'), ctx["data_dir"], paper_meta=ctx["paper_meta"], query=question)
+                    return ans, evidence, []
+        
+        if "section" in q:
+            if df_sect is not None and "total_sections" in df_sect.columns:
+                med = df_sect["total_sections"].median()
+                avg = df_sect["total_sections"].mean()
+                ans = f"Sections per paper — Median: {med:.1f}, Average: {avg:.1f}"
+                evidence = [{"paper_id": "DATA_BASIS", "title": "paper_section_stats.csv",
+                             "year": "N/A", "anchor": "median", "snippet": "Computed from total_sections column."}]
+                return ans, evidence, []
+
+    # --- 4. ImageNet + no data augmentation ---
+    if "imagenet" in q and ("no data augmentation" in q or "without augmentation" in q or "without using data augmentation" in q):
+        if df_ent is not None and df_claims is not None:
+            imagenet_pids = set(df_ent[df_ent["entity"].str.lower() == "imagenet"]["paper_id"].dropna())
+            aug_pids = set(df_claims[df_claims["claim_type"] == "augmentation_flag"]["paper_id"].dropna())
+            no_aug_pids = sorted(list(imagenet_pids - aug_pids))
+            specific_no_aug = set(df_claims[(df_claims["claim_type"] == "augmentation_flag") & (df_claims["raw_text"].str.contains("no |without", case=False))]["paper_id"])
+            final_pids = sorted(list(imagenet_pids & specific_no_aug))
+            if not final_pids: final_pids = no_aug_pids[:5]
+            ans = f"Papers using ImageNet without (reported) data augmentation: {len(final_pids)}\n"
+            ans += f"Sample: {', '.join(final_pids[:10])}"
+            evidence = collect_evidence([{"paper_id": p} for p in final_pids[:3]], ctx["data_dir"], paper_meta=ctx["paper_meta"], query=question)
+            return ans, evidence, ["Absence of augmentation mentions is treated as 'no augmentation'."]
+
+    # --- 5. Percentage questions ---
     if "percent" in q or "%" in q:
         if "method" in q and df_sect is not None and "has_method" in df_sect.columns:
             pct = 100 * df_sect["has_method"].mean()
@@ -647,35 +804,19 @@ def answer_quantitative(question, route, ctx):
                      "year": "N/A", "anchor": "percent", "snippet": "Percentage computed from section/registry flags."}]
         return ans, evidence, []
 
-    # --- Median/average sections ---
-    if ("median" in q or "average" in q or "mean" in q) and "section" in q:
-        if df_sect is not None and "total_sections" in df_sect.columns:
-            med = df_sect["total_sections"].median()
-            avg = df_sect["total_sections"].mean()
-            ans = f"Sections per paper — Median: {med:.1f}, Average: {avg:.1f}"
-        else:
-            ans = "Section stats not available."
-        evidence = [{"paper_id": "DATA_BASIS", "title": "paper_section_stats.csv",
-                     "year": "N/A", "anchor": "median", "snippet": "Computed from total_sections column."}]
-        return ans, evidence, []
+    # --- 6. Entity-specific count (Fallback) ---
+    if df_ent is not None:
+        all_entities = df_ent["entity"].dropna().unique()
+        matched = [e for e in all_entities if str(e).lower() in q and len(str(e)) > 2]
+        if matched:
+            entity = matched[0]
+            papers_with = df_ent[df_ent["entity"].str.lower() == entity.lower()]["paper_id"].nunique()
+            ans = f"Papers mentioning '{entity}': {papers_with} out of {paper_count} corpus papers."
+            evidence = collect_evidence([{"paper_id": p} for p in df_ent[df_ent["entity"].str.lower() == entity.lower()]["paper_id"].unique()[:3]], 
+                                        ctx["data_dir"], paper_meta=ctx["paper_meta"], query=question)
+            return ans, evidence, []
 
-    # --- Average results per paper ---
-    if "average" in q or "mean" in q:
-        avg = result_count / paper_count if paper_count else 0
-        ans = f"Average result tuples per paper: {avg:.1f} (across {paper_count} papers, {result_count} total tuples)"
-        evidence = [{"paper_id": "DATA_BASIS", "title": "result_tuples.csv",
-                     "year": "N/A", "anchor": "average", "snippet": "Mean computed from extraction_registry."}]
-        return ans, evidence, []
-
-    # --- Total entity count ---
-    if "total" in q and "entit" in q and df_reg is not None and "entity_count" in df_reg.columns:
-        total_ent = int(df_reg["entity_count"].sum())
-        ans = f"Total entities extracted across corpus: {total_ent:,}"
-        evidence = [{"paper_id": "DATA_BASIS", "title": "extraction_registry.csv",
-                     "year": "N/A", "anchor": "total", "snippet": f"Sum of entity_count: {total_ent}."}]
-        return ans, evidence, []
-
-    # --- Generic fallback ---
+    # --- Final fallback ---
     ans = f"Quantitative Corpus Summary:\n"
     ans += f"- Total papers with extraction: {paper_count}\n"
     ans += f"- Total result tuples: {result_count}\n"

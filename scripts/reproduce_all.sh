@@ -75,6 +75,7 @@ if [ "$MODE" = "rebuild" ]; then
     python -m src.extract.extract_entities --data-dir "$DATA_DIR"
     python -m src.extract.extract_results --data-dir "$DATA_DIR"
     python -m src.extract.build_paper_summaries --data-dir "$DATA_DIR"
+    python -m src.extract.extract_numeric_claims --data-dir "$DATA_DIR"
     python -m src.extract.build_duckdb --data-dir "$DATA_DIR"
     python -m src.extract.validate_extraction --data-dir "$DATA_DIR"
 else

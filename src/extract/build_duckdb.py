@@ -26,7 +26,8 @@ def build_duckdb(data_dir):
         "result_tuples": extracted_dir / "result_tuples.csv",
         "paper_section_stats": extracted_dir / "paper_section_stats.csv",
         "paper_entity_summary": extracted_dir / "paper_entity_summary.csv",
-        "extraction_registry": extracted_dir / "extraction_registry.csv"
+        "extraction_registry": extracted_dir / "extraction_registry.csv",
+        "numeric_claims": extracted_dir / "numeric_claims.csv"
     }
     
     # Registry and Manifest

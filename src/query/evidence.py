@@ -54,11 +54,14 @@ def get_section_snippet(paper_id, data_dir, section_type=None, anchor=None, max_
         
     return snippet if snippet else "No matching evidence snippet found in sections."
 
-def collect_evidence(rows, data_dir, paper_meta=None, max_items=5):
+def collect_evidence(rows, data_dir, paper_meta=None, max_items=5, query=None):
+    from .retrieval import retrieve_sections
+    
     evidence = []
     seen = set()
     paper_meta = paper_meta or {}
     
+    # Standard exact-match evidence
     for row in rows:
         if len(evidence) >= max_items:
             break
@@ -105,4 +108,18 @@ def collect_evidence(rows, data_dir, paper_meta=None, max_items=5):
             "snippet": snippet
         })
         
+    # If still no evidence and query provided, try retrieval
+    if not evidence and query:
+        retrieved = retrieve_sections(query, data_dir, top_k=max_items)
+        for r in retrieved:
+            pid = r["paper_id"]
+            meta = paper_meta.get(pid, {})
+            evidence.append({
+                "paper_id": pid,
+                "title": meta.get("title", "Unknown"),
+                "year": meta.get("year", "Unknown"),
+                "anchor": f"retrieval:{r['section_type']}",
+                "snippet": r["text"][:500].replace("\n", " ") + ("..." if len(r["text"]) > 500 else "")
+            })
+            
     return evidence
